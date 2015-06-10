@@ -1,0 +1,152 @@
+
+- If Internet were not only a medium for routing packet to hosts, but also responded to users' requests for content. (Thats its primary function anyway.)
+
+Making content delivery through the Internet easier for content providers.
+
+
+Managing a Network with Integrated Content Delivery Functionality
+
+
+Network has the liberty to cache and serve users' requests.
+
+
+
+Impact of Content replication  on ISP network management.
+
+Impact of Pervasive Content caching on ISP network management.
+	- Special case: highly cacheable workload, bandwidth >> server compute resources.
+
+
+Content replication taking server resources into account: 
+
+
+How to handle workload with lower cache hit rates taking server resources into account.
+	- Decide which locations to serve users from. 
+	- 
+	- 
+
+, and leverage deployments in other networks.
+
+Geographic distribution of content workloads.
+
+
+
+
+
+
+What are the assumptions?
+
+Routing, server-load.
+
+
+
+1. Compute resources are adequate.
+2. Workload highly amenable to caching.
+3. 
+4. 
+
+
+
+Not all workloads are amenable to caching. 
+- Several workloads: amenable to caching.
+- Compute resources are finite: certain workloads 
+
+- Joint 
+
+
+Some questions:
+
+1. The current abstraction of host-to-host communication provides enough functionality to perform all tasks.
+2. Is it feasible to think that networks tomorrow will have caching tomorrow. 
+
+Lets assume that we were designing a network CDN.
+	- 
+	- 
+
+- Current Model:
+	- Internet: 
+	- CDN:
+	- DIY: 
+
+
+- Why would networks  want to send traffic 
+
+
+- Administrative domain: (Links, Routers, Servers)
+
+ 
+
+<CP1> <CP2+CDN1> <CP3+CDN2>
+
+
+<---------------Network--------------->
+
+
+
+Current state of affairs:
+
+- CDN 1
+- CDN 2
+
+In a network with pervasive caching functionality:
+
+	- primary problem: 
+
+- How to do it?
+
+- What functionality does network provide?
+	- Content caching.
+	- 
+
+<Content-provider> <Content-provider>
+
+- Router Designed
+
+
+
+- Content-centric networks:
+
+- Content-centric networks:
+
+- Network Management: 
+
+
+
+
+(1) resource management in geo-distributed platforms
+
+- Today's Internet services runs on geo-distributed computing platforms.
+- Why are they geo-distributed?
+	reduces the latency from user to content it is accessing, 
+	path optimizations
+	fault tolerance.
+- Ubiquitous: all content distribution and web services run on a geo-distributed platforms.
+- Heterogeneity. Examples: CDNs, public clouds, private clouds.
+- How to manage resources to maximize performance.
+
+- Sophisticated approaches based on planning, prior history, knowledge of system behaviour: Planned schemes
+- Simple approaches that are unplanned, operate on local knowledge.
+
+
+
+This thesis investigates the following question: (1) Should resource allocation in content distribution be done in a planned or an unplanned manner? Are there specific scenarios where unplanned approaches perform poorly ? Or a planned approach can give considerable improvements over simple unplanned strategies.
+
+- Examples:
+	0. Traffic engineering: if we consider the effect of application level adaptation, an different between planned and unplanned reduces
+	1. Network CDN: unplanned wins
+	2. Hybrid CDN: planned is hard to implement, so unplanned wins
+	3. 
+
+This thesis makes a case 
+
+Locality-aware placement: 
+
+Planned scheme:
+
+
+Formulate a planned vs unplanned problem in a cloud scenario.
+
+Sophisticated planned schemes for resource allocation on geo-distributed platforms.
+
+Sophisticated planned schemes for resource allocation on geo-distributed platforms are either hard to implement, or provide minimal gains. 
+

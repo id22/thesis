@@ -1,0 +1,81 @@
+
+\documentclass{sig-alternate-10pt}
+%\documentclass[letterpaper,twocolumn,10pt]{article}
+%\usepackage{usenix,epsfig,endnotes}
+
+%\thispagestyle{empty}
+
+\usepackage{subfigure, verbatim, soul, comment, pifont, array, url, amsmath, multirow, latexsym, tabularx}
+\usepackage{ifpdf, rotating, colortbl, graphicx}
+%\usepackage[boxed]{algorithm}
+\usepackage{algorithm, wrapfig, algorithmic, xspace, url, bbm, wrapfig, sidecap}
+%\usepackage{wrapfig, xspace, url, wrapfig, sidecap}
+
+\newcommand{\auspice}{Auspice}
+
+\newcommand{\uniform}{Random}
+%\newcommand{\kmedoids}{K-Mediods}
+%\newcommand{\locaware}{Locality}
+%\newcommand{\opt}{Optimal}
+\newcommand{\optimal}{Optimal}
+\newcommand{\beehive}{DHT+Popularity}
+\newcommand{\codons}{DHT+Popularity}
+\newcommand{\staticthree}{Random-M}
+\newcommand{\replicateall}{Replicate-All}
+
+\newcommand{\tbd}[1]{{\bf{[TBD:}#1]}}
+\newcommand{\tbdf}[1]{\footnote{\bf{TBD:}#1}}
+\newcommand{\eat}[1]{}
+\newcommand{\para}[2]{{\bf{[#1]}}\\#2}
+
+\newcommand{\msocket}{msocket}
+
+\newcommand{\vsp}{\vspace{-0.06in}}
+
+\begin{document}
+\title{A Global Name Service for a Highly Mobile Internet}
+\author{Paper \#310}
+
+%\author{Abhigyan Sharma\quad Xiaozheng Tie \quad  Hardeep Uppal \quad Arun Venkataramani\\
+% David Westbrook \quad  Aditya Yadav
+%\\ 
+%University of Massachusetts Amherst }
+\maketitle
+
+\input{abstract}
+\vspace{-0.05in}
+\input{intro}
+\input{bg}
+%\input{mobilityfirst}
+%\input{goal}
+\vspace{-0.05in}
+\input{design}
+\vspace{-0.05in}
+\input{implementation}
+%\input{evalPlanetlab}
+%\input{eval2}
+\input{eval}
+\input{eval-case}
+\input{eval-part2}
+%\input{deployment}
+%\input{eval_feb27}
+%\input{evalSimulator}
+%\vspace{-0.1in}
+\input{related}
+\vspace{-0.1in}
+\input{conclusion}
+\vspace{-0.1in}
+{\small{
+{
+\bibliographystyle{abbrv}
+\bibliography{paperbib.bib}
+}}
+\input{appendix}
+%\input{Additional sections}
+
+%\vspace{-0.1in}
+%\small{
+%
+%}
+\end{document}
+

@@ -1,0 +1,104 @@
+
+\documentclass{sig-alternate-2013}
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+\newfont{\mycrnotice}{ptmr8t at 7pt}
+\newfont{\myconfname}{ptmri8t at 7pt}
+\let\crnotice\mycrnotice%
+\let\confname\myconfname%
+
+\permission{Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.}
+\conferenceinfo{SIGCOMM'14,}{August 17--22, 2014, Chicago, IL, USA. \\
+{\mycrnotice{Copyright is held by the owner/author(s). Publication rights licensed to ACM.}}}
+\copyrightetc{ACM \the\acmcopyr}
+\crdata{978-1-4503-2836-4/14/08\ ...\$15.00.\\
+http://dx.doi.org/10.1145/2619239.2626331}
+
+\clubpenalty=10000 
+\widowpenalty = 10000
+
+
+
+%\documentclass[letterpaper,twocolumn,10pt]{article}
+%\usepackage{usenix,epsfig,endnotes}
+
+%\thispagestyle{empty}
+
+\usepackage{subfigure, verbatim, soul, comment, pifont, array, url, amsmath, multirow, latexsym, tabularx}
+\usepackage{ifpdf, rotating, colortbl, graphicx}
+%\usepackage[boxed]{algorithm}
+\usepackage{algorithm, wrapfig, algorithmic, xspace, url, bbm, wrapfig, sidecap}
+%\usepackage{wrapfig, xspace, url, wrapfig, sidecap}
+
+\newcommand{\auspice}{Auspice}
+
+\newcommand{\uniform}{Random}
+%\newcommand{\kmedoids}{K-Mediods}
+%\newcommand{\locaware}{Locality}
+%\newcommand{\opt}{Optimal}
+\newcommand{\optimal}{Optimal}
+\newcommand{\beehive}{DHT+Popularity}
+\newcommand{\codons}{DHT+Popularity}
+\newcommand{\staticthree}{Random-M}
+\newcommand{\static}[1]{Random-#1}
+\newcommand{\replicateall}{Replicate-All}
+
+\newcommand{\tbd}[1]{\textcolor{red}{\bf{[TBD:} #1]}}
+\newcommand{\tbdf}[1]{\footnote{\bf{TBD:}#1}}
+\newcommand{\eat}[1]{}
+\newcommand{\para}[2]{{\bf{[#1]}}\\#2}
+\newcommand{\blue}[1]{#1}
+%\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\rmCR}[1]{}
+
+
+\newcommand{\msocket}{msocket}
+
+\newcommand{\vsp}{\vspace{-0.06in}}
+\newcommand{\figvsp}{\vspace{-0.2in}}
+
+\newcommand{\asymb}{*}
+
+\begin{document}
+\title{Demand-aware geo-distributed placement for low latency}
+
+
+\maketitle
+
+%\input{abstract}
+%\input{intro}
+%\input{bg}
+%\input{mobilityfirst}
+%\input{goal}
+
+\input{newintro}
+\input{design}
+
+\input{implementation}
+%\input{evalPlanetlab}
+%\input{eval2}
+\input{eval}
+%\input{eval-case}
+\input{eval-part2}
+%\input{deployment}
+%\input{eval_feb27}
+%\input{evalSimulator}
+%\vspace{-0.1in}
+\input{related}
+
+\input{conclusion}
+
+{\small{
+{
+\bibliographystyle{abbrv}
+\bibliography{paperbib.bib}
+}}
+%\input{appendix}
+%\input{Additional sections}
+
+%\vspace{-0.1in}
+%\small{
+%
+%}
+\end{document}
+

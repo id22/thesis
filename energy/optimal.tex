@@ -1,0 +1,21 @@
+\appendix
+\section{Optimal Strategy}
+\label{sec:optimal}
+
+A few simplifications from the above problem statement enable us to formulate the optimal strategy as a mixed-integer program. First, we assume that the demand for a content is equally distributed  over the interval for which the optimal solution is computed. Second, the optimal strategy makes no effort at limiting the number of on-off transitions. Therefore, this optimal strategy provides at least as much energy savings, compared to a formulation which also limited the number of transitions per server (switch)  to once per day. Third, content transfers after server shutdown contribute a small fraction of overall energy, and that a heuristic for deciding content transfers is able to eliminate most of the cache-misses due to server shutdown. 
+
+%****** Why current optimal is not optimal? ******
+%
+%****** Depends on the utilization? ******
+
+Why current optimal is not optimal?
+
+(1) it does not optimize over multiple intervals?
+(2) it does not decide the set of content transfers after a shutdown
+(3) We are running optimal periodically, so what is the best period?
+(4) its strategy to retain current placement is a heuristic scheme
+
+
+
+
+

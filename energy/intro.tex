@@ -1,0 +1,52 @@
+\chapter{Shrink: Greening CDN Datacenters}
+\section{Introduction}
+
+%\textbf{Why should we care about data center energy use?}
+
+Our growing consumption of digital content  is increasing the energy use of datacenters used for content delivery. This growth is a result of increased availability of several forms of content such as video \cite{nielsen-video-growth}, and social media content, as well new platforms for content consumption, such as smartphones and tablets. Due to our growing dependence on digital content, mechanisms for reducing energy use of content delivery are an important societal need. For enterprises that provide content delivery  services, energy is a major factor of operational costs \cite{mathew12}. Energy saving mechanisms reduce their operational costs, keeping them competitive in an commoditized marketplace.
+
+%\textbf{What is lacking in prior work on server minimization?}
+Prior work on  saving server energy in datacenters has is based on consolidation, i.e., aggregating demand on a fraction of servers during low-utilization periods, which allows unused servers to be turned off. Their analyses point to considerable energy saving potential from TBD-TBD\% across datacenters. We find these analyses to be inaccurate for three reasons. First, they do not model the effect of content availability on server load.  They assume the aggregate load at a datacenter to be a fixed value that can be moved around between servers. In case of content workloads, server load depends on whether content is available at a server; cache misses result in a higher server load than cache hits.  Second, they model user perceived performance as depending only whether a server has enough capacity to serve request. However, there is considerable difference in performance for two content requests, one for which content is available at a datacenter, and another which requires content to be fetched from origin servers or another datacenters. Third, they do not model the effect of server shutdown on content availability, even though server shutdown could reduce available storage at a datacenter and increase cache-miss rates. For these reasons, it is unclear if the projected energy savings are indeed achievable without degrading user-perceived performance. 
+
+
+%\textbf{What is lacking in prior work on network energy minimization?}
+
+As datacenter network consumes about 10-20\% of datacenter energy, traffic engineering techniques have been developed to reduce network energy consumption.  These energy savings that scheme achieve depend on traffic patterns in the datacenter, traffic patterns that traffic engineering schemes assume to be unchangeable.  This assumption isn't true for content delivery data centers, where traffic patterns could be influenced by load balancing decisions and server shutdown policies. We hypothesize that there exists potential for more network energy savings in datacenters than shown previously, provided techniques for saving server energy work in coordination with those for saving network energy. 
+
+%\textbf{What are our key insights?}
+
+Our goal is to design a comprehensive solution for content delivery data centers that maximizes  energy savings with minimal impact on user-perceived performance or hardware reliability. 
+Our design coordinates which parts of network and which servers are shutoff to increase network energy savings, uses load balancing algorithms that minimize the impact of server shutdown on cache misses, and selectively transfers  content before shutdown events to avoid sudden content unavailability due to server shutdown. Further, the system is highly responsive to sudden spikes in traffic demand and can compute updated decisions for datacenters with thousands of servers within tens of seconds.
+
+
+We implement a prototype of \shrink\ using TBD library and, and conduct extensive trace-driven evaluation using traces from a large CDN for X and Y types of content. Our results show that \shrink\ can reduce energy consumption by TBD-TBD\% with minimal impact on user-perceived performance and performs with TBD\% of the optimal strategy. 
+
+TBD Results here.
+
+%Key insights (1) coordinate which parts of network and which servers are shut-off (2) ensure minimal performance impact by selectively migrating content before shut-down events (3) whats TE strategy?
+
+
+
+
+\eat{
+
+Network CDN (NCDN) is an ISP offering content delivery services through its ISP network.  Augmenting an ISP network with content caches can help reduce network costs, and improve user-perceived performance. An open question is whether such an architecture can also reduce the network energy consumption of the ISP. A few recent papers have studied how to minimize energy usage of ISP networks, based on the observation that ISP networks often have redundant links, and link are under-utilized most of the time. This enables links to be turned off for long durations and saves energy use of backbone routers, with a minimal effect on the network cost or user-perceived performance. In addition to redundancy of links and link capacity, the content is often replicated in an NCDN. Thus turning off a link to save energy may have even less of an effect on the network cost or user-perceived performance in an NCDN.
+
+We study the problem of calculating a routing in an NCDN which minimizes energy use of backbone routers. Several existing approaches for optimizing energy in an ISP, such as Response are also applicable for an NCDN. We plan to evaluate these approaches. In addition, content replication in an NCDN may enable new approaches to calculate routing, which can deliver more savings than the energy-optimal routing strategies designed for an ISP network. We note that the servers at each PoP also consume energy. We assume that the energy minimization of servers at each PoP is done independently using energy-aware load balancing, and is not the focus of this work.
+
+We model the NCDN infrastructure as follows. We consider an ISP network where each PoP is augmented with servers which acts as a content cache. The servers at each PoP have a finite storage, which limits the number of content that can be cached at each PoP,  and a finite capacity, which limits the maximum throughput of servers at that each PoP. Each PoP has a backbone router, consisting of a chassis to which line cards are fitted. Each line card is the end-point of a network backbone link in the ISP network.
+
+A client request for a content is sent to the PoP closest to the client which has sufficient capacity to serve this request. Under typical load scenarios, this is the PoP closest to the client. If a client requests a content not found at a PoP, then that PoP either fetches the content from other network caches or from the origin servers, caches the content locally and serves the client. A PoP fetches content from closest location based on hop count distance.
+
+We are interested in three metrics: energy saved in over the baseline policy of all links always remaining on, and the network cost of the ISP, and the latency experienced by end-users. Overall, our goal is to minimize the energy use of backbone routers, while keeping the network cost and latency of end-users to the desired level for an NCDN.
+
+%(1) always on: do we need any of these links 
+%
+%(2) MST
+%
+%(3) energy optimal
+%
+%(4) non-optimal
+%\newpage
+
+}

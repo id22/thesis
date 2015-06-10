@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d (TeX Live 2012)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: sigc310-sharma.aux
+The style file: abbrv.bst
+Database file #1: paperbib.bib.bib
+Warning--to sort, need author or key in techreport
+Warning--to sort, need author or key in alexa
+Warning--to sort, need author or key in msocketTR
+Warning--to sort, need author or key in mongodb
+Warning--to sort, need author or key in cassandra
+Warning--empty institution in liskov12vr
+You've used 26 entries,
+            2118 wiz_defined-function locations,
+            613 strings with 6847 characters,
+and the built_in function-call counts, 6942 in all, are:
+= -- 592
+> -- 355
+< -- 1
++ -- 143
+- -- 116
+* -- 386
+:= -- 1132
+add.period$ -- 73
+call.type$ -- 26
+change.case$ -- 136
+chr.to.int$ -- 0
+cite$ -- 32
+duplicate$ -- 303
+empty$ -- 667
+format.name$ -- 116
+if$ -- 1480
+int.to.chr$ -- 0
+int.to.str$ -- 26
+missing$ -- 18
+newline$ -- 128
+num.names$ -- 42
+pop$ -- 248
+preamble$ -- 1
+purify$ -- 110
+quote$ -- 0
+skip$ -- 182
+stack$ -- 0
+substring$ -- 156
+swap$ -- 42
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 104
+warning$ -- 6
+while$ -- 44
+width$ -- 28
+write$ -- 248
+(There were 6 warnings)

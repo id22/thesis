@@ -1,0 +1,9 @@
+%!TEX root = new.tex
+
+
+\section{Conclusions}
+
+\label{sec:concl}
+
+In this paper, we presented the design, implementation, and evaluation of \auspice, a massively scalable, geo-distributed, global name service for an Internet where high mobility is the norm. The name service can resolve flexible identifiers (human-readable names, self-certifying identifiers, or arbitrary strings) to network locations or other attributes that can also be defined in a flexible manner. At the core of \auspice\ is a placement engine for replicating name records to achieve low lookup latency, low update cost, and high availability. Our evaluation shows that \auspice's placement algorithms significantly outperform both commercial managed DNS services employing simplistic replication strategies as well as previously proposed DHT-based replication alternatives. Our case studies show that \auspice\ can form the basis of an end-to-end mobility solution and also enable novel context-aware communication primitives that generalize name- or address-based communication. A pre-release version of \auspice\ on EC2 can be accessed through the developer portal at \verb+http://gns.name+.
+

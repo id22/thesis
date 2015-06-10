@@ -1,0 +1,48 @@
+\section{Related Work}
+
+\subsection{Traffic Engineering }
+A large body of work on traffic engineering precedes this paper. We summarize the methods and results from a subset of them below:
+
+%\textbf{OSPF with Inverse Capacity weights,OSPFInvCap}:  It is also a shortest path routing scheme with edge weights equal to the inverse of the capacity of the corresponding link. This is also the default routing strategy used in Cisco Routers \cite{InvCap}.
+
+ \textbf{OSPF with Optimal Weights}: Fortz and Thorup proposed traffic engineering using OSPF. We refer to this OSPFOptWt. The parameter to configure are the link weights which results in the desired shortest path routing. The objective is to minimize the total cost on all links where the cost of  each link is approximated with a convex cost function. Their results showed that OSPF performs within a few percent of OPTIMAL on their cost metric as well as MLU for AT\&T  Topology and other synthetically generated topology and demand matrices. Our comparison is based on TCP throughput in the network which differs from their comparison. But, we report upto 66 percent higher MLU than OPTIMAL for OSPFOptWt. One reason for this is because we compute routing based on average traffic matrices for past three hours. This is a reasonable time scale for traffic engineering methods.
+
+\textbf{OSPF with few weight changes:} In another paper \cite{FortzThorup2} they propose methods to compute weight settings using fewer weight changes. We cover this case since we compare with the OSPFOptWt itself.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% What are the MPLS TE methods proposed ? What objective functions they use ? What are their results ?
+
+\textbf{MATE }: MATE \cite{MATE}  is online traffic engineering method based on MPLS. It can optimize a cost function based on delay and/or loss rates on the links in the network. Its objective to minimize the sum of cost of all links in the network. In essence, such a cost function is similar to the convex cost function used in \cite{FortzThorup} because queuing delay and loss rates in the network increase in a convex manner in a queue as link utilization increases \cite{queue}. Comparing with such a cost function would require knowing the loss rate and delay function on each link. It is difficult to estimate this function accurately for each link.  Estimating the loss rate and delay function for each link would require multiple simulations for each TM.
+
+\textbf{TeXCP} : TeXCP  [\cite{TeXCP}]  is an online distributed TE method based on MPLS which seeks to optimize MLU using a distributed routing algorithm. We compare with the MLU Optimal scheme and measure its performance.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\textbf{MultiTM}: Another class of algorithms optimize over multiple traffic matrices \cite{MultiTM},\cite{COPE}. The objective is to compute a routing over multiple traffic matrices in the period  which does not need to be changed due to predictable diurnal variations.
+
+\textbf{Oblivious Routing}: Oblivious routing algorithms compute a routing independent of traffic matrices. Applegate and Cohen \cite{ObliviousRouting} present an oblivious routing algorithm which has approximately twice the MLU as the Optimal algorithm. Such an algorithm is advantageous when unpredictable traffic demands occur which can increase MLU significantly.
+
+\textbf{COPE}: COPE is a traffic engineering method which optimizes routing over multiple traffic matrics. In addition it optimizes for unpredictable traffic spikes in which case its MLU is with in a factor $\alpha$ of the MLU Optimal. $\alpha$ is a configurable paramter in the algorithm and its typical value is around 2. Overall COPE's objective is to optimize MLU for predictable demand and have a MLU like Oblivious routing in unpredictable traffic demands. Our comparison measure its performance in terms of throughput and shows that accounting for unpredictability hurts throughput.
+
+\textbf{Link State OPT}: In \cite{LinkStateOPT}, the authors propose a link state routing which can achieve Optimal TE. Their notion of optimal traffic engineering is also a convex cost function of link utilization. We compare the MLU Optimal schemes with respect to Optimal.
+
+We compare these traffic engineering schemes to OSPF InvCap, a baseline that does not engineer traffic but simply uses shortest path routing using the inverse of the link capacity as the link weight, and is a default routing protocol supported by popular commercial router vendors.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Traffic engineering and diversity}
+Recent interest in traffic engineering has been due to increase in traffic of P2P applications especially BitTorrent. To manage this traffic, ISPs have taken to throttling BitTorrent traffic. Two types of solutions have been proposed to solve this problem: One class of solutions have been proposed to change BitTorrent or its tracker to choose local peers in an ISP. By default, BitTorrent chooses its peers randomly. 
+
+\textbf{Taming the Torrent} This paper shows how to select local peers for BitTorrent using Akamai servers.
+
+\textbf{ISP Friendly P2P live streaming} 
+
+Another class of solutions have proposed a joint solution between ISPs and content delivery systems such as BitTorrent and Akamai. These solutions work on a co-operation between the two entities whereby both exchange information -  ISP informs about its network and content provider about its traffic pattern - with each other. The objective is to achieve better performance for both - a lower MLU for ISP and faster content delivery for content provider.
+
+\textbf{P4P} This paper proposes a joint solution where ISPs and content delivery systems such as BitTorrent both exchange information and this approach works to reduce ISP interdomain traffic and also improve download rate for content delivery systems.
+
+\textbf{Co-operative Content Distribution and Traffic Engineering} This paper theoretically analyzes the different modes of co-operation between an ISP and Content Delivery Systems and concludes that a joint optimization can achieve benefits of upto 20\% for 
+
+While these proposals may be adopted in future, internet today already has location diversity. Our objective is to measure the impact of location diversity on traffic engineering. Our comparison of TE schemes with multiple download locations shows that the strong effect of location diversity in the network is of blurring the differences of OPTIMAL TE and OSPFOptWt.
+
+\textbf{Pitfalls of ISP friendly P2P design} This paper shows you cant gain much from ISP friendly P2P design which puts to question some of the previous proposals.

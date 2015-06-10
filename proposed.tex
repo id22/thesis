@@ -1,0 +1,39 @@
+%!TEX root = New.tex
+\chapter{Proposed Research Plan}
+\label{ch:proposed}
+The research towards the completion of this thesis would be conducted in following four phases as outlined in Figure \ref{fig:proposal}.
+\begin{figure}[h]
+\centering
+{\small
+\begin{tabular}{| l | l | l | l |}
+  \hline                       
+  \textbf{Phase} &   \textbf{Project}   &   \textbf{Duration} &   \textbf{Brief description}\\
+  \hline                       
+  1 & Shrink (Ch. \ref{ch:shrink}) & 2 months & Algorithm design and trace-based simulation \\
+    \hline                       
+  2 & Shrink (Ch. \ref{ch:shrink}) & 2 months & Prototype development and evaluation\\
+    \hline                       
+  3 & Auspice (Ch. \ref{ch:auspice}) & 2 months & Evaluation in a wide-area testbed\\
+    \hline                       
+  4 & Dissertation & 2 months & Documentation of research in Phase 1-3 \\  
+  \hline  
+\end{tabular}
+}
+\caption{Proposed work and timeline}
+\label{fig:proposal}
+\end{figure}
+
+\section{Shrink algorithm design and trace-driven evaluation} Our first goal would be to design algorithms for problems in Section \ref{sec:shrinkalgo} and iteratively refine them by conducting trace-driven evaluation with our datasets. Trace-driven evaluation can be accomplished faster than actual experimentations, and will help us iterate quickly over our algorithms.
+
+\section{Shrink prototype development and evaluation} 
+The second phase would involve a developing research prototype, whose main components are following: \textbf{(1) Shrink core:} This module would implement the algorithms designed in the first phase, namely those for deciding the set of active elements in a datacenter, and determining network routing and load balancing decisions.  \textbf{(2) Server and switch daemons:} The role of server and switch daemons is discussed in Section \ref{sec:shrinksystem}. These daemons could be integrated within a process already running at that server, e.g., the proxy software \cite{squid}, or may be implemented as a stand-alone processes.  \textbf{(3) Client:} The client module will send HTTP requests to simulate a datacenter workload and measure end-to-end performance.
+
+We plan to conduct an experimental evaluation with the above prototype on a cloud platform, e.g, Amazon EC2 \cite{amazonec2}, as well on the 12-node Skuld cluster within our department. We expect the experiment evaluation to be an iterative process as well in which experimental findings lead us to reconsider both the designed algorithms and the system implementation.
+
+\section{Auspice evaluation in a wide-area testbed} 
+
+The research in this phase would be an extension of the evaluation presented in Chapter \ref{ch:auspice}. Although emulation-based results show that \auspice's placement strategy outperforms state-of-the-art systems, the results therein do not fully validate if the \auspice\ system can deliver similar gains in a wide-area setting or at a workload with a greater number of records. In particular, the variable latency and loss in a wide-area setting as well as the overhead of replicating a greater number of records in a demand-aware manner may reduce the latency improvements that we have demonstrated. We plan to evaluate \auspice\ on the PlanetLab testbed for a larger-sized workload to provide a more realistic estimate of \auspice's performance and cost improvements.
+
+\section{Dissertation} 
+
+In the concluding phase, we will incorporate research findings in the above phases in the thesis draft to be presented to the committee.

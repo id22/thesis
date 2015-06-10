@@ -1,0 +1,155 @@
+\section{OtherLPs}
+
+\subsection{Other linear programs}
+
+\subsubsection{Linear program to calculate optimal routing for flows with multiple sources}
+
+\label{sec:lpminmlu}
+
+Network  $G = (V,E)$.
+
+Nodes $V = \{ n_1, n_2, ... n_a  \}$
+
+Links $ E = \{ e_{ij}\}$ for link between node $i$ and  $j$ and link capacity = $ C = \{ c_{ij}\}$.
+
+Location diversity parameter $k$. This is the number of sources for each flow.
+
+Flows $F = \{f_1, f_2, ... f_b\}$ 
+
+Sources for flow $f_i$, $S_i = \{ s_{i1},s_{i2},....s_{ik} \}$. Destination for flow $f_i$ = $d_i$.
+
+%Routing configured in the network: 
+
+For the above network and traffic demands, we have to solve the following linear program.
+
+Minimize:  $\alpha$, the maximum link utilization.
+
+Subject to:
+\begin{enumerate}
+\item 
+Each flow demand must be routed. For each flow $f_i$,
+\[ f_i = \sum_{i = 1 to k }  f_{is_{ij}}, 0 \leq  f_{is_{ij}} \leq f_i \]
+where each $f_{is_{ij}}$ amount of flow $f_i$ routed from source node $s_{ij}$ to destination node $t_i$. 
+
+\item 
+Treat each flow as an independent flow which can be routed independently. For flow $f_{is_{ij}}$, . The constraints for routing this flow are :
+
+For each node $q$,
+\[ \sum_{r \in outgoing(q)} h_{qr}^{is_{ij}} - \sum_{p \in incoming(q)} h_{pq}^{is_{ij}} = d\]
+$d = -f_{is_{ij}}$ if $q = s_{ij}$, $d = f_{is_{ij}}$ if $q = t_i$, otherwise $d = 0$. In addition $0 \leq h_{ij}^{st} \leq f_{is_{ij}}$ as mentioned above.
+
+\item
+(Total flow on each link) $\leq $ $\alpha $ (capacity of link). For each link $e_{pq}$, 
+\[ \sum h_{pq}^{is_{ij}} \leq \alpha \times c_{pq} \]
+for each link.
+
+\end{enumerate}
+
+The above formulation can provide us the global optimal solution for flows having multiple sources but a single destination.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Linear program to calculate MLU optimizing flow splits among multiple sources for a given routing}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The variables defined above are reused for this program. We define a new set of variables for the routing to be configured.
+
+\[R = \{r_{ij}^{st}\}, 0 \leq r_{ij}^{st} \leq 1\]
+$r_{ij}^{st}$ is the fraction of flow from source node $s$ to destination node $t$ which passes on the link between node $i$ and $j$. 
+The routing defined must should obey following constraints. For each node $j$,
+\[ \sum_{k \in outgoing(j)} r_{jk}^{st} - \sum_{i \in incoming(j)} r_{ij}^{st} = d\]
+$d = -1$ if $j = s$, $d = 1$ if $j = t$, otherwise $d = 0$. In addition $0 \leq r_{ij}^{st} \leq 1$ as mentioned above. The linear program is as follows:
+
+\textbf{Minimize:}  $\alpha$, the maximum link utilization.
+Subject to:
+\begin{enumerate}
+\item 
+Each flow must be routed: For each flow $f_i$,
+\[ f_i = \sum_{j = 1 \mbox{ to }k }  f_{is_{ij}}, 0 \leq  f_{is_{ij}} \leq f_i \]
+where each $f_{is_{ij}}$ amount of flow $f_i$ routed from source node $s_{ij}$ to destination node $t_i$. 
+
+\item 
+Total flow between a source and destination is defined as $g_{st}$
+\[ g_{st} = \Sigma f_{is_{ij}},   \forall i,j : s_{ij} = s , t_i = t \]
+
+\item
+(Total flow on each link) $\leq $ $\alpha $ (capacity of link). For each link $e_{ij}$, 
+\[ \sum g_st \times r_{ij}^{st} \leq \alpha \times c_{ij} \]
+for each link.
+
+\end{enumerate}
+
+If the routing in the network is defined, i.e. $r_{ij}^{st}$ are constants, then above defition is a linear program. This formulation can be used to compute the capacity for \invcap{} or any other known routing scheme. When $r_{ij}^{st}$ are variables, the above program is not a linear program as defined above.
+
+%For each $f_{is_{ij}} : s_{ij} = s , t_i = t$, let $h_{is_{ij}}^{pq} = f_{is_{ij}} \times r_{pq}^{st}$. Thus, $h_{is_{ij}}^{pq}$ is the part of flow  $f_{is_{ij}}$ which goes on link $e_{pq}$.Thus, we elide the variables $r_{ij}^{st}$ mentioned in equations above. Our new set of constraints are as follows.
+
+%\[ \sum h_{is_{ij}}^{pq} \leq \alpha \times c_{pq} , s_{ij} = s , t_i = t\]
+%Even after this rewriting, the problem isnt a linear program since there is no way to relate $h$'s to $f$'s.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Linear Program to calculate best 'k' locations which minimize MLU}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\textbf{Problem Description}
+
+The problem is to find the best 'k' locations among 'n'  nodes in the network to host content in the network. 
+The input to the problem is a set of traffic demands represented as flows ${f_1,f_2,....}$  where flow $f_i$ is the total demand for the $i$-th flow but we do not know the set source nodes for each flow. Other inputs are similar to the previous two programs. 
+\newline
+\newline
+\textbf{Known parameters}
+Network  $G = (V,E)$.
+
+Nodes $V = \{ n_1, n_2, ... \}$
+
+Links $ E = \{ e_{ij}\}$ for link between node $i$ and  $j$ and link capacity = $ C = \{ c_{ij}\}$.
+
+Flow demands $F = \{f_1, f_2, ... \}$ 
+
+Destination for flow $f_i$ is node  $t_i$.
+\newline
+\newline
+\textbf{Variables:}
+
+${x_j}$ - If $x_j = 1$ node $j$ is a source node and $x_j = 0$ otherwise.
+
+$p_{ij}$ - Fraction of flow $f_i$ which is routed from node $j$. Note that if $x_j = 0$, $p_j$ must be zero.
+
+$\alpha$, the maximum link utilization.
+\newline
+\newline
+\textbf{Linear program:}
+For the above network and traffic demands, we have to solve the following linear program.
+\newline
+\newline
+Minimize:  $\alpha$
+\newline
+\newline
+Subject to:
+\begin{enumerate}
+\item 
+Each flow demand must be routed. For each flow $f_i$,
+\[ 1 = \sum_{i = 1 to k }  p_{ij}, \mbox{ where } 0 \leq p_{ij} \leq 1 \]
+
+\item 
+Treat each flow as an independent flow which can be routed independently. For flow $p_{ij}$, . The constraints for routing this flow are :
+
+For each node $q$,
+\[ \sum_{r \in outgoing(q)} h_{qr}^{ij} - \sum_{p \in incoming(q)} h_{pq}^{ij} = d\]
+(a)  if $q = j$ then $d = -p_{ij} f_i$, (b) if $q = t_i$ then, $d = p_{ij} f_i$ , (c) otherwise $d = 0$. 
+
+In addition $0 \leq h_{pq}^{ij} \leq p_{ij} f_i $ as mentioned above.
+
+\item
+(Total flow on each link) $\leq $ $\alpha $ (capacity of link). For each link $e_{pq}$, 
+\[ \sum_{i,j} h_{pq}^{ij} \leq \alpha \times c_{pq} \]
+for each link.
+
+\item
+There must be $k$ sources.
+
+\[\sum_{j}  x_j = k , \mbox{ where } 0 \leq x_j \leq 1 \]
+
+\item
+If $x_j = 0$, then $p_{ij} = 0$. If $x_j$ = 1, then $p_{ij}$ can be between zero and one.
+\[ p_{ij} \leq x_j \]
+
+\end{enumerate}

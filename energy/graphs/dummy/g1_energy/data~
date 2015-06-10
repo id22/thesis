@@ -1,0 +1,4 @@
+Energy Server[Idle] Server[Client-Traffic] Server[Other-Traffic] Network
+AllOn  100 20
+Shrink 30 8
+LowerBound 25 6

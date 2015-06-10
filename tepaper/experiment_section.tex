@@ -1,0 +1,271 @@
+\documentclass[a4paper,10pt]{article}
+\title{A Comparsion of Traffic Engineering Methods for Application Perceived Metrics}
+\date{}
+\author{}
+\usepackage{geometry} 
+\usepackage{amsmath}    % need for subequations
+\usepackage{amssymb}
+\usepackage[pdftex]{graphicx}
+\usepackage{subfigure}
+\geometry{left=1.0in,right=1.0in,top=1in,bottom=1in}
+
+\begin{document}
+
+\maketitle
+\section{Comparison of traffic engineeriong methods using ns-2 simulations}
+\renewcommand{\topfraction}{.9}
+\renewcommand{\bottomfraction}{.9}
+\renewcommand{\textfraction}{.1}
+
+Section outline:
+
+1. Experimental Dataset
+
+2. Description of Experiment
+
+3. Choice of parameters
+
+4. Results for US-Tier 1 ISP
+
+5. Results for Geant
+
+6. Results for Abilene
+
+\subsection{ISP Topologies and Traffic Matrices:}
+We do our experiments with following pairs of ISP Topologies and Traffic Matrices:
+
+\begin{enumerate}
+\item 
+Abilene: We use the Abilene ISP topology made available with Abilene traffic matrix datasets. This topology had 12 nodes and 30 links. The traffic matrices for the Abilene ISP from 1st March 2004 to 10th Sept 2004 [add ref] are publically available. In this paper, we report the results from Traffic Matrices for three days - 8th April, 27th April and 28th April.
+
+\item 
+Geant: The publicly available datasets consist of the topology without the link capacities. We obtained the Geant ISP topology maps with the link capacities from the authors of the following paper[]. This topology has 23 nodes and 70 links. In our experiments we found that one of the nodes had only two 155 Mbps links but the aggregate traffic to that node was often more than 500 Mbps. These 155 Mbps links had traffic of more than twice the capacity whereas the rest of links in the network had traffic less than half of the capacity. Since traffic was more that the aggregate capacity of links no routing strategy could reduce the link utilization to an acceptable level of less than 1. We compare different routing using their MLU hence we excluded this node and the two links. Our experiments are on a 22 node, 68 link topology. The Totem project [] has made the traffic matrices for the Geant networkom 1st Jan 2005 to 29th April 2005 []  publically available.
+\item 
+US Tier 1 topology: We used the anonymized PoP level topology from a US tier 1 ISP. We obtained this topology from the authors of \cite{MultiTM}. 
+\item 
+RocketFuel Topologies and Gravity Traffic Matrices : We also experiment with topologies of 5 ISPs taken from RocketFuel dataset. Since, traffic matrices for these ISP topologies are not available, we experiment with traffic matrices generated using the gravity model.  It has been used elsewhere in literature.
+
+\end{enumerate}
+
+\subsection{Experiment:} 
+
+%\begin{center}
+%  \begin{tabular}{| l | c | }
+%    
+%TCP packet size & 1500\\ 
+%Maxmimum TCP window size ( at sender) & 10000000\\ 
+%Scale & 1:100 or 1:10\\ 
+%Capacity of backbone links & (Original Capacity)/scaleFactor\\ 
+%Capacity of client access link & 2Mbps/5Mbps/$\infty$ \\ 
+%Capacity of server access links & $\infty$ \\ 
+%Propagation delay on backbone links & From ISP topology\\ 
+%Propagation delay on client/server access links & 0.1ms\\ 
+%Queue size of backbone links & 500 for 100Mbps link (1:100) or 5000 for 1Gbps link(1:10) \\ 
+%Queue size of clients' access links & 64 for 10Mbps link or 32 for 5 Mbps link \\ 
+%Queue size of servers' access links & 1000 (500Mbps) or 3000($\infty$)\\ 
+%    
+%  \end{tabular}
+%\end{center}
+
+
+\subsection{Choice of parameters:}
+
+\begin{enumerate}
+\item 
+TCP Packet Size: TCP Packet Size depend on protocol used but typical packet sizes of TCP for file download and video streaming in the internet is 1500 bytes. 
+\item 
+TCP Window Size: This parameter sets the maximum TCP window size at the sender. We set this window size to be 10MB which is larger than the size of most files in our experiment. We expect that sender window size will not be a bottleneck in any case.
+\item 
+Queue size at the access link: We set the queue size at the access link according to the following formula: 
+\[\mbox{BufferSize} = \mbox{RTT} \times \mbox{BW}\] 
+In our experiments the maximum RTT is less than 50ms for all topologies. We set the queue size for each backbone and access link assuming a RTT of 50ms which is more than the maximum RTT observed by us in all our topologies. This ensures that there are always surplus packets in the access link router buffer. In our experiments for abilene the RTT is observed to be less than 50 msec. For example, for an link of capacity 10 Mbps, we set the buffer size (assuming 1500 byte packets) to be 64 packets, which ensures \[\mbox{BufferSize} > \mbox{RTT} \times \mbox{BW}\] 
+\item
+Queue size at the backbone links: We use the same formula as above. For intra-domain traffic in Abilene maximum RTT is 50ms. For a 1 Gbps backbone link capacity which is typical in our Abilene experiments, a queue size of 500 suffices. 
+\item
+Bandwidth of users : 
+Akamai State of the internet report \cite{Akamai-soti} reports the bandwidth distribution of accross the globe. We use the data for US to experiment on the US-Tier 1 topology and Abilene Topology, and the data from averaging the number from a few european countries to experiment with Geant toppology. The bandwidth distribution is plotted in Table 1.
+\item
+File Sizes : Our experiment configuration has 10 percent of traffic made of 100KB files and 90 percent traffic made of 5 MB files. [Why this distribution of files ?][What is the effect of increasing the percent of 100 KB files?]
+\item
+Inter file arrival time: We assume poisson file interarrival times. \emph{add reference for this!}
+\item
+Duration of experiments : We want to measure the steady state performance of the network.  In all our experiments more than 95\% [calculate this!] of files have download rate more than 200 KBytes per second. The download time of a 5MB file (which is the biggest file size in our experiment)  is 25 seconds. A simulation of 100 seconds is enough to give a reasonable estimate of steady state performance of the network.
+\end{enumerate}
+
+
+Our results 
+
+\subsection{Performance of TE methods for intra-domain traffic matrices on ISP Topologies}
+
+\textbf{For internet bandwidths there is very little difference between TE methods}
+
+For the traffic load in typical ISP networks and the users access link distribution, there is small difference among different traffic engineering methods.The plateau around 200 KBps mark shows that for users with access link upto 2Mbps the bottleneck is the access link itself. But it is not true, since interdomain traffic would have higher loss rates and delay. In which case, the throughput would be much lower for a large number of files. Access links would cease to be bottlenecks.
+
+\begin{figure}[htp]
+  \begin{center}
+    \subfigure[Download rate all files]{\label{fig:edge-a}\includegraphics[scale=0.5]{images/US_ISP/internetBW/download_rates_aggregate_plot.pdf}} 
+    \subfigure[Download ratio all files]{\label{fig:edge-b}\includegraphics[scale=0.5]{images/US_ISP/internetBW/download_ratios_aggregate_plot.pdf}} 
+  \end{center}
+  \caption{US Tier 1 ISP, Aggregate performance on 1 day traffic matrices, access link capacity as per internet distribution }
+  \label{fig:usisp_aggregate_internetBW}
+\end{figure}
+
+
+
+\textbf{mlu is different for different bandwidths but that does not show because of near zero or low loss rates}
+We plot MLU and loss rates on the MLU for different TE methods. nearly every one has zero loss rates even on the MLU link. 
+
+
+A side by side comparison of MLU and download rate presents an interesting contrast. In Fig \ref{fig:US_ISP_MLU} the maximum link utilization is given for each traffic matrix during the day. OSPFInvCap has MLU upto twice that of MLUOptimal and OSPF OptWt has 50\% higher MLU. Both, COPE and MPLSAvg have MLU very close to MLUOptimal. MinimizeFlow minimizes delay instead of MLU and its MLU is similar to OSPFOptWtAvg.  \emph{Do a comparison of MLU and loss rate on MLU, also do a scatter plot of MLU and loss rate for all the links.}
+
+\begin{figure}[htp]
+  \begin{center}
+    \subfigure[MLU]{\label{fig:edge-a}\includegraphics[scale=0.5]{images/MLUdata/plot/ATT_day1_MLU_plot.pdf}}
+%    \subfigure[Loss rate and delay on the MLU link ]{\label{fig:edge-b} \vspace{1in} } %\includegraphics[scale=0.5]{images/US_ISP/10Mbps/download_rates_aggregate_5000000_plot.pdf}} 
+  \end{center}
+  \caption{MLU and loss rate on the MLU link}
+  \label{fig:US_ISP_MLU}
+\end{figure}
+
+% point : MLU does not correlate with throughput - 
+
+\textbf{throughput and MLU are not correlated} we present mean  and median throughput values for different traffic matrices. MLUOptimal, MPLSAvg and MinimizeFlow all have throughput close to the highest download rate in all graphs. OSPFOptWtAvg has throughputs very close to MLUOptimal in all the graphs.
+
+\begin{figure}[htp]
+  \begin{center}
+    \subfigure[all files, mean throughputs]{\label{fig:edge-a}\includegraphics[scale=0.4]{images/US_ISP/internetBW/download_rate_percentiles_50_plot.pdf}}
+    \subfigure[all files, mean throughputs]{\label{fig:edge-a}\includegraphics[scale=0.4]{images/US_ISP/internetBW/download_rate_percentiles_50_plot.pdf}}
+  \end{center}
+  \caption{US Tier 1 ISP, Mean and median download rates for 1 day traffic matrices}
+  \label{fig:US_ISP_download_rate_percentile}
+\end{figure}
+
+\subsection{Experiment with no access link bottlenecks}
+
+How beautiful!
+
+\textbf{comparison of TE methods} optimal, mpls avg and minimize flow are all close, opt wt slightly lower, then inv cap cope has extremely long delays. this shows that cope has very long delays for different traffic engineering methods. 
+
+\begin{figure}[htp]
+  \begin{center}
+    \subfigure[Download rate 100 KB files]{\label{fig:edge-a}\includegraphics[scale=0.5]{images/US_ISP/nolimit/download_rates_aggregate_100000_plot.pdf}}
+    \subfigure[Download rate 5 MB files]{\label{fig:edge-b}\includegraphics[scale=0.5]{images/US_ISP/nolimit/download_rates_aggregate_5000000_plot.pdf}} \\
+    \subfigure[Download ratio 100 KB files]{\label{fig:edge-c}\includegraphics[scale=0.5]{images/US_ISP/nolimit/download_ratios_aggregate_100000_plot.pdf}}
+    \subfigure[Download ratio 5 MB files]{\label{fig:edge-c}\includegraphics[scale=0.5]{images/US_ISP/nolimit/download_ratios_aggregate_5000000_plot.pdf}}
+  \end{center}
+  \caption{US Tier 1 ISP, Aggregate performance on 1 day traffic matrices, without access link bottlenecks}
+  \label{fig:usisp_aggregate_nolimit}
+\end{figure}
+
+\textbf{Comparison with delay graph}  The delay graph shows how similar the delay graph looks to the optimal MLU graph. Again a case of low loads.
+
+\subsection{Access links with long latency to simulate interdomain traffic delays} 
+
+\textbf{what do you expect will happen ?} difference in delays will be reduced, loss rates will become more equal for everyone. therefore the difference will reduce further.  do and plot a graph if needed
+
+\subsection{Performance for UDP traffic - voip calls and streaming}
+
+\textbf{what do you expect will happen ?}. most graphs: zero loss rates, delay decides performance. high MLU graphs: queuing delay, i dont know ? loss rates decide performance, what are loss rates. 
+
+  performance for udp traffic - voip calls and streaming. 
+
+Our results in part (a) are have two limiting factors. first, the rtts are very short and current access link bottlenecks can be expected to increase. even today in some countries 
+
+We first present the results for the case where all users have a bottleneck of 10 Mbps. This configuration clearly brings out the difference in performance of traffic engineering methods. No access link bottlenecks is not a realistic configuration to compare traffic engineering methods. When access link bottlenecks follow the distribution present in internet,  the difference in between traffic engineering methods are blurred. Any TE method can give enough throughput to fill up the access link of majority of users. 
+
+We experiment with three days of data and we present the results of simulation of all traffic matrices during one of the days. The results are similar for other days. We compare two statistics, first the download rate of files and second the download ratio of each file compared to it speed in the optimal MLU routing scheme. We plot the results 100 KB files and 5 MB files separately, since their patterns are different. A 100 KB files may finish download before finishing its slow start period. In this case its TCP download rate is determined by the RTT. A gradation of download rates also suggests delay is a factor. \emph{You may plot delay graph and show the similarity.} 5 MB files on the other hand have sufficient time to get out of slow start their throughput is limited by either access link bottlenecks or depend on the loss rates in the network. In this figure, most files have throughputs close to 1000 KBps ( the access link bottleneck is 1250 KBps). This suggests that  network is loss rates on most links are low \emph{Plot the aggregate loss rates on backbone links!}.  
+
+%put graphs
+% download rates aggreate only 100 KB files, CDF
+% download rate aggregate only 5 MB files, CDF
+% download ratios aggregate only 100 KB files, CDF
+% download ratios aggreate only 5 MB KB files, CDF
+
+\begin{figure}[htp]
+  \begin{center}
+    \subfigure[Download rate 100 KB files]{\label{fig:edge-a}\includegraphics[scale=0.5]{images/US_ISP/10Mbps/download_rates_aggregate_100000_plot.pdf}}
+    \subfigure[Download rate 5 MB files]{\label{fig:edge-b}\includegraphics[scale=0.5]{images/US_ISP/10Mbps/download_rates_aggregate_5000000_plot.pdf}} \\
+    \subfigure[Download ratio 100 KB files]{\label{fig:edge-c}\includegraphics[scale=0.5]{images/US_ISP/10Mbps/download_ratios_aggregate_100000_plot.pdf}}
+    \subfigure[Download ratio 5 MB files]{\label{fig:edge-c}\includegraphics[scale=0.5]{images/US_ISP/10Mbps/download_ratios_aggregate_5000000_plot.pdf}}
+  \end{center}
+  \caption{US Tier 1 ISP, Aggregate performance on 1 day traffic matrices, 10Mbps access link}
+  \label{fig:usisp_aggregate}
+\end{figure}
+
+Excluding OPSFInvCap and COPE, the performance of all traffic engineering schems is almost identical. For OSPFInvCap the difference is of a few tens of KBps for 100KB files. For 5 MB files the difference is around than 50 KBps at 5th percentile and decreases after that. Surprisingly, COPE has the lowest download rates.  For short files, this difference is upto 100 KBps at 75th percentile. This is because COPE chooses longer paths to minimize the MLU, which reduces its throughput. \emph{Plot a graph which plots the average propagation delay among different pairs of nodes}
+
+Download ratio curve highlights the difference among differnt schmes more clearly. For MPLS Avg and Minimize Flow have nearly identical performance to MLU Optimal scheme. The small fraction of files for which they have a lesser throughput than MLU Optimal scheme is offset by a nearly identical fraction of files for which these schemes have a higher throughput than MLU Optimal. Notably, MPLSAvg is an offline TE schmes which uses MPLS. This shows that offline TE schmes can achieve the same perfomance as online TE schmes in ISP networks today. 
+
+OSPFOptWt which is another offline TE scheme which performs very close to these two schemes. It has slightly lower throughput than MPLS Schemes for 100 KB files. For 5 MB files, the difference is negligible. OSPFOptWt is restricted to use shortest path routing but is still able to achieve performance quite close to multipath routing schemes. In fact our measurements show that multipath routing schemes use multiple paths on average for less than 5\% of source-destination pairs \emph{number based on one traffic matrix only, compute this statistic for different traffic matrices, make a table with average number of paths taken by each routing scheme }. OSPFInvCap clearly has a routing which is not optimized for this traffic matric the but still it is a fairly good heuristic in practice. At the 10th percentile, its download ratio is more than 0.9 for 100KB files and more than 0.95 for 5 MB files. 
+
+COPE has slower download rate than MLU Optimal for more than 40 \% of 100 KB files and more than 20 \% of 5 MB files. 
+
+A side by side comparison of MLU and download rate presents an interesting contrast. In Fig \ref{fig:US_ISP_MLU} the maximum link utilization is given for each traffic matrix during the day. OSPFInvCap has MLU upto twice that of MLUOptimal and OSPF OptWt has 50\% higher MLU. Both, COPE and MPLSAvg have MLU very close to MLUOptimal. MinimizeFlow minimizes delay instead of MLU and its MLU is similar to OSPFOptWtAvg.  \emph{Do a comparison of MLU and loss rate on MLU, also do a scatter plot of MLU and loss rate for all the links.}
+
+\begin{figure}[htp]
+  \begin{center}
+    \subfigure[MLU]{\label{fig:edge-a}\includegraphics[scale=0.5]{images/MLUdata/plot/ATT_day1_MLU_plot.pdf}}
+%    \subfigure[Loss rate and delay on the MLU link ]{\label{fig:edge-b} \vspace{1in} } %\includegraphics[scale=0.5]{images/US_ISP/10Mbps/download_rates_aggregate_5000000_plot.pdf}} 
+  \end{center}
+  \caption{MLU and loss rate on the MLU link}
+  \label{fig:US_ISP_MLU}
+\end{figure}
+
+
+We present only the 5th, 50th and 75th percentile values of download rates. The value for other percentiles can be extrapolated from these graphs. \emph{Change this sentence}. MLUOptimal, MPLSAvg and MinimizeFlow all have throughput close to the highest download rate in all graphs. OSPFOptWtAvg has throughputs very close to MLUOptimal in all the graphs. 
+
+\begin{figure}[htp]
+  \begin{center}
+    \subfigure[100 KB files, 5th percentile]{\label{fig:edge-a}\includegraphics[scale=0.4]{images/US_ISP/10Mbps/download_rate_percentiles_5_100000_plot.pdf}}
+    \subfigure[100 KB files, 50th percentile]{\label{fig:edge-b}\includegraphics[scale=0.4]{images/US_ISP/10Mbps/download_rate_percentiles_50_100000_plot.pdf}} 
+    \subfigure[100 KB files, 75th percentile]{\label{fig:edge-c}\includegraphics[scale=0.4]{images/US_ISP/10Mbps/download_rate_percentiles_75_100000_plot.pdf}}\\
+    \subfigure[5 MB files, 5th percentile]{\label{fig:edge-c}\includegraphics[scale=0.4]{images/US_ISP/10Mbps/download_rate_percentiles_5_5000000_plot.pdf}}
+    \subfigure[5 MB files, 50th percentile]{\label{fig:edge-c}\includegraphics[scale=0.4]{images/US_ISP/10Mbps/download_rate_percentiles_50_5000000_plot.pdf}}
+    \subfigure[5 MB files, 75th percentile]{\label{fig:edge-c}\includegraphics[scale=0.4]{images/US_ISP/10Mbps/download_rate_percentiles_75_5000000_plot.pdf}}
+  \end{center}
+  \caption{US Tier 1 ISP, Download rate for TMs at different percentiles }
+  \label{fig:US_ISP_download_rate_percentile}
+\end{figure}
+
+
+
+\subsection{Experiment at a higher scale}
+Show conclusions:
+
+\begin{itemize}
+\item 
+The results above hold here as well.
+\end{itemize}
+
+\subsection{Experiments with UDP traffic to measure VoIP Call Quality}
+
+Repeat above experiments with UDP traffic netween each source destination pair and measure the loss rates and queuing delay.
+
+\subsection{Effect of Traffic engineering on Interdomain traffic}
+
+Inter-continental links: 
+
+\begin{enumerate}
+\item
+Extend abilene/geant topology by including some intercontinental links. The latency of these links is 50ms each. We introduce artificial loss rates on these links. In particular we experiment with two conditions : a. low loss rates, 0.001 and b. high loss rates: 0.01 on these links.
+\item
+We divide the traffic at the  nodes with interdomain links into interdomain traffic: (50\%) and intra-domain traffic(50\%).
+\item
+We compare the effect of traffic engineering on interdomain and intra domain traffic separately.
+\end{enumerate}
+
+Intra-country interdomain traffic : We add new nodes and links to the abilene/geant topology. But these links have lower latency than inter-continental links (10ms). We repeat the above experiment with high and low loss rates and report findings.
+
+\subsection{Additional measurements to understand performance of traffic engineering methods}
+
+\begin{enumerate}
+\item 
+The cdf of the average propagation delay between each source-destination pair. This can be computed from the ISP topology map and routing for every traffic engineering method.
+\item 
+A similar cdf of loss rates  and RTTs between each source destination pair. Taken from ns-2 simulations.
+\item 
+We measure the loss rates and queuing delay on different links.
+\end{enumerate}
+
+
+\end{document}

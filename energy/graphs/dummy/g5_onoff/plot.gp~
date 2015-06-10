@@ -1,0 +1,13 @@
+set terminal pdf dashed fsize 14
+
+set ylabel "On-off transitions/server/day"
+
+set yrange [0:]
+
+set xlabel "Pre-shutdown wait (min)"
+
+set xrange [0:]
+
+set output "onoff.pdf"
+
+plot "data" u 1:2 w lp ls 2 ps 3 lw 6 t "Shrink";

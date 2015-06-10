@@ -1,0 +1,111 @@
+===========================================================================
+                         SIGCOMM 2012 Review #265A
+                Updated Saturday 3 Mar 2012 11:49:32am PST
+---------------------------------------------------------------------------
+    Paper #265: Distributing Content Simplifies ISP Traffic Engineering
+---------------------------------------------------------------------------
+
+
+                         ===== Paper summary =====
+
+Paper examines at the possible benefit of jointly optimizing routing and placement of content in a content network managed by the ISP.  So data is placed in content caches in PoPs nearest subscriber (which makes the routing problem slightly simpler than for a CDN where the subscriber is on a different network).
+
+                        ===== Paper strengths =====
+
+The paper has strong and slightly surprising results -- in particular says you generally do better to run a simple cache algorithm and grow the cache vs. trying to be smart and that routing's contribution is small vis-a-vis cache improvement.
+
+                      ===== Paper shortcomings =====
+
+The critical figures are hard to read and interpret.
+
+                      ===== Detailed evaluation =====
+
+Overall I found this paper well written and interesting.  However, I found section 5 excruciatingly hard to read and since this is where the critical results are, I knocked the paper down from "accept" to "weak accept".   Given the paper was generally strong, there are not a whole lot of comments.
+
+Section 1, seems to assume only static content.   There's no discussion of dynamic [non-cacheable] content and what role it plays (or does not play) in the evaluation.
+
+In a similar vein, I've seen a trend in layer 3 content networking (e.g. CCNx) to assume that content is often enhanced and republished... Not clear that's a trend for the CDNs mentioned here, but I did find myself wondering if it could affect the formulation of the problem.   (I think not but encourage you to take 5 minutes to think about it).
+
+Section 2.1, section title should be "Why do NCDNs change the game?"
+
+Section 2.1.3, overall I really liked this section -- the example was excellent.  But I was surprised by the "central thesis of this paper is..." sentence, since my reading of the paper is it proves exactly the opposite.  So should it be "the central experimental thesis of the paper was..." (and it was disproved) or did I misunderstand something?
+
+Section 5, gave me trouble.
+
+5.1 -- storage ratio is a useful way to discuss a cache size but it begs the question "how big is that cache"?   While I'm told we're looking at a trace of 27M playbacks cover 85000 videos and totalling 738 TBytes of data, that doesn't allow me to figure out if we're talking 1TB per cache or 70TB per cache...   Knowing the number would both help understand how definitive the results of this paper are (if we're arguing over a few TB then there's no point) and also reveal how important the heterogenous cache size issue (identified as future work) really is.
+
+Section 5.2 lists the schemes evaluated but does not explain evaluation metrics.  Is a low MLU good or bad?  Section 2.1.3 suggests a low MLU is good, but if I'm buying capacity, I might like a higher MLU (provided it does not hit 1).  I suspect the real point is that, all things being equal, a provider prefers to run links at a higher capacity but when reviewing different schemes, a scheme with a lower normalized MLU is better because it says the scheme uses less bandwidth.   This is sort of what the "MLU computation section" in 5.1 says at the end, but not quite -- some clarity would be nice.
+
+Similarly, describing the metric for Figure 9 rather than assuming we should puzzle out that in-cache hits are good would be useful.
+
+Figure 7 is so small that I cannot distinguish most lines from each other.   Also, the legend presents results the 7 schemes in a different order from the way they are presented in 5.2, which can trip up the reader.  I suggest using a consistent ordering.
+
+In Figure 8, I could only find 6 lines plotted but there are 7 in the legend?
+
+                   ===== Questions for the authors =====
+
+A-1: How does dynamic content impact this analysis?
+
+A-2: Could you tell how big  the cache was (i.e. Storage Ratio of 1 = ??? bytes).
+
+===========================================================================
+                         SIGCOMM 2012 Review #265B
+                 Updated Sunday 18 Mar 2012 8:14:30am PDT
+---------------------------------------------------------------------------
+    Paper #265: Distributing Content Simplifies ISP Traffic Engineering
+---------------------------------------------------------------------------
+
+
+                         ===== Paper summary =====
+
+The paper basically looks at the benefits gained from performing TE using both content placement and routing. The motivation is that NCDNs will be able to do this since they control both storage nodes and the routing infrastructure. The conclusion is that the joint optimization doesn't really help.
+
+                        ===== Paper strengths =====
+
+Interesting and timely problem statement.
+
+                      ===== Paper shortcomings =====
+
+The conclusion is not really surprising.
+
+                      ===== Detailed evaluation =====
+
+The main issue I have with the paper is that the conclusion is quickly clear to someone that has stared at a zipf curve or examined some form of caching hierarchy/mesh. If the first level caches are operated in a reasonable fashion (e.g. LRU), they will remove most of the locality from your request trace. As a result, there is little increase in hit rate obtained by contacting other caches (unless they *significantly* add to cache capacity). This is clear from Fig 9. 
+
+The above reason is also why improving the prediction of tomorrow's traffic, or splitting  will not help. The use of yesterdays traffic does make you worse than LRU. However, LRU does a reasonable job of identify the popular content. The one result I found interesting was how bad the yesterday-based prediction works on Internet traffic. This might have some interesting issues on amount of cache update traffic on the Internet.
+
+Motivation issue: You point out that ISPs can now jointly optimize both routing and content placement. However, you miss that ISPs can now jointly optimize capital expenditures across caches and routers/links. I suspect that caches are much cheaper and, as a result, you end up with fairly large caches per PoP that have a high storage ratio. This pushes you pretty far down the zipf locality curve, which kills top TE optimization for the above reasons.
+
+Nit: sec 5.2 - you say that you do not cache video if the user does not view more than 10\%. Most video today relies on chunk based delivery. A more accurate model would be to cache just the 10\% viewed for video. This probably does not change your results significantly.
+
+===========================================================================
+                         SIGCOMM 2012 Review #265C
+                Updated Thursday 22 Mar 2012 2:40:31am PDT
+---------------------------------------------------------------------------
+    Paper #265: Distributing Content Simplifies ISP Traffic Engineering
+---------------------------------------------------------------------------
+
+
+                         ===== Paper summary =====
+
+This paper observes that an ISP which operates its own CDN service has the opportunity to jointly optimize the placement of content of its servers and the direction of clients to those servers (as a CDN does) and also the routes that traffic takes within its network.  In particular, it shows that careful placement of content and routing of client requests may aid in traffic engineering or even greatly reduce the need for traffic engineering.
+
+                        ===== Paper strengths =====
+
+The paper is well written and easy to read.  One of the nice things about the paper is that its simulations are based in part on extensive data sets from Akamai, including logs from a video delivery service and logs from a large-file download service.  It is also interesting that some of the conclusions about which placement and routing strategies work best are counterintuitive.  E.g., using information from the previous day's video delivery access logs doesn't help much in guiding placement the next day - in fact it seems to hurt.
+
+                      ===== Paper shortcomings =====
+
+One shortcoming is that the simulation of setting up routes in the ISPs may not be so accurate, as the authors did not have access to AT&Ts real network map, or perhaps information about constraints on how traffic can really be routed in the network.  E.g., where is MPLS available, where only OSPF, etc.
+
+                      ===== Detailed evaluation =====
+
+You write that the challenges of scaling the network backbone has "necessitated" the evolution of network CDNS.  Can you really back that up?  First, network CDNs are pretty old (at least AT&T and Level 3 have been doing this for a long time.)  Also, do these networks really carry much traffic compared to the "pure-play" CDNs like Akamai?  Or are you rolling IPTV into this mix?  In that case, I think that there is a strong case that NCDNs are of growing importance, although the content mix is different than that carried by a CDN like Akamai because the total number of distinct content objects is limited.
+
+When you first mention on page two that joint-optimal placement with knowledge of the previous day's demand did worse than the simpler schemes, it was very counterintuitive because you used the word "optimal."  Perhaps it would be helpful to add a one-line explanation like "because the previous day's demand was not very predictive"
+
+p7: "we need to optimize for less than 5000 content" sounds awkward to me.
+
+p8: when doing simulations of the Abilene or AT&T network, did you use requests only for clients that were either on Internet2 campuses or AT&T, respectively?  Or were some (most?) of the clients coming from outside of the network?  Also, how did you model client requests coming into the network from outside?  It wasn't clear to me exactly how you used the Akamai traces to drive the simulations.
+
+p10: "videoa"

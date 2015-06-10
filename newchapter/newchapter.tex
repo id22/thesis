@@ -1,0 +1,76 @@
+%!TEX root = ../New.tex
+\chapter{Resource management on a  geo-distributed platform}
+
+\section{Goals}
+
+The goal is to design a platform that makes it easy to deploy applications on a global scale. The system runs on a geo-distributed platform spanning up to thousands of locations worldwide and runs up to thousands of applications on this platform. This global platform manages both compute and storage resources for every application across geo-distributed data centers.  
+
+An application divided into two logical tiers: a storage tier  and a processing tier. Each application has an SLA specified in terms of 95-percentile request latencies and a minimum number of deployment locations for fault tolerance. 
+
+
+\begin{itemize}
+\item
+Which locations should each application be deployed given the storage and server constraints at a location and the geo-distribution of demand patterns?
+\item
+How to dynamically allocate server/storage resources for an application at a location?
+\item
+Whether to add/remove the set of deployed locations for an application based on the current load?
+\item
+How to allocate/deallocate resources across data centers dynamically?
+\item
+At what timescales should these decisions be made?
+\item
+How to reduce operational costs while meeting SLAs of various applications?
+\item
+How to ensure fairness across applications? And how to balance fairness and the goal of maximizing aggregate utility of the system?
+\end{itemize}
+
+
+In the simplest case, if all applications are uni-dimensional and our objective is to minimize user-perceived latency for a static workloads, then the formulation presented in Auspice \cite{auspice} gives the best deployment. However there are several shortcomings with this formulation. 
+
+\begin{itemize}
+\item
+Does not model the cost of creating/destroying a replica.
+\item
+Resource usage of an application must be characterized across four dimensions: storage, compute, memory and network bandwidth.
+\item
+Applications could be hierarchical, e.g, a search engine with a 2-tier design with the upper layer used for less frequent queries, more frequent queries are cached in lower tier.
+\item
+The time before a new replica is functional may be too small for it to be effective. 
+\end{itemize}
+
+
+An application $A_i$: 
+
+i = Application
+j = Regions
+k = Location
+
+Overall metric: end-user latency, performance under surge tolerance for an application, 
+
+1. Demand vector (similar to Auspice): $r_{ij}$. Requests for $A_i$ from region $j$. Updates for $A_i$ from region $j$.
+
+2. A mapping from $r_{ik}$ = requests for $A_i$ at location $k$. (total cores, total RAM, total storage). (Assume network bandwidth is abundant.)  to a latency metric.
+
+3. Final output: which locations to deploy each application.
+
+4. Evaluation: (1) Latency comparison to static heuristics, less planned heuristics. (2) Latency comparison in case of demand surge of an application, multiple applications, all applications.
+
+
+
+
+
+
+
+
+%How do we find an online algorithm 
+
+
+%a datacenter to determine the resource usage in whether spilling over to other data centers is necessary. Also, the initial deployment should reduce the chances of spilling over.
+
+
+
+%Existing systems such as Akamai Edge Computing, Google App Engine, and Windows Azure  provide a similar service today.
+
+
+

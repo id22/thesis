@@ -1,0 +1,86 @@
+\section{Comparison of traffic engineering schemes for capacity}
+
+Our results in the previous section show that for internet traffic loads and traffic matrices the difference in MLU for TE schemes make little difference in application performance for different TE methods. The case for traffic engineering is made by proposing that when traffic demands scale in the future Optimal will be able to sustain a higher demand than a MLU suboptimal scheme \cite{TeXCP06}.
+
+We take a different stance on the question of capacity. Our stance is based on the observation that a significant fraction of internet traffic has location diversity available to it.
+
+Optimal exploits path diversity in the network to increase its capacity. Location diversity also increases capacity of the network by giving multiple locations for each download. Importantly, this capacity increase is available to all TE schemes. We experimentally compare of TE schemes with location diversity and show that the the differences in capacity between TE schemes vanish even when a small number of locations are available for file download.
+
+\subsection{Definition of the capacity of a network}
+
+In line with the theme of the paper, we define the capacity of a network in terms of the file download rates. 
+
+We call the internet TM to be a load 1.0 and TM at load $x$ is obtained by multiplying the internet TM by $x$. On increasing the load, some links in the network reach utilization of close to 1. If the traffic on a link in the network nears the capacity then the download rate of files through that link must reduce.  Experimentally we observe that as we increase the load on the network, the lower percentile of file download rate (e.g. 10th percentile, 20th percentile) reduces sharply. Hence, we infer that a sharp drop in file download rate is because the network is reaching capacity on one or more links. This leads to our definition of capacity:
+
+\emph{The capacity of a network is the least load at which the 10th percentile download rate is less than 100KBps.}
+
+Our rationale for selecting the 10th percentile is that a value lower than 10th percentile is prone to artifacts from our simulation.  For example, the 5th percentile download rate is small even at load = 1.0  since 5\% of internet users in US have access link less than 256Kbps. We selected 100KBps as the threshold but the comparative results for TE methods remained same for a range of values from 75KBps to 125 KBps. The capacity of TE methods measured using our capacity metric follows the same order as that predicted using theoretical MLU. The load at which capacity is reached according to our definition is approximately is  15\%-20\% less than the load at which theoretical MLU touches 1.
+
+In fig ~\ref{fig:10th_percentile_TMs} we plot the 10th percentile throughputs for 3 TMs from Abilene, Geant and US-ISP. The drop in 10th percentile throughput as load on the network increases can be seen in all three graphs. 100 KBps lies in the region of a sharp drop in throuhgput which makes it a good choice for selecting as a thresold value.
+
+Other contenders for the capacity metric from our experiment such as the file download times and the maximum link utilization did not show a distinct value which could be unambiguously selected as the capacity point. For example MLU increased and decreased on small variations in load. The total file download times became infinite much before MLU became 1 because of zero download rates for some files.
+
+\subsection{Capacity without traffic with diversity }
+
+We randomly selected 5 TMs from Abilene, Geant and US-ISP datasets. For each TM we computed the capacity for each routing and the ratio of its capacity compared to OPTIMAL. We call this ratio the \emph{capacity ratio} for a routing. In fig \ref{fig:all_isps_capacity_without_diversity} we plot the average capacity ratio for 5 TMs based on our capacity metric in fig ~\ref{fig:capacity_ratio_no_diversity} and using theoretical MLU values in fig ~\ref{fig:capacity_ratio_no_diversity_MLU}. The figures show that capacity ratio for our metric correlates well with the MLU predicted capacity ratio but is 15-20\% higher for some same.
+
+In fig ~\ref{fig:capacity_ratio_no_diversity} Optimal clearly has a higher capacity than other schemes. For Abilene, shortest path routing methods (InvCap, OspfOptWt) can only achieve  65-70\% of the capacity of Optimal and for US-ISP they have a capacity of 70-85\%. Offline TE schemes which use MPLS (MplsAvg,COPE) have a higher capacity than shortest path routing methods and can achieve more than 90\% of the capacity of Optimal in Geant and  US-ISP toplogies but for Abilene they have 75-85\% capacity of Optimal. The anomaly that the capacity COPE has a higher capacity than Optimal  for Geant topology is becuase we do not simulate the traffic matrix accurately. As mentioned earlier, the link utilization in our simulation can be 0.1 different from the link utilization expected using calculations. 
+
+Without diversity, Optimal enjoys a capacity advantage over offline TE schemes especially shortest path routing schemes.  OspfOptWt is a widely used traffic engineering scheme in the internet. Its lower capacity should motivate a switch to a higher capacity traffic engineering scheme either based on offline MPLS based scheme or online TE. But, our results in the following section shw that effect of location diversity vanishes the capacity difference between OspfOptWt and Optimal.
+
+%It has a higher capacity than other TE scheme by upto 25\%.  MLU Optimal has an advantage over traffic engineering schemes in terms of capacity. MLU Optimal has 25\% higher capacity than other traffic engineering schemes for Abilene topology. In Geant, the capacity predicted for COPE is higher than MLU optimal. We take it to be an error in our simulation. The link utilization we simulate in ns-2 and the actual link utilizations differ upto 0.1. On average OSPFOptWt performs worst in terms of capacity in our simulations. OSPFOptWt is a widely used traffic engineering scheme in the internet. Its poor performance should motivate a switch to a higher capacity traffic engineering scheme.But, our results in the following section suggest that effect of location diversity increases the capacity for OSPFOptWt similar to even MLUOptimalScheme.
+
+\begin{figure*}[tbh]
+  \begin{center}
+ \subfigure[ Capacity ratio using ns simulations]{\label{fig:capacity_ratio_no_diversity}\includegraphics[scale=0.65]{newImages/Capacity/cap_without_diversity/capacity_without_diversity.jpg}}
+\subfigure[Capacity ratio predicted using MLU]{\label{fig:capacity_ratio_no_diversity_MLU}\includegraphics[scale=0.65]{newImages/Capacity/cap_without_diversity/capacity_theoretical.jpg}}
+  \end{center}
+  \caption{Capacity of TE schemes without diversity}
+  \label{fig:all_isps_capacity_without_diversity}
+\end{figure*}
+
+\begin{figure*}[htb]
+  \begin{center} \subfigure[US-ISP TM]{\includegraphics[scale=0.75]{newImages/ATT_download_rate_percentiles_10_plot.pdf}}
+\subfigure[Geant TM]{\includegraphics[scale=0.75]{newImages/Geant_download_rate_percentiles_10_plot.pdf}}
+\subfigure[Abilene TM]{\includegraphics[scale=0.75]{newImages/Abilene_download_rate_percentiles_10_plot.pdf}}
+  \end{center}
+  \caption{10th percentile throughput with increasing loads for TMs}
+  \label{fig:10th_percentile_TMs}
+\end{figure*}
+
+\subsection{Capacity with diversity}
+We make the strongest possible case for location diveristy by assuming that all traffic in the network has location diversity available to it and an application can download from all locations in parallel. Our results show that the effect of location diversity increases the capacity for all TE schemes and vanishes the capacity differences between them (except for InvCap). First we describe how we simulate a traffic matrix with diversity and then present the results about capacity under location diversity.
+
+%We compare the capacity of TE schmes under diversity using two approaches. 1. Sampling the throughputs from multiple locations. 2. Simulating a traffic matrix with parallel downloads.
+
+\subsubsection{Experiment description}
+There are two requirements for a simulation a) A file download sequence corresponding to a TM b) Routing for the TM.
+
+In this simulation, we assume each file is downloaded simultaneously from 3 locations. A file download finishes when the total bytes downloaded from all 3 locations equals  the file size.  
+
+%We wish to construct a sequence of file requests which are downloaded parallel from 3 locations and result in the traffic matrix we want to simulate.
+Constructing a file download sequence for a TM is difficult for parallel downloads. Accurately constructing such a sequence of file requests is difficult because we do not know the download rate between all source destination pairs. We work around this problem as follows: We construct a sequence of file downloads assuming equal fraction of file is downloaded from each source. This sequence of file downloads will have the same aggregate traffic demand at each destination but the traffic between from each source to the destination may be different. 
+
+Next, we describe how we find the routing for a TM. Let us assume we want to simulate Optimal routing for a TM $T$. We construct a sequence of file downloads as described above. We compute the Optimal routing for TM $T$ and simulate the  file download sequence. We measure the resulting TM $T'$ which may be different from $T$. We compute the Optimal routing for the new TM $T'$ and use it in our simulation. The TM after the simulation may still be different from $T'$ because we simulate the file downloads on a new routing. But we stop further iterations of this process to avoid adding to the complexity of our simulation.
+
+For each TM $T$, we simulate the file download sequence and routing calculated as above and report the results. In effect, we do not simulate the original TM $T$, but we simulate  $T'$. We accept this difference because it is difficult to predict an accurate file download sequence for parallel downloads.
+
+The simulation process depends on the TE scheme. This is because the set of critical TMs using which routing is computed is not same for all TE schemes, e.g.  OspfOptWt uses the average of past 3 hour TMs  and COPE uses all TMs in the previous day. Let S be the set of critical TMs for a TM $T_1$ and a TE scheme R. For each TM $S_i$ in set S, we calculate a corresponding TM $S'_i$, which has diversity incorporated into it. The transformation from $S_i$ to $S'_i$ is done in the same way as $T$ to $T'$ in the previous example. Let $S'$ be the set of TMs $S'_i$. The new routing is computed based on the new set of critical TMs $S'_i$.
+
+The set of critical TMs for TE schemes is as follows: For Optimal the critical TM is the same traffic matrix.  OspfOptWt and MplsAvg compute the routing based on the average of TMs for past 3 hours and the critical TM is the average of TMs for the past 3 hours.  For COPE, the set of critical TMs is the all TMs in the previous day. We select a subset of these matrices as our critical TMs.
+
+\subsubsection{Results}
+
+We compare the capacity of TE schemes with location diversity in fig ~\ref{fig:all_isps_capacity_with_diversity}. In fig ~\ref{fig:capacity_with_diversity} we plot the capacity with diversity for 3 ISPs. Surprisingly, all TE schemes (except InvCap) have the same capacity after diversity in all 3 ISPs. The capacity of offline TE schemes using MPLS and even OspfOptWt has the same capacity as Optimal. InvCap still has upto 30\% less capacity than Optimal. Less powerful TE schemes such as OspfOptWt leverage location diversity  to reach the capacity of Optimal but a simple static routing scheme such as InvCap is not enough to harness the benefits of location diversity. OspfOptWt is a widely used intra-domain routing protocol. Our results show if application can leverage location diversity, ISPs can continue to use existing intra-domain routing protocols and achieve capacity close to Optimal scheme.
+
+We earlier made the case that location diversity can increase capacity in ISP networks. In fig ~\ref{fig:capacity_inc_with_diversity} we plot the capacity increase measured in our experiments. The results are the average of the ratio of capacity increase for 5 TMs.
+Concurrent with our findings in ~\ref{fig:capacity_ratio_no_diversity} and ~\ref{fig:capacity_with_diversity} , we see that the capacity of OspfOptWt increases maximum in all 3 ISPs - 2.2 $\times$ in Abilene, 2 $\times$ in Geant and 1.5 $\times$ in US-ISP respectively. The capacity for Optimal also increases 1.2-1.5$\times$, but the capacity increase works to the advatange of offline TE schemes and they reach the capacity for Optimal. InvCap also increases its capacity 1.2-2$\times$, but despite this increase other schemes still have a greater capacity.
+
+\begin{figure*}[tbh]
+  \begin{center}
+ \subfigure[ Capacity ratio with diversity]{\label{fig:capacity_with_diversity}\includegraphics[scale=0.65]{newImages/Capacity/cap_with_diversity/capacity_with_diversity.jpg}}
+\subfigure[Capacity increase with diversity]{\label{fig:capacity_inc_with_diversity}\includegraphics[scale=0.65]{newImages/Capacity/cap_with_diversity/capacity_inc_with_diversity.jpg}}
+  \end{center}
+  \caption{Capacity of TE schemes with diversity}
+  \label{fig:all_isps_capacity_with_diversity}
+\end{figure*}

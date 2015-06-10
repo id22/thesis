@@ -1,0 +1,41 @@
+\section{Computational complexity of optimal placement problems}
+
+\subsection{\optloc\ is NP-Complete}
+
+We first reduce \subsetsum\ to \minsubsetsum\ and next reduce \minsubsetsum\ to \optloc. 
+
+\noindent{\textbf{Network model:}}  Network is a graph $G(V, E)$. Network serves a set of traffic demands $F=\{f_1,f_2, ...\}$ at sink nodes $N = \{n_1, n_2, ...\}$. A set of source nodes $M =\{m_1, m_2, ...\}$ serve the demands to all the sink nodes.
+
+\noindent\textbf{\optloc:} The \optloc\ problem is to select $k$ source locations in the network which minimize the MLU of the network. The decision version of this problem asks if there are $k$ source locations, such that the $MLU$ of the network is $\alpha$. The MLU of the network for a set of source nodes can be calculated by solving the linear program described in Section \ref{sec:lpminmlu}. 
+
+
+%For a network $G(V, E)$ and a set of demands $F=\{f_1,f_2, ..., f_m\}$ at sink nodes $N = \{n_1, n_2, ..., n_m\}$, select source nodes $S =\{s_1, s_2, ..., s_k\}$ such that the optimal MLU for this network calculated using linear program is minimized.
+
+%We define the problem \minsubsetsum\ which we show to be NP-hard by reduction from the \subsetsum\ problem.
+
+\noindent\textbf{\minsubsetsum:} Let $C_i = (c_{i1}, c_{i2}, ..., c_{ip})$ be an integer array of length $p$. Let $C = \{C_1, C_2, ..., C_q\}$ be a set of integer arrays $C_i$ each of length $p$. Let $a$ and $r (r > 0)$  be two integers. The \minsubsetsum\ problem asks if there are $r$ indices $j_1, j_2, ..., j_r$ such that $ \textit{min}(x_1, x_2, ... , x_q) = a$, where $x_i = c_{ij_1} + c_{ij_2} + ... + c_{ij_r}$.
+
+\noindent\textbf{Reduction from \subsetsum\ to \minsubsetsum:} 
+
+Let $B = \{ b_1, b_2, b_3, ..., b_p\}$ be a set of integers and $a$ be a given integer. The \subsetsum\ problem asks if there is a subset of $B$ the sum of whose elements is $a$. 
+
+We can reduce this to \minsubsetsum\ as follows: We make a array $B_1 = \{b_1, b_2, ..., b_p\}$ of length $p$ with elements of $B$. We define $C = \{ B_1 \}$ . For each $k \in \{1, 2, ..., p\}$, we ask the following \minsubsetsum\ problem: are there $k$ indices $j_1, j_2, ..., j_k$ such that the sum of the integers $B_1[j_1], B_1[j_2] ..., B_1[j_k]$ equals $a$. For any value of $k$, if \minsubsetsum\ returns the answer $\textit{Yes}$, then the answer to the \subsetsum\ problem is also $\textit{Yes}$. Otherwise, the answer to \subsetsum\ is $\textit{No}$.
+
+Thus, we have shown a polynomial time reduction from \subsetsum\ to \minsubsetsum.
+
+\noindent\textbf{Reduction from \minsubsetsum\ to \optloc:} 
+
+
+We reduce the \minsubsetsum\ problem defined above to \optloc.  Since the capacity of links in the network is more than zero, we assume $c_{ij} > 0$. % rational
+
+We define $N = \{n_1, n_2, ..., n_p\}$, $M' = \{m_1, m_2, ..., m_p\}$, $ G = N \cup M'.$ The set of nodes $M'$ is a superset of the set of source nodes. For all pairs of vertices $n_i, m_j$, $e = (n_i, m_j)$, $e \in E$. The capacity of link $e$ is $c_{ij}$.  The traffic demands at node all nodes $n_i \in N$ is 1 unit. The \optloc\ problem asks if there is a $ M \subseteq M', |M| = k, k \leq p$, such that  such that the MLU of the network is $\alpha$.
+
+
+
+Since all sink nodes $n_i$'s have same demand, the MLU of the network will be determined by the sink node $n_j$ for which the sum of the link capacities to the source nodes is minimum. Specifically, MLU = $\alpha$ if the minimum sum of link capacities from any sink node to all source nodes $1/\alpha$. 
+
+For an instance of the \minsubsetsum\ problem, ask the following \optloc\ question: if there a set $M$ such that the MLU of the network is $1/a$. If the answer to \optloc\ problem is $\textit{Yes}$., then the answer to the \minsubsetsum\ is also $\textit{Yes}$.. Otherwise, the answer to \minsubsetsum\ is also $\textit{No}$.
+
+Thus, we have shown a polynomial time reduction from \minsubsetsum\ to \optloc.
+
+Since, \subsetsum\ is NP-Hard \optloc\ is NP-Hard. It is easy to show that \optloc\ $\in$ NP. Therefore, \optloc\ $\in$ NP-Complete.

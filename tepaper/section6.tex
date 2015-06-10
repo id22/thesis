@@ -1,0 +1,61 @@
+\section{Discussion}
+\label{sec:discuss}
+
+\noindent\textbf{Limitations of our study:} We now point out the limitations of our work considering both the experiment design as well as evaluation objectives.
+
+\noindent{\emph{Traffic engineering:}}
+The TE problem for ISPs has other objectives as well, e.g., reducing interdomain traffic costs, computing backup routes for link failures,  ensuring QoS for different classes of traffic \cite{RFC3272} which we do not compare in our current study. We plan to include them in future work. 
+
+\noindent{\emph{Network topology and traffic matrices:}}
+ We perform experiments based on dataset from three ISPs and we experiment with a small set of TMs given our resources. Our simulation setup approximates or ignores some real world network topology entities such as multi-Gigabit backbone links, the router software/hardware at backbone and access links, TCP/IP software used at users and servers, to name a few.  We also do not model all aspects of Internet traffic demand pattern such as interdomain traffic, different variety of application layer protocols (HTTP, FTP, ICMP etc.), and the pattern of usage of these protocols.
+
+\noindent{\emph{Location diversity:}}
+ Without knowledge of future traffic matrices, our analysis considers only the uniform scaling of traffic matrices. Our capacity metric SPF and well as the MLU metric are based on this assumption. We show results using the adaptation scheme of parallel downloads of each file.  Accurately quantifying the capacity for TE schemes for Internet traffic would involve modeling the different adaptation schemes in Internet, which we consider a complex problem. 
+
+%Interdomain traffic is an important aspect of TE but traffic since realistic models of interdomain traffic demand are not yet known which makes it difficult to model.
+% and interdomain TE is still an active research area.
+
+
+
+\noindent{\textbf{Effect of parameters:}} We have chosen a set of parameters similar to those in an ISP network. Below we discuss how our results would be affected by changing some of these parameters.
+
+\noindent{\emph{Scale:}}
+If the scale of experiments were higher, then each backbone link will carry more flows. The aggregate traffic  will become even less bursty and the loss rates and queuing delay will reduce further. Therefore in a real ISP network, the difference among TE schemes is expected to be even less. We  performed experiments at higher scales than those described in this paper. As expected, the difference in TE schemes was further reduced. These experiments are described in our technical report \cite{TR}.
+
+\noindent{\emph{Bandwidth of users:}}
+If the bandwidth of users were lower, access links will become bottlenecks for more flows in the network which will further make the TE schemes equal. If the bandwidths were higher, then the differences among TE schemes will increase.  Since loss rates and queue sizes are uniformly very low at current bandwidth, we do not expect to observe a significant difference among TE schemes. Our experiments with a higher bandwidth of users corroborates this hypothesis \cite{TR}.
+
+\noindent{\emph{File sizes:}} 
+
+\noindent{\emph{Queuing at routers:}}
+%We have used Drop Tail queuing at routers. A more sophisticated queuing such as RED will serve to improve the TCP throughput, but it is unlikely to improve the TCP performance of one TE scheme over another.	
+
+%\emph{Limitations of our study}
+
+%\begin{itemize}
+%\item
+%Only 3 ISPs and 4 TMs
+%\item
+%We assume that all traffic is intra-domain traffic since do have any interdomain traffic matrices available to us. Our focus in this paper is to compare the effect of traffic engineering on application performance in ISP network. We do not take into account the effect of interdomain traffic or interdomain traffic engineering in the ISP network.
+%\item
+%\emph{Effect of scale}: It must be noted that our experiments are at scale 1:10 to 1:50. At, higher scale the loss rate and queuing delay would be lower at the same link utilization level. As scale increases, the router buffer sizes increase and the per packet processing time decrease proportionally. If we take the analogy from a queuing model such as $M/M/1/K$ queue, at higher loads the mean packet arrival rate ($\lambda$), the mean packet processing rate($\mu$) and the capacity of the queue ($K$) increase proportionately. The formula for loss rates of this queuing model show that both these metrics decrase as $\lambda$, $\mu$  and $K$ increase proportioately \cite{queue}. If anything , the scale of our experiments reinforces our results that MLU has minimal application performance in realistic ISP topologies.
+%\item
+%A solution deployed in an ISP network would consider multiple objectives such as backup routes, traffic which belong to a multiple class
+%\item
+%TM variations within 5 min or or 15 min time scale
+%\item
+%We do not consider live streaming traffic.
+%\end{itemize}
+
+%\emph{Alternatives to ns-2 simulations:} There are other alternatives to performing ns-2 simulations in order to evaluate application performance. Prior work in traffic engineering has focused on simulations based on linear programming using synthetic cost functions  based on link utilization levels. However, these cost functions at best a crude approximation of user-perceived application performance. For example, commonly used metrics such as MLU or the Fortz-Thorup cost function \cite{FortzThorup} do not account for path delays. Another approach we considered was to use a theoretical model, e.g., a fixed point \cite{fixedpoint} model for a large number of flows in the network that explicitly incorporates the TCP throughput model. However, we found existing theoretical models to be too simplistic to capture fine-grained application behavior for realistic workloads and topologies, e.g., it is nontrivial to extend existing models to incorporate multiple bottleneck links or TCP behavior for realistic file transfers dominated by small Web transfers.  A third approach  we considered was emulation (e.g., Emulab) or a  virtualized infrastructure (e.g., VINI \cite{VINI} ) but we chose ns-2 as it enabled us to run experiments at much larger scales.
+
+%\emph{Should ISPs rely on TE on focus on leveraging application adaptation ?}
+%\begin{itemize}
+%\item
+
+%\item
+
+%\end{itemize}
+
+%\emph{Path Diversity vs Location diversity. Which is more beneficial ?}
+%There is another class of application adaptation based on exploiting the path diversity in ISP networks. Path diversity can give \opt{}. Location diversity betters \opt{} by upto 1.5$\times$.

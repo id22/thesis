@@ -1,0 +1,104 @@
+
+
+\documentclass{sig-alternate}
+
+\title{Distributing Content Simplifies ISP Traffic Engineering}
+
+
+% Sigmetrics is double-blind review process.
+%
+%\author{
+%Abhigyan Sharma$^\dagger$\quad Arun Venkataramani$^\dagger$\quad Ramesh Sitaraman$^{\dagger\star}$\\
+%\\
+%$^\dagger$ University of Massachusetts Amherst\quad$^\star$ Akamai Technologies
+%}
+
+
+%\documentclass[10pt]{article}
+%\usepackage{fullpage}
+
+\usepackage{subfigure, verbatim, soul}
+\usepackage{comment,pifont,array,url,amsmath,multirow,latexsym,tabularx}
+\usepackage{ifpdf,rotating,colortbl}
+\usepackage{graphicx}
+%\usepackage[boxed]{algorithm}
+\usepackage{algorithm}
+\usepackage{wrapfig}
+\usepackage{algorithmic}
+\usepackage{xspace}
+\usepackage{url}
+\usepackage{bbm}
+ \usepackage{wrapfig}
+ \usepackage{sidecap}
+
+
+\newcommand{\tbd}[1]{\footnote{\bf{TBD:}#1}}
+\newcommand{\eat}[1]{}
+\newcommand{\vsp}{\vspace{-0.1in}}
+
+
+
+\newcommand{\ncp} {NCDN}
+\newcommand{\ancp} {an NCDN} %change to an NCDN if we go with NCDN
+\newcommand{\Ancp} {An NCDN}
+
+\newcommand{\prfs} {TE}
+\newcommand{\cc} {CC}
+
+\newcommand{\opt} {Optimal}
+\newcommand{\mplsavg} {MPLS}
+\newcommand{\invcap} {InvCap}
+\newcommand{\optwt} {OptWt}
+\newcommand{\cope} {COPE}
+
+\newcommand{\setcover} {{{SetCover}}}
+\newcommand{\subsetsum} {{{SubsetSum}}}
+\newcommand{\minsubsetsum} {{{MinSubsetSum}}}
+\newcommand{\optloc} {{{Opt-\ncp}}}
+
+
+\newcommand{\optrpl} {\textsf{OptRP-L}}
+\newcommand{\optrp} {\textsf{OptRP}}
+\newcommand{\optrpfuturel} {\textsf{OptRP-Future-L}}
+\newcommand{\optrpfuture} {\textsf{OptRP-Future}}
+\newcommand{\invlru} {\textsf{InvCap-LRU}}
+\newcommand{\optlru} {\textsf{OptR-LRU}}
+\newcommand{\invoptp} {\textsf{InvCap-OptP}}
+\newcommand{\invoptpfuture} {\textsf{InvCap-OptP-Future}}
+
+
+\newcommand{\unplanned} {unplanned}
+\newcommand{\planned} {planned}
+\newcommand{\Unplanned} {Unplanned}
+\newcommand{\Planned} {Planned}
+
+
+%\newcommand{\optrp} {Opt(R+P)}
+%\newcommand{\optrpfuture} {Opt(R+P)Future}
+%\newcommand{\invlru} {InvCap+LRU}
+%\newcommand{\optlru} {OptR+LRU}
+%\newcommand{\invoptp} {InvCap+OptP}
+%\newcommand{\invoptpfuture} {(InvCap+OptP)Future}
+
+\begin{document}
+\maketitle
+
+\input{abstract}
+\input{Introduction}
+\input{Schemes}
+\input{LinearPrograms}
+\input{Dataset}
+\input{Evaluation}
+\input{Evaluation2-alt}
+\input{RelatedWork-alt}
+\input{Conclusions}
+
+\begin{scriptsize}
+\bibliographystyle{plain}	% (uses file "plain.bst")
+\bibliography{New}		% expects file "myrefs.bib"
+\end{scriptsize}
+
+\input{Appendix}
+
+
+\end{document}

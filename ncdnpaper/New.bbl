@@ -1,0 +1,161 @@
+\begin{thebibliography}{10}
+
+\bibitem{applehls}
+Apple.
+\newblock {HTTP Live Streaming}.
+\newblock \url{http://bit.ly/MgoUED}.
+
+\bibitem{Applegate2010}
+D~Applegate, A~Archer, V~Gopalakrishnan, S~Lee, and K~K Ramakrishnan.
+\newblock {Optimal content placement for a large-scale VoD system}.
+\newblock In {\em Co-NEXT}, 2010.
+
+\bibitem{Cohen}
+D~Applegate and E~Cohen.
+\newblock {Making routing robust to changing traffic demands: algorithms and
+  evaluation}.
+\newblock {\em IEEE/ACM Trans. Netw.}, 14:1193--1206, December 2006.
+
+\bibitem{att-cdn}
+AT\&T.
+\newblock {Content Distribution}, 2011.
+\newblock \url{http://bit.ly/Lefgj2}.
+
+\bibitem{Racke}
+Y~Azar, E~Cohen, A~Fiat, H~Kaplan, and H~Racke.
+\newblock {Optimal oblivious routing in polynomial time}.
+\newblock In {\em STOC}, 2003.
+
+\bibitem{edgecast}
+Edge Cast.
+\newblock \url{http://www.edgecast.com/solutions/licensed-cdn/}.
+
+\bibitem{cisco-videogrowth}
+Cisco.
+\newblock {Visual Networking Index}, 2011.
+\newblock \url{http://bit.ly/KXDUaX}.
+
+\bibitem{serviceplacement}
+R~Cohen and G~Nakibly.
+\newblock A traffic engineering approach for placement and selection of network
+  services.
+\newblock {\em IEEE/ACM Trans. Netw.}, 2009.
+
+\bibitem{JohariGameTheory}
+D~DiPalantino and R~Johari.
+\newblock {Traffic Engineering vs. Content Distribution: A Game Theoretic
+  Perspective}.
+\newblock In {\em INFOCOM}, 2009.
+
+\bibitem{MPLS2}
+A~Elwalid, C~Jin, S~Low, and I~Widjaja.
+\newblock {MATE: MPLS adaptive traffic engineering}.
+\newblock In {\em INFOCOM}, 2001.
+
+\bibitem{fortz2000internet}
+B~Fortz and M~Thorup.
+\newblock {Internet traffic engineering by optimizing OSPF weights}.
+\newblock In {\em INFOCOM}, 2000.
+
+\bibitem{InvCap}
+B~Fortz and M~Thorup.
+\newblock Optimizing ospf/is-is weights in a changing world.
+\newblock {\em JSAC}, May 2002.
+
+\bibitem{catenew}
+B~Frank, I~Poese, G~Smaragdakis, S~Uhlig, and A~Feldmann.
+\newblock Content-aware traffic engineering.
+\newblock In {\em SIGMETRICS}, 2012.
+
+\bibitem{hpcdn}
+HP.
+\newblock {The edge of bandwidth growth}.
+\newblock \url{http://bit.ly/HwXtUO}.
+
+\bibitem{CPLEX}
+IBM.
+\newblock {ILOG CPLEX}.
+\newblock \url{http://ibm.co/KRuqhB}.
+
+\bibitem{netsessions}
+Akamai~NetSession Interface.
+\newblock \url{http://www.akamai.com/client}.
+
+\bibitem{vmrouting}
+J.W. Jiang, Tian Lan, Sangtae Ha, Minghua Chen, and Mung Chiang.
+\newblock Joint vm placement and routing for data center traffic engineering.
+\newblock In {\em INFOCOM}, 2012.
+
+\bibitem{Jiang2009}
+W~Jiang, R~Zhang-Shen, J~Rexford, and M~Chiang.
+\newblock {Cooperative content distribution and traffic engineering in an ISP
+  network}.
+\newblock In {\em SIGMETRICS}, 2009.
+
+\bibitem{TEXCP}
+S~Kandula, D~Katabi, B~Davie, and A~Charny.
+\newblock Walking the tightrope: responsive yet stable traffic engineering.
+\newblock In {\em SIGCOMM}, 2005.
+
+\bibitem{level3-cdn}
+Level3.
+\newblock {Content Delivery Network}, 2011.
+\newblock \url{http://bit.ly/LvsIDm}.
+
+\bibitem{telcowhitepaper}
+Streaming Media.
+\newblock {Telco-CDN Whitepapers}.
+\newblock \url{http://bit.ly/GUDrUZ}.
+
+\bibitem{nielsen-video-growth}
+Nielsen.
+\newblock {Online Video Usage Up 45\%}.
+\newblock \url{http://bit.ly/MiXiPU}.
+
+\bibitem{akamai-overview}
+E~Nygren, R~K Sitaraman, and J~Sun.
+\newblock {The Akamai network: a platform for high-performance internet
+  applications}.
+\newblock {\em SIGOPS Oper. Syst. Rev.}, August 2010.
+
+\bibitem{rfc2616}
+RFC.
+\newblock 2616.
+\newblock \url{http://www.ietf.org/rfc/rfc2616.txt}.
+
+\bibitem{Abhigyan}
+A~Sharma, A~Mishra, V~Kumar, and A~Venkataramani.
+\newblock {Beyond MLU: An application-centric comparison of traffic engineering
+  schemes}.
+\newblock In {\em INFOCOM}, 2011.
+
+\bibitem{Abilene}
+Abilene Topology.
+\newblock \url{http://bit.ly/Lf8k7a}.
+
+\bibitem{fios}
+Verizon.
+\newblock {HBO for FIOS Customers}.
+\newblock \url{http://bit.ly/JQ2dn8}.
+
+\bibitem{verizon-cdn}
+Verizon.
+\newblock {Velocix at Verizon}, 2011.
+\newblock \url{http://bit.ly/LlqGn3}.
+
+\bibitem{COPE}
+H~Wang, H~Xie, L~Qiu, Y~R Yang, Y~Zhang, and A~Greenberg.
+\newblock {COPE: Traffic Engineering in Dynamic Networks}.
+\newblock In {\em SIGCOMM}, 2006.
+
+\bibitem{P4P}
+H~Xie, Y~R Yang, A~Krishnamurthy, Y~G Liu, and A~Silberschatz.
+\newblock {P4P: Provider Portal for Applications}.
+\newblock In {\em SIGCOMM}, 2008.
+
+\bibitem{multiTM}
+C~Zhang, Y~Liu, W~Gong, J~Kurose, R~Moll, and D~Towsley.
+\newblock {On optimal routing with multiple traffic matrices}.
+\newblock In {\em INFOCOM}, 2005.
+
+\end{thebibliography}

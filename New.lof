@@ -1,0 +1,63 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Example networks}}{23}{figure.3.1}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Triangle network}}}{23}{figure.3.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Lasso network}}}{23}{figure.3.1}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Block diagram of experiment process}}{27}{figure.3.2}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces ISP Data}}{28}{figure.3.3}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Bandwidth Distribution}}{28}{figure.3.4}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Download rate CDFs for all TE schemes are near identical except COPE\ which has slightly lower performance}}{31}{figure.3.5}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Mean download rates}}{32}{figure.3.6}
+\contentsline {figure}{\numberline {3.7}{\ignorespaces COPE has the highest propagation delay among TE schemes}}{32}{figure.3.7}
+\contentsline {figure}{\numberline {3.8}{\ignorespaces TE schemes differ as much as 2$\times $ in MLU}}{34}{figure.3.8}
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Profile of Max-IO-Diff{} at increasing surge factors for a Geant TM}}{38}{figure.3.9}
+\contentsline {figure}{\numberline {3.10}{\ignorespaces Block diagram of experiment process with location diversity}}{38}{figure.3.10}
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Comparison of SPF among TE schemes for different levels of location diversity; SPF values are obtained using ns-2 simulations }}{40}{figure.3.11}
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Comparison of SPF values}}{41}{figure.3.12}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces A tripartite view of content delivery.}}{44}{figure.4.1}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces NCDN Architecture}}{47}{figure.4.2}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces (Top) Traditional formulation with content distribution and traffic engineering optimized separately. (Bottom) Our new formulation of NCDN magamenent as a joint optimization.}}{48}{figure.4.3}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces News and entertainment have a significant fraction of requests for new content on all days. Downloads has a small fraction of requests for new content on all days, except one.}}{57}{figure.4.4}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Planned\ \textsf {OptRP}\ performs much worse than unplanned\ \textsf {InvCap-LRU}. \textsf {OptRP-Future}\ performs moderately better than \textsf {InvCap-LRU}\ primarily at small storage ratios.}}{64}{figure.4.5}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {News, US-ISP}}}{64}{figure.4.5}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Entertainment, US-ISP}}}{64}{figure.4.5}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Downloads, US-ISP}}}{64}{figure.4.5}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {News, Abilene}}}{64}{figure.4.5}
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {Entertainment, Abilene}}}{64}{figure.4.5}
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {Downloads, Abilene}}}{64}{figure.4.5}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces [Videos, Abilene] \textsf {OptRP}\ serves 50\% and 21\% of news and entertainment requests respectively from the origin. \textsf {InvCap-LRU}\ and \textsf {OptRP-Future}\ serve at most 2\% from the origin.}}{65}{figure.4.6}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {News, Abilene}}}{65}{figure.4.6}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Entertainment, Abilene}}}{65}{figure.4.6}
+\contentsline {figure}{\numberline {4.7}{\ignorespaces [Downloads, US-ISP] \textsf {OptRP}\ incurs a very high MLU on one ``peak load'' day.}}{65}{figure.4.7}
+\contentsline {figure}{\numberline {4.8}{\ignorespaces [All traces] Optimizing routing yields little improvement to MLU of either \textsf {InvCap-LRU}\ or \textsf {InvCap-OptP-Future}}}{66}{figure.4.8}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {MLU reduction with \textsf {OptR-LRU}\ compared to \textsf {InvCap-LRU}}}}{66}{figure.4.8}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {MLU reduction with \textsf {OptRP-Future}\ compared to \textsf {InvCap-OptP-Future}}}}{66}{figure.4.8}
+\contentsline {figure}{\numberline {4.9}{\ignorespaces [Entertainment, US-ISP] Content chunking helps bridge the gap between \textsf {InvCap-LRU}\ and \textsf {OptRP-Future}.}}{69}{figure.4.9}
+\contentsline {figure}{\numberline {4.10}{\ignorespaces [Entertainment, Abilene] Hybrid placement schemes perform at best as well as \textsf {InvCap-LRU}.}}{69}{figure.4.10}
+\contentsline {figure}{\numberline {4.11}{\ignorespaces [Entertainment, US-ISP] \textsf {OptRP}\ does not outperform \textsf {InvCap-LRU}\ despite engineering 8 times a day.}}{69}{figure.4.11}
+\contentsline {figure}{\numberline {4.12}{\ignorespaces A realistic planned\ scheme, \textsf {OptRP-L}\ causes excessively high latency costs in some cases. \textsf {InvCap-LRU}\ achieves latency costs close to ideal planned\ scheme, \textsf {OptRP-Future-L}, at higher storage ratios.}}{71}{figure.4.12}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {News, US-ISP}}}{71}{figure.4.12}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Entertainment, US-ISP}}}{71}{figure.4.12}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Downloads, US-ISP}}}{71}{figure.4.12}
+\contentsline {figure}{\numberline {4.13}{\ignorespaces [News, US-ISP]Network costs at varying fractions of NCDN traffic in an ISP network.}}{73}{figure.4.13}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces A datacenter topology. Black components are turned on and grey components are turned off. (Top) All servers and switches are on as is the current practice. (Middle) Demand is consolidated on randomly selected 10 servers and remaining servers are shutoff. All ToR switches must be kept on to provide connectivity to servers. (Bottom) Demand is consolidated on servers in one rack, which allows servers as well as ToR switches in other racks to be turned off.}}{81}{figure.5.1}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Replication strategy impacts content availability after server shutdown. All four servers are active during normal utilization periods, but the two servers on the right are turned off during low utilization periods. Squares with same letters represent replicas of the same content. (Top) One replica of each content is maintained as shown. When servers 3 and 4 are shutdown, two of the four content become unavailable. (Middle) Two replicas of each content are maintained, but still shutting down servers 3 and 4 makes two of the four content unavailable. (Bottom) Two replicas of each content are maintained, but servers 1 and 2 have one copy of all four content. In this case, all content is available despite shutting down servers 3 and 4.}}{82}{figure.5.2}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Geo-distributed servers in Auspice. Replica-controllers (logically separate from active replicas) decide placement of active replicas and active replicas handle requests from end-users. N1 is a globally popular record and is replicated globally; record N2 is popular in select regions and is replicated in those regions.}}{89}{figure.6.1}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces \relax \fontsize {10.95}{13.6}\selectfont \abovedisplayskip 11\p@ plus3\p@ minus6\p@ \abovedisplayshortskip \z@ plus3\p@ \belowdisplayshortskip 6.5\p@ plus3.5\p@ minus3\p@ \def \leftmargin \leftmargini \parsep 5\p@ plus2.5\p@ minus\p@ \topsep 10\p@ plus4\p@ minus6\p@ \itemsep 5\p@ plus2.5\p@ minus\p@ {\leftmargin \leftmargini \topsep 9\p@ plus3\p@ minus5\p@ \parsep 4.5\p@ plus2\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip {Auspice\ has up to 5.7$\times $ to 9$\times $ lower latencies than Random-M\ and DHT+Popularity\ reps. (\ref {fig:load}). A load of 1 means 200 lookups/sec and 100 updates/sec per name server. Replicate-All\ peaks out at a load of 0.3 while Auspice\ can sustain a request load of up to 8 as it carefully chooses between 3 and 80 replicas per name. In Figure \ref {fig:updates}, median update latency of Auspice\ with total write ordering per name is 284ms and is comparable to other schemes.}}}{99}{figure.6.2}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Lookup latencies (load = 0.3)}}}{99}{figure.6.2}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Lookup latency vs. load}}}{99}{figure.6.2}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Update cost vs. load}}}{99}{figure.6.2}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Update latency}}}{99}{figure.6.2}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Time-to-connect $\approx $ lookup latency for moderate mobility rates ($<$1/100s) as Auspice\ returns up-to-date responses w.h.p., but sharply rises thereafter.}}{104}{figure.6.3}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Auspice\ adapts to varying demand geo-locality in two epochs each 75s long with a (tunable) reconfiguration message overhead of 3.6\%.}}{104}{figure.6.4}
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Lookup latency: Auspice\ with 5 replicas is comparable to UltraDNS (16 replicas); Auspice\ with 15 replicas has 60\% lower latency than UltraDNS.}}{105}{figure.6.5}
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Update propagation delay: Auspice\ with 5 replicas is 1.0 to 24.7 secs lower than three top-tier managed DNS service providers. }}{105}{figure.6.6}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Proposed work and timeline}}{111}{figure.7.1}

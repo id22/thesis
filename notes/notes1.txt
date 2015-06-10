@@ -1,0 +1,101 @@
+1. if the primary purpose of network is content delivery, how would you architect it differently.
+
+2. I am advocating a different architecture. Every network should be an NCDN. 
+
+<CP>	
+
+<Network>	
+
+<Users>	
+
+--------------------------------------------------------------------------------
+
+
+user <---> 
+
+1. status quo: <network layer> and <applications layer>: open flow based controller that combines both 
+
+2. content router: 
+
+- can routers support caching of content ?
+
+- design of content caching router.
+
+
+How much valuable is network layer information for content delivery?
+
+- link load
+- 
+
+1. What are the advantages of having a CDN functionality in a network ?
+	- 
+
+Q. My goal is to design a NCDN system.
+A. Deliver content using a network and routers.
+
+1. Design of content servers.
+2. 
+
+Q. How can the network assist in content delivery?
+A. 
+
+- support different QoS
+- caches accompanying routers
+
+
+- caching
+- 
+
+Assume that anything and everything can be cached.
+
+Every network wants to include CDN functionality in their network.
+
+Which locations to serve each content from.
+
+
+Variety of content: web, 
+
+
+
+Network has caches installed at every pop.
+
+
+
+Think that each network must support content caching and delivery.
+
+
+Be an akamai : mapping problem. <---aaa---> : 
+
+
+Assume that each ISP supports CONNECTIVITY + CONTENT DELIVERY.
+
+Controller: <>
+
+
+
+Assume that if internet as a whole were to support content caching and delivery for all content.
+
+<Name resolution> ---> <Hyper-charged DNS server>
+
+1. Name resolution : 
+	- <Map Problem>
+2. 
+3. 
+
+
+
+
+1. Map problem.
+
+2. Caching & Redirection Algorithm.
+	- 
+3. 
+
+
+
+
+
+
+
+
+

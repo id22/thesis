@@ -1,0 +1,26 @@
+\begin{abstract}
+
+Several major Internet service providers (e.g., Level-3, AT\&T, Verizon) today also offer content distribution services.
+The emergence of such ``network-CDNs"  (NCDNs) is driven both by market forces as well as the cost of carrying ever-increasing volumes of traffic across their backbones. An NCDN has the flexibility to determine both where content is placed and how traffic is routed within the network. However NCDNs today continue to treat traffic engineering independently from content placement and request redirection decisions. In this paper, we investigate the interplay between content distribution strategies and traffic engineering  and ask whether or how an NCDN should address these concerns in a joint manner. Our experimental analysis, based on traces from a large content distribution network and real ISP topologies, shows that realistic (i.e., history-based) joint optimization strategies offer little benefit (and often significantly underperform) compared to simple and ``unplanned'' strategies for routing and placement such as InverseCap and LRU. We also find that the simpler strategies suffice to achieve network cost and user-perceived latencies close to those of a joint-optimal strategy with future knowledge.
+
+%effective content placement can significantly simplify traffic engineering and in most cases obviate the need to engineer NCDN traffic all together! Further, we show that simple \unplanned\ schemes for routing and placement such as InverseCap and LRU suffice as they achieve network costs that are close to the best possible.
+
+\eat {
+A Network-CDN (an Internet service provider which provides content distribution services through its network) decides routing as well as content placement in its network.
+In this work, we study the relative impact of routing and content placement on network cost optimization for a Telco CDN.
+Our analysis, based on traces from one of the largest content distribution networks in the world and  well known ISP topologies, shows that optimal content placement is significantly more important than optimal routing  to reduce the network cost. 
+Today's emerging Telco CDNs should use traffic engineering schemes which optimize content placement instead of  traditional traffic engineering schemes which only optimize routing.
+}
+%Today ISPs solve the problem of optimizing routes in their network and CDNs solve the problem of content placement on an Internet scale, i. e, where to place each content in the Internet and which content replica to redirect each user to. Assuming an ISP takes over the role of the CDN within its own network, it needs to solve twin problems of optimizing routing and content placement. In this work, we ask the question, which among route optimization and content placement optimization is more important to reduce network cost for an ISP. Our analysis, based on traces from one of the largest CDNs in the world and  well known ISP topologies, shows that optimizing content placement alone performs nearly as well as a joint optimization of content placement and routing. Moreover,  optimizing routing without optimizing content placement incurs a significantly higher network cost.
+
+
+
+%%% PREVIOUS ABSTRACT
+%
+%Internet service providers (ISPs) change routes in the network in response to changing traffic demands in order to minimize  congestion in the network. This process is known as traffic engineering.
+%If an ISP owns the content being distributed in the network, it can minimize congestion also by changing the content placement, i. e., it can vary the location of a content, the number of replica of the content, and how traffic is split among multiple replica of each content.
+%Assuming that an ISP controls both content placement and routing: (1) Which of the two should it optimize to maximize its traffic engineering objective? (2) Should it jointly optimize content placement and routing ?
+%Using ISP topology and traffic demands, we show that for fixed traffic demands, optimizing content placement is more valuable than optimizing routing for traffic engineering. Even a joint optimization of content placement and routing performs no better that optimizing content placement only.
+
+
+\end{abstract}

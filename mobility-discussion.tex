@@ -1,0 +1,36 @@
+
+\eat{
+\section{Mobility}
+\label{sec:mobility}
+In this section, we describe pros and cons of different approaches of handling mobility and make a case for designing a global name service to address this problem.
+
+%In this section, we describe why a global name service approach to handle mobility is advantageous over other approaches, including indirection-based approaches and name-based routing. 
+%Next, we explain why Internet's name service, DNS, is inadequate to handle a workload of hostnames with high mobility.
+
+
+Despite a staggering diversity of proposals re-architecting Internet naming and routing, we find that they explicitly or implicitly embed one of three broad approaches to handling mobility--{\em indirection-based routing, global name-to-address resolution}, or {\em name-based routing}--based on how they go from the name of an endpoint to the endpoint itself. 
+\Indirection\ schemes uses an static indirection agent associated with each mobile device to route all traffic to/from the mobile \cite{MIP,i3}. 
+{\Logcen} schemes rely on a distributed service to resolve names to addresses as the first step in connection establishment \cite{MobilityFirst-UMASS,XIA,AIP,LNA}.
+{\Namerouting} schemes route directly over names; mobility of names is handled seamlessly by the routing strategy itself\cite{TRIAD, DONA, CCN}.
+
+To handle end-host mobility, \indirection\ and  \namerouting\ strategies hurt either the performance and/or the scalability of the Internet. As every data packet must be routed through a fixed-indirection agent, \indirection\ can cause significant routing stretch, thereby hurting performance. Whether names are structured or unstructured, \namerouting\ schemes stand to significantly increase routing table sizes, thereby hurting the scalability of the Internet. When names are unstructured (a.k.a. flat names), theoretical results on compact routing show that routing over N flat identifiers entails a prohibitive $\Omega(N)$ forwarding table size per router in order to ensure a small constant stretch factor ($\approx$3) compared to shortest-path routing. When names are hierarchically-structured (as in CCN\cite{CCN}), frequent mobility still poses a challenge as routers would have to maintain special forwarding entries for ``displaced names'' when the name moves from its hierarchically organized namespace for longest-prefix matching to work correctly, i.e., high mobility effectively makes routing directly over structured names as hard as routing over flat names unless indirection or a name resolution infrastructure is used.
+
+A  \logcen\ strategy offers the best combination of trade-offs among three approaches: 
+(1) Unlike \indirection\ and  \namerouting\ strategies, it cause no data path stretch.
+(2) Unlike \namerouting\ strategies,  addresses can be aggregated keeping routing table sizes small.
+(3) During connection establishment, it poses a modest overhead of lookup from a name service.
+(4) It can leverage existing work on  end-to-end connection migration to handle mid-connection mobility of one or both end points rapidly (1-2 RTTs)\cite{Migrate,ECCP,TCP-R} .
+
+The main challenge in realizing  a \logcen\ strategy is designing a distributed system that can store billions of name records for mobile devices, handle handle tens of updates/day for each record, and still provide a low latency of address lookups. 
+As we discussed in Section \ref{sec:dynamic}, placement of dynamic data such as name records on a global scale is still an active research area. The limitations of existing approaches for this problem, namely high update costs, and/or high lookup latency, necessitates a new design that can reduce update costs, and yet provide low lookup latencies.
+}
+%A global name service needs to replicate frequently updated name records in on a global scale, which is the same problem as deciding placement of dynamic data discussed in Section \ref{sec:dynamic}.
+
+%can handle tens of updates/day from billions of devices, yet return responses within tens of milliseconds. A global name service needs to replicate frequently updated name records in on a global scale, which is the same problem as deciding placement of dynamic data discussed in Section \ref{sec:dynamic}. 
+
+%Essentially a problem of replicating dynamic data in a wide-area setting.
+%(1) in current DNS, the data is stored at authoritative name servers.
+%(2) centralized authoritative name servers: poor performance
+%(3) alternative is managed DNS: managed DNS uses simple replication: static or replicate-all. but as discussed in sec x, these strategies are suboptimal in terms of update costs or performance.
+
+

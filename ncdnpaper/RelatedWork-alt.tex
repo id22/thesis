@@ -1,0 +1,79 @@
+%\section{Discussion}
+%\label{sec:limitations}
+
+%Our results suggest that optimizing routing yields little improvement to network cost for the NCDN portion of the traffic, but this finding does not imply that traffic engineering by ISPs is unnecessary. An important reason for ISPs to engineer traffic is that they route transit traffic in addition to NCDN traffic. Since an ISP does not control either content placement or request redirection for transit traffic, traditional traffic engineering methods, e.g., OSPF traffic engineering, can reduce the network cost due to transit traffic. The benefit of traffic engineering, or lack thereof, depends on the fraction of transit traffic vs. NCDN traffic in an ISP. 
+
+
+%\textbf{How does dynamic content impact this analysis?} Dynamic content is outside the scope of this work. That said, it contributes to a much smaller volume of traffic compared to static content such as on-demand video and downloads, so an NCDN is likely to achieve the most significant reduction in network cost by focusing just on static content.
+
+%\textbf{Does end-user performance not affect 
+%How does dynamic content impact your analysis?} An NCDN may additionally consider end-user performance, not just the network cost, while deciding placement and routing. We plan to consider the effectiveness 
+
+\eat{
+(1) Our \ncp\ model models only the CDN traffic and not the transit traffic which present in an ISP network. Since, an ISP cannot control content placement for transit traffic, traffic engineering will help reduce network cost for transit traffic.
+
+(2) Minimizing network cost in face of link failures, either planned or accidental, is one of the goals of traffic engineering. \Ancp\ could suffer from link failures as well as server failures at the PoPs. We intend to study the effect of link failures as well as server failures for \ancp\ in our future work.
+}
+
+
+
+\section{Related Work}
+\label{sec:related}
+
+Traffic engineering and content distribution have both seen an enormous body of work over more than a decade. To our knowledge, our work is the first to consider the NCDN problem, wherein a single entity seeks to address both concerns, and empirically evaluate different placement, routing, and redirection strategies. 
+%\noindent\textbf{Interaction of location diversity and TE:}
+
+
+
+\textbf{Joint optimization:} Recent work has explored the joint optimization of traffic engineering and ``content distribution'', where the latter term refers to the {\em server selection} problem. P4P (Xie et al.  \cite{P4P}) shows that P2P applications can improve their performance and ISPs can reduce the MLU and interdomain costs, if P2P applications adapt their behavior based on hints supplied by ISPs. Jiang et al.  \cite{Jiang2009} and  DiPalantino et al. \cite{JohariGameTheory} both study the value of joint optimization of traffic engineering and content distribution versus   independent optimization of each. CaTE (Frank at al. \cite{catenew}),  like P4P, shows that a joint optimization can help both ISPs and content providers improve their performance. These works equate content distribution to server selection (or request redirection in our parlance), while the NCDN problem additionally considers content placement itself as a degree of freedom. 
+We find that the freedom to place content is powerful enough that even \unplanned\ placement and routing strategies suffice to achieve close to best latency and network costs for NCDNs, making joint optimization of content distribution and traffic engineering unnecessary.
+
+%As our results show, optimizing placement is powerful and even \unplanned\ strategies for placement can single-handedly reduce the MLU significantly even in conjunction with simple request redirection and routing strategies.
+
+%CaTE \cite{cate},  like P4P,  shows that both ISPs and content providers can benefit if content providers perform request redirection based on network information provided by ISPs. 
+
+% supply hints  to P2P (called as \emph{p-distances}) applications, and the 
+
+%that ISP should supply hints  to P2P applications that when used by them improves their performance and also reduces interdomain transit costs and the MLU for the ISP.  
+
+
+
+
+%interaction between traffic engineering and content distribution using a game-theoretic model and show that, without a joint optimization, the equilibrium of this interaction may not result in a socially optimal solution.  
+
+%Jiang et al.  \cite{Jiang2009} and  DiPalantino et al. \cite{JohariGameTheory} both study the interaction between traffic engineering and content distribution using a game-theoretic model and show that, without a joint optimization, the equilibrium of this interaction may not result in a socially optimal solution.  
+
+
+%\noindent\textbf{Content Placement in ISP networks:}
+% content pl
+%\noindent\textbf{Network CDNs:}
+%Major ISP/Telco organizations such as AT \& T \cite{att-cdn}, Level-3 \cite{level3-cdn}and Verizon \cite{verizon-cdn} are building hosting and content delivery infrastructure into their networks.  ISPs enjoy a natural advantage for a CDN since they can place content within their networks at close proximity to their own customers. ISPs can integrate CDN infrastructure such as storage and server clusters at their PoP locations. The falling prices of bandwidth are providing the push to these companies to enter CDN market. 
+
+\textbf{Placement optimization:} Cohen \cite{serviceplacement} propose an algorithm to optimizing placement of  \emph{services} in the network to help traffic engineering objectives. Jiang et al \cite{vmrouting} study how to jointly optimize placement of virtual machines and routing for traffic engineering inside a data center.
+Applegate et al. \cite{Applegate2010} study the content placement problem for a VoD system that seeks to minimize the aggregate network bandwidth consumed. However, they assume a {\em fixed routing} in the network, while one of our contributions is to assess the relative importance of optimizing routing and optimizing  placement in an NCDN.
+
+%  There are two key differences between their work and ours. First, they assume a {\em fixed routing} in the network, while one of our contributions is to assess the relative importance of optimizing routing and optimizing  placement in an NCDN. Second, 
+
+
+Furthermore, they find that an optimized, \planned\ placement with a small local cache (similar to our ``hybrid'' strategy in $\S$\ref{sec:hybrid}) outperforms LRU. In contrast, our experiments suggest otherwise. There are three explanations for this disparity. First,  their workload seems to be predictable even at weekly time scales, whereas the Akamai CDN traces that we use show significant daily churn.  Second, their scheme has some benefit  of future knowledge and is hence somewhat comparable to our \optrpfuture. For a large \ncp, obtaining knowledge about future demand may not be practical for all types of content, e.g., breakout news videos. Finally,  our analysis suggests that LRU performs sub-optimally only at small storage ratios,  and the difference between  LRU and \optrpfuture\ reduces considerably at higher storage ratios (not considered in \cite{Applegate2010}).
+
+
+\eat{
+The disparity in the performance of \planned\ schemes  observed in \cite{Applegate2010} and in our experiments can be explained as follows: (1) Their workload seems to predictable even at weekly time scales, while our CDN traces consisting of a variety of on-demand video and downloads traffic exhibit significant daily churn. (2) Their scheme has some benefit  of future knowledge and is hence somewhat comparable to the \optrpfuture\ scheme. For a large \ncp, obtaining knowledge about future demand may not be practical for all types of content, e.g., news videos. (3) Our analysis suggests that LRU performs worse only at small storage ratios,  and the difference between  LRU and optimized placement  reduces considerably on increasing the storage ratio.
+}
+
+% They  compare different video placement algorithms and find that an optimized, \planned\ placement strategy with a small local cache (similar to our ``hybrid'' strategy in $\S$\ref{sec:hybrid}) outperforms purely \unplanned\ LRU-like strategies. Our work differs from theirs with respect to both the problem addressed and the qualitative findings as follows. We model an \ncp\ that in addition to placement also controls routing, and assessing the relative importance of routing and placement strategies is one of our contributions. 
+
+
+
+
+%Furthermore, unlike \cite{Applegate2010}, we find that a simple, \unplanned\, LRU strategy significantly outperforms an optimized, \planned\ (static or hybrid) placement strategy. There are a explanations for this seeming disparity. First, we consider a comprehensive trace of CDN requests with a variety of on-demand video as well as download traffic that exhibits significant daily churn; in comparison, their workload appears to be reasonably predictable even over weekly timescales. Second, the optimized, \planned\ placement strategy they consider also has some benefit of future knowledge and is therefore somewhat comparable to a \planned\ scheme with future knowledge (\optrpfuture\ in $\S$\ref{sec:eval}). In general, obtaining knowledge about future demand may not be practical for all types of content, e.g., news videos, for a large \ncp.  Furthermore, our analysis of different storage ratios suggests that LRU performs worse only at small storage ratios,  and the difference between  LRU and optimized content placement reduces significantly on increasing the storage ratio.
+
+
+\textbf{Traffic engineering:} Several classes of traffic engineering schemes such as OSPF link-weight optimization \cite{fortz2000internet}, MPLS flow splitting \cite{MPLS2},  optimizing routing for multiple traffic matrices \cite{COPE, multiTM}, online engineering \cite{TEXCP,MPLS2}, and oblivious routing \cite{Cohen,Racke}, have been studied. All of these schemes assume that the demand traffic is a given to which routing must adapt. However, we find that an NCDN is in a powerful position to change the demand traffic matrix, so much so that even a naive scheme like InverseCap, i.e., no engineering at all, suffices in conjunction with a judicious placement strategy and optimizing routing further adds little value. In this respect, our findings are comparable in spirit to Sharma et al. \cite{Abhigyan}. However, they focus on the impact of location diversity, and show that even a small, fixed number of randomly placed replicas of each content suffice to  blur differences between different engineering schemes with respect to a capacity metric (incomparable to MLU), but find that engineering schemes still outperform InverseCap.
+
+%OSPF, MPLS based schemes, online schemes. these schemes are based on a notion of traffic matrix which is known apriori. in our model traffic matrix is not fixed but it depends on the content placement and flow split in the network. Our work compares the performance of naive traffic engineering InvCap and Optimal traffic engineering in a network for a variety of content placement and flow split strategies. we arrive at the conclusion that traditonal traffic engineering makes little different when content placement and flow split is optimized in the network.
+
+%\noindent\textbf{Facility Location:} \tbd{Ramesh: do you want to write something here?}
+
+

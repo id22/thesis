@@ -1,0 +1,303 @@
+% description of TE schemes
+
+The spectrum of traffic engineering methods proposed in literature has been introduced in the previous section. 
+We choose the following traffic engineering methods for comparison which are representative of different traffic engineering methods.
+
+\textbf{OSPF with Inverse Capacity weights,OSPFInvCap}:  It is also a shortest path routing scheme with edge weights equal to the inverse of the capacity of the corresponding link. This is also the default routing strategy used in Cisco Routers \cite{InvCap}.
+
+ \textbf{OSPF with Optimal Weights}:
+OSPF is the most widely used intra-domain routing protocol and is used for traffic engineering by ISPs \cite{FortzThorup2,rexford}. 
+
+We use the method proposed by Fortz and Throup[\cite{FortzThorup}]. This algorithm heuristically computes the optimal weight setting which minimizes the cost function given in [ \cite{FortzThorup} ] for a given traffic matrix. This cost function equal the sum of costs of all links and the  cost of each link is approximated with a convex cost function. Link costs increase significantly as the link utilization approaches the capacity of the link. We use the implementation of this algorithm provided in the totem toolbox [ \cite{TotemData} ]. We compute a new routing every 3 hours using average of traffic matrices for the past 3 hours. This is similar to time scales for offline traffic engineering.
+
+ \textbf{MLU Optimal}:
+We select this traffic engineering scheme to represent online traffic engineering schemes such as TeXCP[\cite{TeXCP}]. 
+Online traffic engineering aims to react very quickly to traffic changes and compute a new routing which optimizes the metric of interest such as MLU. MLU Optimal scheme computes an optimal routing using a multi-commodity flow problem which optimizes MLU [rewrite this sentence]. The formulation of our objective function is as follows
+
+\[ \mbox{ Minimize } MLU + \alpha DELAY\]
+
+$\alpha$ is a very small value. $DELAY$ is the sum of propagation delays of all the traffic in the network. Hence this formulation chooses the routing which optimizes MLU and among the routings with MLUs very close to each other chooses the one with minimum delay. Choosing the minimum delay routing helps improve the application performance which forms the basis of our comparison.
+
+\textbf{MPLS Average }:
+This routing computes routing using the average of traffic matrices taken from the past 3 hours. It minimizes the same objective function as MLU Optimal. We use this routing as a representative of offline traffic engineering using MPLS.
+
+\textbf{Minimize Delay:} This routing emulates an online traffic engineering which optimizes the propagation delay of all traffic in the network subject to the constraint that MLU should be below a threshold value ( which is 0.5 in for the results we present). This is also an oracle scheme which knows the traffic matrix beforehand. We experiment with this routing to understand how does a delay optimal scheme perform 
+
+%\[ \mbox{ Minimize }  \sum_{e \in edges} f_e \times p_e, \mbox{ where } f_e = \mbox{ aggregate flow on edge e }\]
+%
+%subject to 
+%
+%\[ (\forall e \in edges)\ f_e/C_e < TH , \mbox{ where } C_e = \mbox{ Capacity of link on edge e  and } \]
+%
+%\[ TH = \mbox{ the maximum link utilization threshold }\]
+
+\textbf{COPE)}:This is an MPLS traffic engineering method which tries to optimize the traffic for a set of traffic matrices. The objective of this method is to minimize the maximum link utilization during normal traffic conditions and and at the same time limit the worst case link utilization during spikes in the traffic. The method is shown to be effective in coping with sudden bursts of traffic and keep the link utilization low under normal traffic. We compute a new routing once every day as in the paper\cite{COPE}. The performance ratio parameter is set to 2.2. We use the code provided by the authors of the paper for experiments. 
+
+
+
+***************************
+
+%old intro ....
+\section{Introduction}
+
+\textbf{What is traffic engineering? What is its role ?}
+Traffic engineering determines how to route traffic through a network so as so to optimize a network-wide objective. ISPs use traffic engineering for a variety of objectives that include minimizing congestion hotspots, computing backup routes to accommodate links that fail or are taken down for maintenance, making longer term capacity provisioning decisions, optimizing interdomain transit cost or revenue, and so on. 
+
+\textbf{What has been the goal of traffic engineering research ? - Minimize MLU}
+The first of these objectives, minimizing congestion, has received the most amount of attention from researchers as well as network operators \cite{}. A commonly used optimization objective is to minimize the maximum link utilization (MLU), or to minimize a monotonically increasing convex function of the link utilization aggregated over all links in the network. An implicit assumption is that minimizing congestion in this manner results in better application performance perceived by end-users. %i.e., minimizing congested links improves metrics such as TCP throughput or VoIP quality for flows traversing the links.
+
+\textbf{How does minimize MLU change application performance ?}
+In this paper, we question the above assumption, i.e., we ask if common traffic engineering schemes improve application performance and, if so, by how much? To answer this question, we consider TCP throughput as representative of application performance. We conduct a comparative simulation study of different traffic engineering schemes using real backbone topologies and traffic matrices from three ISPs spread across the U.S. and Europe, and a realistic distribution of access network bottlenecks. We compare these traffic engineering schemes to OSPF InvCap, a baseline that does not engineer traffic but simply uses shortest path routing using the inverse of the link capacity as the link weight, and is a default routing protocol supported by popular commercial router vendors.
+
+\textbf{What are our results ?}
+Our study reveals several intriguing conclusions that go against the grain of conventional wisdom and are summarized below.
+
+\begin{enumerate}
+\item Traffic engineering has little value for improving TCP throughput. OSPF InvCap achieve both mean and median TCP throughput within 5\% of the optimal scheme.
+
+\item MLU is a poor predictor of TCP throughput. Although OSPF InvCap has upto 66\% higher MLU than optimal, it performs close to optimal with respect to TCP throughput. More surprisingly, COPE, a traffic engineering scheme that seeks to optimize MLU while accounting for predictable perturbations in the traffic matrix achieves nearly optimal MLU, but has up to 10\% lower TCP throughput.
+
+\item Offline traffic engineering schemes that engineer once every few hours achieve almost the same TCP throughput as optimal, suggesting that more frequent or online engineering schemes have limited value.
+
+\end{enumerate}
+
+\textbf{What advantage does TE give?}
+Optimal traffic engineering does increase the capacity of the network by more than 50\% over OSPFOptWt and OSPFInvCap.  However, when clients can leverage {\em location diversity}, i.e., the ability to download data from more than one source in parallel, as is the case with popular peer-to-peer applications and content distribution networks, the capacity advantage enjoyed by MLU optimal traffic engineering over offline traffic engineering schemes almost disappears.  Optimal traffic engineering however continues to retain its capacity advantage over OSPF InvCap despite location diversity. The differences between different engineering schemes as well as OSPF InvCap with respect to TCP throughput diminish further.
+
+\textbf{Recent interest in traffic engineering}
+Recent interest in traffic engineering has been due to increase in traffic of P2P applications especially BitTorrent. To manage this traffic, recently ISPs have taken to throttling BitTorrent traffic. Two types of solutions have been proposed to solve this problem: a) Change BitTorrent or its tracker to choose local peers in an ISP. (By default, BitTorrent chooses its peers randomly) b) A joint solution between ISPs and BitTorrent where ISP modifies its traffic engineering and also BitTorrent also changes its choice of peers.
+
+\textbf{Location diversity changes traffic engineering}
+We take a different approach and measure the effect of location diversity on traffic engineering. The huge demand for P2P applications has increased the internet traffic much to the ire of ISPs. 
+
+
+\textbf{Our experiments show location diveristy nullifies capacity differences between TE methods}
+We compare traffic engineering performance in present of diversity.
+
+
+\textbf{Our results show that overall the choice of traffic engineering method makes little difference to application performance. Leveraging location diversity can give you the benefits of traffic engineering irrespective of methods that you use.}
+
+The rest of this paper is organized as follows. Section 2 makes a case for studying traffic engineering from an application-centric perspective. Section 3 discusses related traffic engineering methods we compare with. Section 4 describes the experimental setup used for our comparative study. Section 5 compares different engineering schemes with respect to TCP throughput. Section 6 compares them with respect to capacity improvement and studies the impact of location diversity on capacity. Section 7 presents a discussion and analysis of the key insights learned from the study and Section 8 concludes.
+
+
+-----------------------------------------------------------------------------
+
+\textbf{why comparison of te schemes for capacity?} 
+Our experiments in previous section show that TE schemes show that for TCP downloads there is marginal 
+
+
+
+
+\textbf{how do you measure sustainable load ?}
+The empirical approach to measure traffic enginereing performance is that the demand must be supportable for different traffic matrices. The demand is supportable if 
+
+\textbf{location diversity and capacity} Based on our discusssion in section 1, we need to include location diversity in capacity measurements a comparison of traffic enngineering schemes.
+
+\subsection{Measuring the capacity of a network}
+
+First we define the term capacity as we use it in this section. A network can sustain a traffic load if its throughput is equal to the rate of file arrivals. 
+
+We define the capacity of a network for a routing in terms of load it can sustain. The original traffic matrix is said to have a load of 1 and the traffic matrix obtained by multiplying the original traffic matrix by 'x' is said to have a load 'x'. We say that a network has a capacity 'x' if it can sustain a load 'x'.
+
+
+The basic definition is that demand should be supportable. simple approach, compare MLUs and see at what load MLU reaches 1. In practice mlu = 1 is inoperable, since demand will be unsupportable before that. but it is expected that demand will exceed capacity before mlu reaches 1. Our experimental apparatus allows us to measure capacity from an application's perspective which we describe below.
+
+\textbf{experiment for measuring capacity} 
+We repeat the previous experiments by increasing load on the network. A load of 2 means each traffic matrix entry is twice the previous value and there are twice as many file downloads during the simulation. For a traffic matix and a given routing, there must exist a load where capacity is reached. We repeat the experiment by increasing loads for a traffic matrix and calculte the load at which capacity is reached based on the statictics from the experiment.
+
+\textbf{which statstic to use?}
+Our simulation yields various staistics based on which we could define capacity.  We define capacity based on the application perceived metric of throughput. Our definition of capacity for our experiments is as follows: The capacity of the network is the load at which the 10th percentile download rates falls below 100 KBps.
+
+Our justification for picking this metric is following :1) Picking the 10th percentile downlod rate implies that we are comparing the worst case performance of files.
+2) It also implies that 
+
+ We choose to define capacity based on the 10th-percentile download rates. This is a metric which compares the worst case file download times. We assign a threshold value of 10th percentile download rate. We define capacity as the load at which the 10th percentile download rate goes below the threshold value. We pick this threshold as 100 KBps. 
+
+We find that there is a distict drop in througput n
+
+Our simulation yields various staistics based on which we could define capacity. First is the maximum link utilization. We could define a threshold value of MLU which gives our capacity. We find that the MLU oscillates near its maximum values as load increases (Add figure). Moreover this value is different for different traffic matrices and rouitng. This makes it difficult to pick a value to define capacity. Another metric is the file transfer delay. We calculated file 
+
+Second is the difference between size of files downloaded and 
+
+\textbf{why capacity improvement ?}
+The results in previous section show that in the conditions present in internet today the performance of traffic engineering schemes differ within 10 \% percent of each other. The difference in MLU among traffic engineering schemes  did not translate to a improvement in performance since the network was operating under low load conditions. 
+The region where traffic engineering would help improve performance is under high load 
+
+But the region where traffic engineering 
+
+
+
+-----------------------------------------------------------------
+
+
+We first present the results for the case where all users have a bottleneck of 10 Mbps. This configuration clearly brings out the difference in performance of traffic engineering methods. No access link bottlenecks is not a realistic configuration to compare traffic engineering methods. When access link bottlenecks follow the distribution present in internet,  the difference in between traffic engineering methods are blurred. Any TE method can give enough throughput to fill up the access link of majority of users. 
+
+We experiment with three days of data and we present the results of simulation of all traffic matrices during one of the days. The results are similar for other days. We compare two statistics, first the download rate of files and second the download ratio of each file compared to it speed in the optimal MLU routing scheme. We plot the results 100 KB files and 5 MB files separately, since their patterns are different. A 100 KB files may finish download before finishing its slow start period. In this case its TCP download rate is determined by the RTT. A gradation of download rates also suggests delay is a factor. \emph{You may plot delay graph and show the similarity.} 5 MB files on the other hand have sufficient time to get out of slow start their throughput is limited by either access link bottlenecks or depend on the loss rates in the network. In this figure, most files have throughputs close to 1000 KBps ( the access link bottleneck is 1250 KBps). This suggests that  network is loss rates on most links are low \emph{Plot the aggregate loss rates on backbone links!}.  
+
+%put graphs
+% download rates aggreate only 100 KB files, CDF
+% download rate aggregate only 5 MB files, CDF
+% download ratios aggregate only 100 KB files, CDF
+% download ratios aggreate only 5 MB KB files, CDF
+
+\begin{figure}[htp]
+  \begin{center}
+    \subfigure[Download rate 100 KB files]{\label{fig:edge-a}\includegraphics[scale=0.5]{images/US_ISP/10Mbps/download_rates_aggregate_100000_plot.pdf}}
+    \subfigure[Download rate 5 MB files]{\label{fig:edge-b}\includegraphics[scale=0.5]{images/US_ISP/10Mbps/download_rates_aggregate_5000000_plot.pdf}} \\
+    \subfigure[Download ratio 100 KB files]{\label{fig:edge-c}\includegraphics[scale=0.5]{images/US_ISP/10Mbps/download_ratios_aggregate_100000_plot.pdf}}
+    \subfigure[Download ratio 5 MB files]{\label{fig:edge-c}\includegraphics[scale=0.5]{images/US_ISP/10Mbps/download_ratios_aggregate_5000000_plot.pdf}}
+  \end{center}
+  \caption{US Tier 1 ISP, Aggregate performance on 1 day traffic matrices, 10Mbps access link}
+  \label{fig:usisp_aggregate}
+\end{figure}
+
+Excluding OPSFInvCap and COPE, the performance of all traffic engineering schems is almost identical. For OSPFInvCap the difference is of a few tens of KBps for 100KB files. For 5 MB files the difference is around than 50 KBps at 5th percentile and decreases after that. Surprisingly, COPE has the lowest download rates.  For short files, this difference is upto 100 KBps at 75th percentile. This is because COPE chooses longer paths to minimize the MLU, which reduces its throughput. \emph{Plot a graph which plots the average propagation delay among different pairs of nodes}
+
+Download ratio curve highlights the difference among differnt schmes more clearly. For MPLS Avg and Minimize Flow have nearly identical performance to MLU Optimal scheme. The small fraction of files for which they have a lesser throughput than MLU Optimal scheme is offset by a nearly identical fraction of files for which these schemes have a higher throughput than MLU Optimal. Notably, MPLSAvg is an offline TE schmes which uses MPLS. This shows that offline TE schmes can achieve the same perfomance as online TE schmes in ISP networks today. 
+
+OSPFOptWt which is another offline TE scheme which performs very close to these two schemes. It has slightly lower throughput than MPLS Schemes for 100 KB files. For 5 MB files, the difference is negligible. OSPFOptWt is restricted to use shortest path routing but is still able to achieve performance quite close to multipath routing schemes. In fact our measurements show that multipath routing schemes use multiple paths on average for less than 5\% of source-destination pairs \emph{number based on one traffic matrix only, compute this statistic for different traffic matrices, make a table with average number of paths taken by each routing scheme }. OSPFInvCap clearly has a routing which is not optimized for this traffic matric the but still it is a fairly good heuristic in practice. At the 10th percentile, its download ratio is more than 0.9 for 100KB files and more than 0.95 for 5 MB files. 
+
+COPE has slower download rate than MLU Optimal for more than 40 \% of 100 KB files and more than 20 \% of 5 MB files. 
+
+A side by side comparison of MLU and download rate presents an interesting contrast. In Fig \ref{fig:US_ISP_MLU} the maximum link utilization is given for each traffic matrix during the day. OSPFInvCap has MLU upto twice that of MLUOptimal and OSPF OptWt has 50\% higher MLU. Both, COPE and MPLSAvg have MLU very close to MLUOptimal. MinimizeFlow minimizes delay instead of MLU and its MLU is similar to OSPFOptWtAvg.  \emph{Do a comparison of MLU and loss rate on MLU, also do a scatter plot of MLU and loss rate for all the links.}
+
+\begin{figure}[htp]
+  \begin{center}
+    \subfigure[MLU]{\label{fig:edge-a}\includegraphics[scale=0.5]{images/MLUdata/plot/ATT_day1_MLU_plot.pdf}}
+%    \subfigure[Loss rate and delay on the MLU link ]{\label{fig:edge-b} \vspace{1in} } %\includegraphics[scale=0.5]{images/US_ISP/10Mbps/download_rates_aggregate_5000000_plot.pdf}} 
+  \end{center}
+  \caption{MLU and loss rate on the MLU link}
+  \label{fig:US_ISP_MLU}
+\end{figure}
+
+We present only the 5th, 50th and 75th percentile values of download rates. The value for other percentiles can be extrapolated from these graphs. \emph{Change this sentence}. MLUOptimal, MPLSAvg and MinimizeFlow all have throughput close to the highest download rate in all graphs. OSPFOptWtAvg has throughputs very close to MLUOptimal in all the graphs. 
+
+\begin{figure}[htp]
+  \begin{center}
+    \subfigure[100 KB files, 5th percentile]{\label{fig:edge-a}\includegraphics[scale=0.4]{images/US_ISP/10Mbps/download_rate_percentiles_5_100000_plot.pdf}}
+    \subfigure[100 KB files, 50th percentile]{\label{fig:edge-b}\includegraphics[scale=0.4]{images/US_ISP/10Mbps/download_rate_percentiles_50_100000_plot.pdf}} 
+    \subfigure[100 KB files, 75th percentile]{\label{fig:edge-c}\includegraphics[scale=0.4]{images/US_ISP/10Mbps/download_rate_percentiles_75_100000_plot.pdf}}\\
+    \subfigure[5 MB files, 5th percentile]{\label{fig:edge-c}\includegraphics[scale=0.4]{images/US_ISP/10Mbps/download_rate_percentiles_5_5000000_plot.pdf}}
+    \subfigure[5 MB files, 50th percentile]{\label{fig:edge-c}\includegraphics[scale=0.4]{images/US_ISP/10Mbps/download_rate_percentiles_50_5000000_plot.pdf}}
+    \subfigure[5 MB files, 75th percentile]{\label{fig:edge-c}\includegraphics[scale=0.4]{images/US_ISP/10Mbps/download_rate_percentiles_75_5000000_plot.pdf}}
+  \end{center}
+  \caption{US Tier 1 ISP, Download rate for TMs at different percentiles }
+  \label{fig:US_ISP_download_rate_percentile}
+\end{figure}
+
+excluded portions
+
+%  network models
+
+\subsection{Large Scale Network Simulation:}
+An actual ISP network has link capacity of the order of 10 Gbps. There may be tens or hundreds of such links with each link carrying few hundred or thousands of TCP flows. It is difficult to emulate or simulate a network of this scale. Network models for large scale simulation such as the fixed point model and the fluid model have been proposed to solve this problem.
+
+\emph{why do you not use these models?} These models work for persistent TCP flows. These models try to compute the throughput of a large number of TCP flows given the number of tcp flows. We solve a different problem which is to calculate the throughput of one flow given the aggregate traffic on each link in the network. 
+
+We want to calculate the throughputs for long TCP flows, short TCP flows as well as the quality of streaming traffic such as VoIP calls we adopt a simpler approach which helps us calculate the characteristic for individual flows independently of other flows.
+
+In section 6, we describe experiments which shows the accuracy of our approach.
+
+
+%% fixed point model details
+
+
+\section{Traffic Models}
+Our objective is to calculate the loss rates and queuing delay on backbone in the network from the traffic matrix given. Loss and queuing delay can in turn help us calculate the throughput of long TCP flows (using the PFTK formula []) as well as transfer time of short TCP flows([]). 
+
+Given a traffic matrix and a routing, we can calculate the aggregate flow on each link. But it is not straightforward to compute the queue sizes and loss rates on the link as function of the aggregate flow on the link. These values also depend on the  number of flows on the link. To understnad this, let us consider a link with the total flow is close to capacity. If we double the number of TCP flows on the link the loss rate at this link would increase and the throughput of each TCP flow would be reduced by half. Even without any major change in total flow, the loss rates increases significantly.
+
+We pursue two approaches for this problem:
+
+1. Compute the property of each link using a model for packet arrival at a link
+
+We model the traffic on the link as a M/M/1/K queue. Next, we do a ns-2 simulation on an ISP topology map with hundreds of TCP flows on each link and plot the packet inter-arrival times to find a probability distribution.
+
+2. Fixed point model for infinite TCP flows:
+
+We use the fixed point model proposed by Bu and Towsley \cite{bu01fixedpoint} to compute the network parameters. This network model computes a solution assuming infinite TCP flows. The model does not account for short TCP flows such as web files in the network, but we use this model since a solution for finite models using fixed point model has not been solved yet.
+
+
+\subsection{Related Work in Traffic Modelling}
+
+There have been several measurement studies on traffic pattern on backbone links.
+
+The packet interarrival times on a OC-3 link has been reported to be distributed with a poisson distribution. \cite{Karagiannis04anonstationary}
+
+Markopoulou et al \cite{Markopoulou05} report a measurement study of loss rates and delay characteristics on 43 backbone links across 7 ISPs. They report that losses are sporadic on most links with a maximum loss of 0.26\% on any link.
+
+
+\subsection{Backbone Traffic as M/M/1/K queue}
+We model backbone traffic as a M/M/1/K queue. The packet arrival times are poisson as suggested in []. We assume that router processing delays have a poisson distribution.
+
+For a  M/M/1/K queue, the loss rates and delay are the following.
+
+The loss propability according to $M/M/1/K$ queue is expressed in terms of 
+
+$\rho$ = arrival\_rate/departure\_rate = $\alpha/C$ is 
+
+\[P = (1-\rho)\rho^{K} / (1 - \rho^{K +1}) for \rho \neq 1\]
+
+\[= 1/(K+1) for \rho = 1\]
+
+The length of the queue is following :
+
+\[q = \rho/(1-\rho) - (K+1)\rho^{K+1}/(1- \rho^{K+1}) \mbox{ for }\rho \neq 1 \]
+
+\[=K/2  \mbox{ for }\rho = 1\]
+
+The queuing delay at link $m$ is
+ \[T = q/C^\prime\]
+
+$C^\prime$ is the effective capacity of the link due to losses which occur 
+
+where \[C^\prime = \mbox{effective capcity} = C (1 - p)\]
+
+The loss rates predicted by $M/M/1/K$ queue is negligible even at link utilization of 0.9. The queuing delays are singnificant especially at high link utilization.
+
+We plot the loss rates and queue size for this function below. We keep a buffer size of 500 packets. The maximum queuing delay would be 2ms on 1Gbps link.
+
+\includegraphics[scale=0.4]{backbone-lossrates-LU.png}
+
+\includegraphics[scale=0.4]{backbone-queuedelay-LU.png}
+
+\subsection{ns-2 Simulation}
+
+We performed ns-2 simulations on ISP topology maps to get an estimate of the link loss rates and queuing delays on backbone links when a large number of TCP flows share the link. We derive empirical formulas for loss rates and queuing delays and use these in the simulations in our later experiments.
+
+We used the Abilene ISP topology for simulation. Each node in the topology is a PoP (Point-of-Presence). The PoP's are connected by backbone links. We keep link backbone capacities of 100 Mbps. Each PoP has client nodes connected to it by 2Mbps access links and servers connected by 100 Mbps access links.
+Each client node downloads in parallel from k = 3 locations. For each (s,t) PoP pair, we add two random locations s2, s3. For each 4-tuple (s,s2,s3,t) a set of client nodes at PoP t are downloading simultaneously from servers at PoPs (s,s2,s3). For each 4-tuple (s,s2,s3,t), we now measure the average download rates (d1,d2,d3)  clients at t are getting from (s,s2,s3) respectively.
+Each server node serves less than 10 clients in our experiments. The server link is over provisioned and the bottleneck link in the experiment is either the access link or the backbone link.
+We want to measure the loss rates and queuing delay at links. Both these metrics depend strongly on the size of the router buffer queue. We keep router buffer queue size around 10ms (measured in terms of queuing delay at the router) on backbone links. [why ?] According to formula, $RTT*C/\sqrt(n)$. For C = 100 Mbps, RTT = 25 ms, n = 100, the router buffer size needed is 250. The values of C, RTT and n in our experiment are within this range which makes our queue size reasonable.
+
+The number of TCP connection on a backbone could also possibly affect the loss rate and queuing delay on the link. In our experiment, different links have different number of TCP connections on them. We try to derive a formula which is independent of number of TCP connections but depends only on the utilization of the backbone link. This makes our model less accurate but it allows us to calculate the loss rate and queuing delay directly from the traffic matrix.
+
+Other parameters of the experiment are written in Table I. The experiments in [1] show that synchronization among TCP flows can occur even with a large number of TCP connections on a link. We add a random processing delay at sender and receiver side to avoid this synchronization (as suggested in papers [1] [2]).
+
+TABLE: ns-simulation parameters:
+\begin{center}
+  \begin{tabular}{| l | c | }
+    \hline
+TCP packet size & 500\\ \hline
+TCP window size & 16000*\\ \hline
+Number of PoPs in Abilene topology & 12\\ \hline
+Number of  file downloads & 792\\ \hline
+Capacity of backbone links & 100 Mbps\\ \hline
+Capacity of client access link & 2 Mbps\\ \hline
+Capacity of server access links & 100 Mbps\\ \hline
+Propagation delay on backbone links & 5ms\\ \hline
+Propagation delay on client/ server access links & 1ms\\ \hline
+Queue size of backbone links & 250\\ \hline
+Queue size of clients' access links & 64\\ \hline
+Queue size of servers' access links & 100\\ \hline
+    \hline
+  \end{tabular}
+\end{center}
+
+During the experiment we measured the throughput between each source destination pair. We monitored the all the links in the network and measured the average queue sizes and the average loss rate at each queue. 
+
+\subsection{Results from ns2 Simulation}
+
+The following curves plot the average queuing delay and loss rate at the backbone links and client access links in the network. The queuing delay is computed by multiplying the average queue size by per packet processing delay at the link.
+
+\subsection{Other Traffic Models}

@@ -1,0 +1,311 @@
+%!TEX root = New.tex
+\section{\shrink\ Design}
+
+\shrink\ is a cluster manager that handles traffic engineering, load balancing and power management in CDN datacenters for maximizing energy savings with minimal effect on user-perceived performance or hardware reliability. This section provides an architectural overview of the system,  the CDN datacenter model on which \shrink's design is based, the energy,  performance, and reliability metrics which \shrink\ optimizes.
+
+
+\subsection{Architectural overview}
+
+\shrink\ is a cluster manager software which runs at the front-end load balancer. \shrink\ requires support from daemon processes running at each server for reporting content demand statistics to \shrink\ and to execute content transfer decisions sent to it. \shrink\ also requires datacenter switches to support OpenFlow in order to implement its traffic engineering decisions. 
+The functionality to support powering on/off switches and servers is implemented via TBD and TBD respectively. Servers at the datacenter periodically report content demand statistics to \shrink, based on which it computes a set of load balancing, traffic engineering and content transfer decisions, and also decides which set of servers and switches to keep active in the next interval. The computed load balancing decisions are updated locally, and servers and switches are informed of the updated content transfer and traffic engineering decisions respectively. When all servers report that content transfer is complete, \shrink\ informs switches and servers to turn on/off as necessary.
+
+\subsection{CDN datacenter model}
+
+Table 1 lists all the model parameters. 
+A CDN datacenter consists of a set of nodes $V$, which are either servers $S$ or switches $R$. The nodes are connected by a set of directed edges $E$ that represent the datacenter network links. All servers are homogenous and have a storage  $D$ and can serve traffic at a peak capacity of $B$ (in bits/sec).  Each link $e\in E$ has a capacity  $C_e$.
+
+The set of content requested by end-users is represented by the set $K$ and the sizes of content are denoted by $S_k, k\in K$.  A demand vector $T$ specifies the demand for each content, such that the $k$-th entry of this vector $T_k$ denotes the demand for content $k\in K$.
+
+The rest of the Internet excluding this datacenter, which includes end-users and other data centers, are modeled as virtual node $o$. The virtual node connects to the root nodes in datacenter network via virtual links which are assumed to have very high capacity. Content requested by clients are sent from servers via root nodes to this virtual node $o$. Also, any content that is unavailable within the datacenter can be fetched from the virtual node $o$ to  any server in the datacenter.
+
+\textbf{Energy model:}  Our energy models reflects typical power usage  of switches and servers. The energy use of a switch  $i \in R$ that is turned on  $PR_i$. A switch consumes the same amount of energy independent of the rate at which it is forwarding traffic. Indeed, several  switch vendors report that their switches consume in excess of 90\% of their peak power in idle state. A server $i \in S$ consumes a fraction $f$ of its peak power $PS_i$ when idle. As server utilization increases from 0\% to 100\%, server's energy use grows linearly from $f\times PS_i$ to $PS_i$. 
+
+%is the sum of energy consumption of the chassis  and of the line cards plugged into the chassis.  All routers have a similar chassis which consumes $R$ units of energy, the line card for link $e \in E$ uses $L_e$ energy units on routers at both ends.
+
+%Energy consumption of a server in use in $P$ watts. At any time, only a subset of servers at a PoP are turned on at any time to reduce energy use. Total energy use of servers at a PoP is $P$ times the number of servers that are turned on.
+
+
+\subsection{Problem statement}
+
+\shrink's goal is to minimize the energy use of server and network components in a datacenter. Moreover, the system must meet following performance and reliability constraints: 
+\begin{itemize}
+\item
+We target to provide three-nines of server availability, which is a common SLA guarantee provided by CDNs. A server is said to be available to serve a request if it has enough spare resources to start serving the request without delay.
+\item
+Requests that require the content to be fetched from servers outside datacenters and incur a high latency for the end-user. We seek to ensure that  the fraction of such requests increases by no more than a small percentage ($\approx 10\%$) compared to the current CDN policy of keeping entire datacenters in an always on state.
+\item
+Transitions between on and off states cause wear-and-tear and reduce hardware reliability. We aim to keep the frequency of on/off transitions of a server or a switch to less than once per day.
+\end{itemize}
+
+% What about fault tolerance goals?
+
+Towards achieving above goals, \shrink\ makes following set of decisions that are formally defined below:
+
+%The set of decisions made by \shrink\ are formally defined as follows: 
+\emph{Power management:} Compute binary variables $p_i, i \in V$ to decide whether servers and switches are powered on  ($p_i = 1$) or off ($p_i = 0$).
+
+\emph{Load balancing:} Compute variables  $l_{ks} \forall k \in K, \forall  s \in S$ such that $\sum_k l_{ks} = 1$, where $l_{ks}$ denotes the fraction of requests for content $k$ that are sent to server $s$.
+
+\emph{Traffic engineering:} Compute routing between nodes $i,j \in V \cup \{o\}$ by deciding variables  $f_{ije} \forall i,j \in V \cup \{o\} \forall e\in E$, which denote the fraction of traffic from $i$ to $j$ that flows on link $e$.
+
+\emph{Pre-shutdown content transfer:} Compute the set of content transfers to be done prior to shutdown of a set of servers, where a content transfer is defined by a three-tuple $(k, i, j)$, which denotes that content $k \in K$ is to be copied from server $i \in S'$, to sever $j \in S''$, where $S'$ is the set of servers being shutdown at a current stage  and $S''$  is the set of servers that will remain active post-shutdown. 
+
+\eat{
+(1) Select number of servers to keep on considering both cache hit rates and aggregate load. T is a parameter, that is empirically defined. 
+
+(2) Select number of components that are kept active using an optimization algorithm. Coordinated server and network shutdown. Retain same components as much as possible. 
+
+(3) Load balancing algorithm. Describe how we account for server-to-server traffic. Minimum number for fault-tolerance. Making load-balancing energy-aware. 
+
+(4) (Content transfers?)
+
+(5) Traffic engineering is simple.
+
+
+}
+\subsection{Algorithms}
+\label{sec:heuristic}
+
+With some simplifications, we have formulated the optimal strategy for the above problem as a mixed-integer program. But, we find that the optimal strategy takes tens of minutes to compute a solution even for a small-scale datacenter with few tens of nodes, and could fail to meet the three-nines availability goal in case of sudden spikes in content demand. Therefore, \shrink\ uses a set of computationally efficient heuristics to make all the above decisions which are described next. A description of the optimal strategy is presented in the Appendix \ref{sec:optimal}.
+
+\eat{
+Define a complete system which meets the above stated goals:
+
+(1) How many servers to keep on?
+
+(2) How to do load balancing decisions?
+
+(3) How do decide which parts of network to keep on?
+
+(4) How to make traffic engineering decisions?
+
+(5) Which content to transfer before server shutdown?
+}
+
+\subsubsection{Power management}
+
+
+%Power management consists of two decisions: deciding number of servers to keep on, and selecting which set of servers,  and switches to keep active. 
+
+\shrink's power management policy is composed of two algorithms. The first algorithm decides the number of servers to be kept active, based on which the second algorithm decides which set of servers and switches are to be turned on or off. 
+%Both algorithms try to maximize energy savings while reducing the number of on-off transitions.
+
+
+%Our strategy is similar to those proposed by others, e.g., Matthew et al., and turn on a server immediately if average load increases over a given level, and shuts off a sever that has been unused for the past hour. The former minimizes affecting server availability, and the later reduces impact on hardware reliability.  
+%The number of active servers are decided using an online algorithm whose input is a time-series of aggregate load on datacenter. A data point in this time series reflects the load in a 1-minute window and is calculated by summing the utilizations reported by all servers in that window.
+
+*** Don't begin with Matthew et al.***
+
+The number of active servers are decided using an online algorithm proposed by Mathew \emph{et al.}  \cite{mathew12} whose input is a time series of aggregate load on datacenter. A data point in this time series reflects the load in a one-minute window and is calculated by summing the utilizations reported by all servers in that window. The algorithm run at one-minute intervals and decides to turn servers on or off based on three values: aggregate load in the previous minute $L\_PREV$, maximum aggregate load in the previous hour $L\_MAX$, and the current number of active servers $N$. $L\_PREV$ and $L\_MAX$ are measured relative to the capacity of a single server. If $L\_PREV > \alpha N$, turn on $\lceil \frac{L\_PREV - \alpha N}{\alpha} \rceil $ more servers. if  $L\_MAX < \alpha N$, turn off $\lceil \frac{\alpha N - L\_MAX}{\alpha} \rceil$ servers. When load increases, the algorithm immediately turns more servers on to minimize the impact on server availability.  When load decreases, the algorithm waits for an hour to see if the decrease in load persists before turning servers off, a strategy which reduces the number of on-off transitions due to a spurious decrease in load.
+%If the decrease in load is spurious, this strategy avoids unnecessary on-off transitions.
+
+
+Algorithm \ref{algo:power} presents the pseudocode for the algorithm to select the active switches and servers based on the number of active servers N. The N active servers are chosen to be the N leftmost leaf nodes. Thereafter, the algorithm selects a subtree in the topology with following three properties: (1) Only these N nodes are the leaf nodes. (2) The sum of link capacities between nodes at successive levels is at least as much as the sum of outgoing link capacities of active servers. This property ensures that enough switches are active at each level so that  even if all servers send data at their outgoing link capacity, there are no bottleneck links. (3) 
+*** don't start with Is***
+
+****  if we use colon " : ". bullets should be compact sentences. ****
+
+****  
+
+*** good subtrees = (1) and (2)  *******
+Is the subtree with the minimum number of nodes, which satisfies properties (1) and (2). The third property minimizes network energy use. 
+This algorithm implicitly depends on the first algorithm to minimize the number of on-off transitions of a switch. This is becasue number of transitions of a switch are limited to the maximum number of transitions made by any of its leaf nodes. As the first algorithm is effective in reducing on-off transitions for  servers, this algorithm reduces them for switches.
+
+\begin{algorithm}[h]
+  \SetAlgoLined
+  \SetKwInOut{Input}{input}
+  \SetKwInOut{Output}{output}
+\Input{ (V,E) \emph{// nodes (V) and links (E) in topology}}
+\Input{ $n$ 	\emph{// number of active servers}}
+\Output{$R$ 	\emph{// set of nodes that are in active state}}
+S  = select $n$ leftmost leaf nodes \emph{/*S is set of servers in active state*/}\\
+T = \{\} 	\emph{// traffic sent towards root by each node}\\
+
+*** use macros instead of T, R, S etc *****
+
+*** make it easier to read *****
+
+\For{ $v \in V$}{
+	\eIf{ $v \in S$}{
+		T[v] = total outgoing link capacity of node $v$\\
+		 \emph{/* server sends traffic at full capacity */}\\
+		R = R $\cup$ \{v\}\\
+	}{ 
+		T[v] = 0
+	}
+}
+
+H = height of tree topology \emph{// leaves have height 1}\\
+\For{$ h \in  \{1,  .., (H - 1)\}$}{
+	$V_h$ = nodes at height $h$ in left to right order\\
+	\For{ $v \in V_h$}{
+		P = parents of node $v$ in left to right order\\
+		\For{ $p \in P$}{
+			\If{ T[v] == 0}{
+				\textbf{break} \emph{/* node has no traffic to send upwards */}
+			}
+			R = R $\cup$ \{p\}  // Parent p must be active\\
+			L = link capacity of edge (v, p)\\
+			traffic = min(T[v], L)\\
+			T[p] += traffic\\
+			T[v] -= traffic
+		}
+	}
+}
+\caption{Select active servers and switches}
+\label{algo:power}			
+\end{algorithm}
+
+%We select severs and switches in the same subtree as much as possible. We select servers from left to right, and select switches which need to be active state to serve the given demand assuming servers are sending traffic at line rate. 
+%As the number of transitions for server is reduced, this implies transitions for switches are also minimized.
+%
+%To minimize both the network and server energy, we select a subtree that has the requisite number of active servers at its leaves and is composed of the smallest number of active switches. 
+%Among multiple such subtrees, we select a sub-tree which requires the minimum number of servers and switches to be turned on or off compared to the current configuration. 
+%
+%We illustrate the result of this selection policy for fat-tree and hierarchical topologies in Figure TBD. actually, define them
+
+\subsubsection{Load balancing}
+
+Our load balancing algorithms use the abstraction of a \emph{content bucket}. Content are mapped to buckets to using consistent hashing based on their name. A bucket abstraction decouples the runtime of the load-balancing algorithm with the number of content in the workload, and allows us to control the runtime by varying the number of buckets. While content buckets reduce the granularity of load-balancing decisions, in our experience, keeping the number of buckets to be two orders of magnitude higher than the number of servers, results in sufficiently fine-grained load balancing with an acceptable runtime for a data center with a thousand servers.
+
+\shrink's algorithms operate on content demand statistics reported by every server once every minute. A server's report includes demand for every content bucket at that server since the last report.  \shrink's maintains a recent history of these demand statistics over the previous hour because decisions are made not only on the most recent window, but a recent history of these demand statistics. 
+
+%k is fixed
+%s_ik   
+%s_i = \sum_k s_ik
+%
+%l_k = {i1: p_i1, i2: p_i2}
+
+%Current assignments: {l_k} forall k
+%Current loads: {s_i}
+
+%In order to increase the likelihood of cache hits, the algorithm retains its load balancing rules from its previous run for many buckets as possible. Rules for some content buckets may need to be changed because of an overloaded server or a server shutdown. These buckets are considered in a random order, and new rules are decided by selecting the least loaded servers. 
+
+%The algorithm main objective is to maximize the likelihood of cache hits. To this end, it retain rules from the previous period, and chooses a small number of buckets for each rule.
+
+**** what is ? ****
+
+*** can be retained, replace by "feasible", define what makes something feasible ****
+
+Algorithm \ref{algo:lb} describes pseudocode for \shrink's load balancing. 
+**** load balancing rule, define what a rule is  *** 
+The algorithm runs once every minute and outputs a load balancing rule for each content bucket, which decides the servers that will serve its requests and the ratios in which requests will be distributed among those servers. 
+***The algorithm maintains a variable to track the load assigned to each server while computing rules. *** 
+The algorithm makes two passes over the set of content buckets. 
+****Too long a sentence: In the first pass, a content bucket's previous load balancing rule is retained and the load assigned to servers is updated based on the bucket's demand, if all servers used by that rule are active and when this content bucket's demand is added on to them, their assigned load remains within the threshold. ****
+The first pass scans buckets  in an increasing order of demand to maximize the number of load balancing rules that can retain from the previous run, which in turn increases the likelihood of cache hits. 
+
+The second pass creates new rules for buckets *** whose previous rule is not retained.*** For each bucket, all its demand is assigned to the least loaded server. If assigning all the demand for a bucket to this server would increase its load above threshold $\alpha$, then only as much demand is assigned to the server as would keep its load below the threshold; the remaining demand is then assigned to the next least loaded server. In this manner, as many servers are selected as necessary to serve this bucket demand. The proportion in which demands assigned to those servers  determines the probabilities assigned to servers in the new load balancing rule.
+
+****** correct spelling ******
+
+****** make text more readable,  ******
+
+********* remove primes' *********
+
+********* one "input:", one "output:" *********
+%Objectives: retains assignments to maximize reuse.
+%(1) two-passes over the set of content buckets:
+%(2) first: retain the set of buckets
+%(3) second: remap unnecessary buckets
+
+\begin{algorithm}[htbp]
+  \SetAlgoLined
+  \SetKwInOut{Input}{input}
+  \SetKwInOut{Output}{output}
+  \Input{S = \{$s_1$, ...  \} \emph{// set of active servers}}
+%\noindent content = \{$c_1$, ...  \}\\
+  \Input{D = \{($c_1, d_1$),  ...  \}}
+\noindent \emph{/* $d_i$ is demand for content $c_i$. $d_i$ is ratio of actual demand (in bits/sec) to  capacity of one server (in bits/sec) */}\\
+\Input{LBPrev = \{($c_1$, $rule_1$), .. \} }
+\noindent \emph{/* $rule_i$ is previous LB rule for content $c_i$. $rule_i = \{(s_1, p_1), ...\}$ such that server $s_i$ receives a request with probability $p_i > 0$. */}\\
+\Input{$\alpha$ \emph{// threshold server load. $0 < \alpha < 1$}}
+  \Output{LBNew \emph{// new set of LB rules}}
+  LBNew = \{\}\\
+loads = \{\} \emph{// load assigned to each active server} \\
+
+\For{$s_i$  in S}{loads[$s_i$] = 0 \emph{// initialize load  to zero}\\
+}
+\For{$(c_i, d_i)$  in D sorted by increasing $d_i$ } {
+prevRule = LBPrev[$c_i$] \emph{// previous rule for $c_i$}\\
+$S'_k$ = set of servers in prevRule\\
+\If{$S'_k \not\subset S$}{ 
+	\textbf{continue} \emph{/* all servers are not active, change LB rule */}
+}
+flag = True\\
+\For{$s_j \in S'_k$}{
+$p_j$ = probability of $s_j$ receiving request \\
+\If{loads[$s_j$] $+$ $d_i p_j >  \alpha$}{
+flag = False \emph{/* demand exceeded  server load threshold, change LB rule */}\\
+}
+}
+\If{flag}{LBNew[$c_i$] = prevRule \emph{// copy old rule}
+}
+}
+\For{ $(c_k, d_k)$ in D sorted by decreasing  $d_k$}{
+	\If{ $c_k  \notin LBNew$}{
+		newRule = \{\}\\
+		\For {$(s_j, l_j) \in loads$ sorted by increasing $l_j$}{
+			$p_j$ = min($1 - l_j$, $d_j$)\\
+			newRule[$s_j$] = $p_j$\\
+			$d_k = d_k - p_j$\\
+			\If{$d_k == 0$}{break}
+		}
+		LBnew[$c_k$] = newRule\\
+}
+}
+  \caption{Compute load balancing (LB) rules}
+\label{algo:lb}
+\end{algorithm}
+
+
+%
+%\IncMargin{1em}
+%\begin{algorithm}
+%  \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+%  \SetKwFunction{Union}{Union}\SetKwFunction{FindCompress}{FindCompress}
+%  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+%  \Input{A bitmap $Im$ of size $w\times l$}
+%  \Output{A partition of the bitmap}
+%  \BlankLine
+%  \emph{special treatment of the first line}\;
+%  \For{$i\leftarrow 2$ \KwTo $l$}{
+%    \emph{special treatment of the first element of line $i$}\;
+%    \For{$j\leftarrow 2$ \KwTo $w$}{\label{forins}
+%      \Left$\leftarrow$ \FindCompress{$Im[i,j-1]$}\;
+%      \Up$\leftarrow$ \FindCompress{$Im[i-1,]$}\;
+%      \This$\leftarrow$ \FindCompress{$Im[i,j]$}\;
+%      \If(\tcp*[h]{O(\Left,\This)==1}){\Left compatible with \This}{\label{lt}
+%        \lIf{\Left $<$ \This}{\Union{\Left,\This}}\;
+%        \lElse{\Union{\This,\Left}\;}
+%      }
+%      \If(\tcp*[f]{O(\Up,\This)==1}){\Up compatible with \This}{\label{ut}
+%        \lIf{\Up $<$ \This}{\Union{\Up,\This}}\;
+%        \tcp{\This is put under \Up to keep tree as flat as possible}\label{cmt}
+%        \lElse{\Union{\This,\Up}}\tcp*[r]{\This linked to \Up}\label{lelse}
+%} }
+%    \lForEach{element $e$ of the line $i$}{\FindCompress{p}}
+%  }
+%  \caption{disjoint decomposition}\label{algo_disjdecomp}
+%\end{algorithm}\DecMargin{1em}
+\subsubsection{Traffic engineering}
+
+Inverse cap with ECMP is sufficient to use available path diversity in the best-possible manner.
+
+
+\subsubsection{Pre-shutdown content transfers}
+
+Select content available in past time window, and transfer it to other servers.
+
+\subsubsection{Failure handling}
+
+How does \shrink\ handle server failures? 
+
+(1) A content bucket is placed on at least two servers. If one of the servers for a content bucket fails, other server handles all requests until next load balancing event. There is a brief period of (one epoch) of sub-optimal load balancing.
+
+(2) Load balancing recomputes rules in the next run to balance load among servers, and starting new servers if necessary.
+
+How does \shrink\ handle switch failures?
+
+(1) Need to add the constraint that no single switch failure makes both servers responsible for a content bucket unavailable.
+

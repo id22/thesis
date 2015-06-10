@@ -1,0 +1,227 @@
+\section{ns-2 simulations for file arrivals}
+
+We do ns-2 simulations where request for file downloads are according to a given traffic matrix. Specifically, the rate of file download requests between a source node S and destiation node T is proportional to the value of the traffic matrix entry TM[s][t].
+
+\[\frac{TM[s][t]}{scaleFactor} = R\times S\]
+
+R is the rate of file arrival and S is the mean file size. In the first experiment, we assume a constant file arrival rate and a constant file size.
+
+The first file download is chosen randomly between 0 and $\lfloor (Duration of Experiment)\rfloor\%\lfloor(File Inter arrival time)\rfloor$. If the file interarrival time is more than the duration of experiment then a download start time is chosen at random from in the interval $(0,duration)$.
+
+The download rate of a file is limited by the maximum window size at the sender and capacity of the access link. We set the maximum TCP window size more than the size of the file and the access link capacity more than the capacity of the backbone link. This ensures that these factors do not limit the download rate.
+
+The parameters for this experiment are as follows:
+
+\begin{center}
+  \begin{tabular}{| l | c | }
+    \hline
+TCP packet size & 500\\ \hline
+TCP window size & 10000000\\ \hline
+Number of PoPs in Abilene topology & 12\\ \hline
+Capacity of backbone links & 100 Mbps\\ \hline
+Capacity of client access link & 1000 Mbps shared by multiple users (<10) \\ \hline
+Capacity of server access links & 1000 Mbps shared by multiple users (<10) \\ \hline
+Propagation delay on backbone links & From Abilene topology\\ \hline
+Propagation delay on client/server access links & 0.1ms\\ \hline
+Queue size of backbone links & 250\\ \hline
+Queue size of clients' access links & 500\\ \hline
+Queue size of servers' access links & 500\\ \hline
+    \hline
+  \end{tabular}
+\end{center}
+
+We repeated this experiment for different routings and for a few randomly selected traffic matrices. The following table shows the set of experiments:
+
+\begin{center}
+  \begin{tabular}{|c | c | c | c |}
+    \hline
+Exp ID & Duration of Experiment (seconds) & Mean file size & File Size Distribution \\ \hline
+1 &  200 & 1 MB & Constant\\ \hline
+2 &  300 & 10 MB & Constant\\ \hline
+3 &  200 & [100 KB(10 \% traffic ), 5 MB(90 \% traffic )] & Constant\\ \hline
+    \hline
+  \end{tabular}
+\end{center}
+
+We present the results for the following TMs and the MLU in the graph.
+
+\begin{center}
+  \begin{tabular}{|l | c |  c | c |  c |}
+    \hline
+Routing & TM ID 5761 load = 1.0  & TM ID 5761 load 3.0 \\ \hline
+OSPFInvCap & 0.07 & 0.14 \\ \hline
+OSPFOptWt & 0.15 & 0.45 \\ \hline
+MPLSDynamic & 0.15 & 0.26 \\ \hline
+MPLSAvg & 0.18 & 0.21 \\ \hline
+MinimizeFlow Dynamic & 0.07 & 0.38 \\ \hline
+COPE & 0.06 & 0.18 \\ \hline
+Optimal & 0.26 & 0.15 \\ \hline
+    \hline
+  \end{tabular}
+\end{center}
+
+The following graphs show the set of experiments done and their corresponding results:
+
+\begin{figure}[h]
+
+\includegraphics[width=80mm,height=60mm]{images/ns2_file_arrival_exps/expid4/TM5761/load1.0/downratesdistribution.png}
+\includegraphics[width=80mm,height=60mm]{images/ns2_file_arrival_exps/expid4/TM5761/load3.0/downratesdistribution.png}
+\includegraphics[width=80mm,height=60mm]{images/ns2_file_arrival_exps/expid6/TM5761/load1.0/downratesdistribution.png}
+\includegraphics[width=80mm,height=60mm]{images/ns2_file_arrival_exps/expid6/TM5761/load3.0/downratesdistribution.png}
+\includegraphics[width=80mm,height=60mm]{images/ns2_file_arrival_exps/expid7/TM5761/load1.0/filesize100KB/downratesdistribution.png}
+\includegraphics[width=80mm,height=60mm]{images/ns2_file_arrival_exps/expid7/TM5761/load3.0/filesize100KB/downratesdistribution.png}
+\includegraphics[width=80mm,height=60mm]{images/ns2_file_arrival_exps/expid7/TM5761/load1.0/filesize5MB/downratesdistribution.png}
+\includegraphics[width=80mm,height=60mm]{images/ns2_file_arrival_exps/expid7/TM5761/load3.0/filesize5MB/downratesdistribution.png}
+
+\caption{a. Exp 1: TM 5761,load 1.0, 1MB files, b. Exp 1: TM 5761,load 3.0, 1MB files, c. Exp 2: TM 5761,load 1.0, 10MB files, d. Exp 2: TM 5761,load 1.0, 10MB files, e. Exp 3: TM 5761,load 1.0, 100KB files, f. Exp 3: TM 5761,load 3.0, 100KB files, g. Exp 3: TM 5761,load 1.0, 5MB files, h. Exp 3: TM 5761,load 3.0, 5MB files}
+
+\label{ x1}
+\end{figure}
+
+% set of graphs
+
+We repeated the above experiments when the experiments have been scaled down by a factor of 20. The following table shows the values of parameters changed from the previous experiment:
+
+\begin{center}
+  \begin{tabular}{| l | c | }
+    \hline
+Capacity of backbone links & 500 Mbps\\ \hline
+Capacity of client access link & 2000 Mbps shared by multiple users (<10) \\ \hline
+Capacity of server access links & 2000 Mbps shared by multiple users (<10) \\ \hline
+Propagation delay on backbone links & From Abilene topology\\ \hline
+Propagation delay on client/server access links & 0.1ms\\ \hline
+Queue size of backbone links & 1000\\ \hline
+Queue size of clients' access links & 2000\\ \hline
+Queue size of servers' access links & 2000\\ \hline
+    \hline
+  \end{tabular}
+\end{center}
+
+
+The following graph plots the performance of different traffic engineering methods in our experiments. The details of the experiments are provided below the figures:
+
+
+\begin{figure}[ht]
+
+\includegraphics[width=80mm,height=60mm]{images/ns2_file_arrival_exps/scaleFactor_20/downratesdistribution_4_1.png}
+\includegraphics[width=80mm,height=60mm]{images/ns2_file_arrival_exps/scaleFactor_20/downratesdistribution_6_1.png}
+\includegraphics[width=80mm,height=60mm]{images/ns2_file_arrival_exps/scaleFactor_20/downratesdistribution_7_1_100KB.png}
+\includegraphics[width=80mm,height=60mm]{images/ns2_file_arrival_exps/scaleFactor_20/downratesdistribution_7_1_5MB.png}
+
+\caption{a. Exp 1: TM 5761,load 1.0, 1MB files, b. Exp 2: TM 5761,load 1.0, 10MB files, c. Exp3: TM 5761,load 1.0, 100KB files, d. Exp 3: TM 5761,load 1.0, 5MB files}
+
+\label{ x1}
+\end{figure}
+
+Our experiments on a limited set of traffic matrices provide interesting findings on the performance of traffic engineering methods. 
+
+
+
+\begin{enumerate}
+\item 
+ Abilene Topology - 10 TMs selected with High MLUs ( scale = 1:100)
+\item
+ Abilene Topology - 100 TMs selected at random from the dataset ( scale = 1:100)
+\item
+Geant Topology - 10 TMs selected with high MLUs ( scale = 1:100)
+\item
+Geant Topology - 36 TMs (other than above 10) selected randomly
+\end{enumerate}
+
+In general we observe the followind order in the download times of traffic engineering methods.
+
+\[OSPFInvCap > MinimizeFlow > MPLSDynamic,Optimal,MPLSAvg > OSPF OptWt > COPE\]
+
+\emph{Compute the relative throuhputs with respect to OSPF InvCap for each file.}
+
+To present the results succintly we propose following statistics to be computed for each experiment.
+
+\emph{1 percentile download rate,  5 percentile download rate, 10 percentile download rate, 25 percentile download rate, 50 percentile download rate, 75 percentile download rate, 90 percentile download rate, 95 percentile download rate, 99 percentile download rate}
+
+Compute the percent difference wrt OSPF InvCap, and the actual difference in KBps.
+
+Next we plant to do following experiments to get and explanation of the above observed order of traffic engineering methods :
+
+\begin{enumerate}
+\item  
+Compare the performance of traffic engineering methods for traffic matrices with high MLU
+\item 
+Access link bottleneck are not infinite but are much smaller than backbone links. Also, we can experiment with a user population which has a mixture of varying access link capacities
+\item 
+Verify if the results are true at even higher scale of simulation, say 1/10 or 1/5
+\item
+Find out which of the following factors are responsible for the performance curve. i) Path round trip delays ii) Losses at backbone links ii) Queuing delays at backbone links iii) Losses at server/client access links iv) Queuing delay at server/client access link
+\item
+What are the results for Geant Topology and Traffic matrices
+\end{enumerate}
+
+
+\subsubsection
+ We enumerate the list of experiments we are doing annd their description:
+
+This is the set of parameters which need to be configured for every experiment.
+
+
+
+\begin{enumerate}
+\item 
+
+\item 
+\item 
+
+\end{enumerate}
+% number of graphs
+
+% exp id 4 : tm1 
+% exp id 4 : tm1 - zoomed
+% exp id 4 : tm2
+% exp id 4 : tm2 - zoomed
+
+% load = 2
+% exp id 4 : tm1 
+% exp id 4 : tm1 - zoomed
+% exp id 4 : tm2
+% exp id 4 : tm2 - zoomed
+
+% exp id 6 : tm1 
+% exp id 6 : tm1 - zoomed
+% exp id 6 : tm2
+% exp id 6 : tm2 - zoomed
+
+% load = 3
+% exp id 6 : tm1 
+% exp id 6 : tm1 - zoomed
+% exp id 6 : tm2
+% exp id 6 : tm2 - zoomed
+
+
+% exp id 7 : tm1 - 100 KB files
+% exp id 7 : tm1 - 5 MB files
+% exp id 7 : tm1 - 100 KB files - zoomed
+% exp id 7 : tm1 - 5 MB files - zoomed
+
+% exp id 7 : tm2 - 100 KB files
+% exp id 7 : tm2 - 5 MB files
+% exp id 7 : tm2 - 100 KB files - zoomed
+% exp id 7 : tm2 - 5 MB files - zoomed
+
+% load = 2
+% exp id 7 : tm1 - 100 KB files
+% exp id 7 : tm1 - 5 MB files
+% exp id 7 : tm1 - 100 KB files - zoomed
+% exp id 7 : tm1 - 5 MB files - zoomed
+
+% exp id 7 : tm2 - 100 KB files
+% exp id 7 : tm2 - 5 MB files
+% exp id 7 : tm2 - 100 KB files - zoomed
+% exp id 7 : tm2 - 5 MB files - zoomed
+
+
+% TM1 
+% graph showing LUs according to java simulations for all the routings
+% graph showing LUs according to ns-2 simulations for all the routings
+
+% TM2
+% graph showing LUs according to java simulations for all the routings
+% graph showing LUs according to ns-2 simulations for all the routings
+

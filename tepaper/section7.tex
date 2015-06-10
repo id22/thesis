@@ -1,0 +1,138 @@
+
+\section{Related Work}
+\label{sec:rel}
+
+\noindent\textbf{Traffic engineering:}
+The past decade has seen considerable work in the area of traffic engineering seeking to optimize link utilization based metrics using OSPF \cite{fortz2000internet} or MPLS \cite{MPLSIntro}.  TE techniques can be broadly classified as {\em offline}, {\em online}, or {\em oblivious}. Offline TE is done using measured TMs by ISPs and is widely deployed today \cite{rexford}. Different approaches to offline TE include optimizing OSPF link weights \cite{fortz2000internet}; optimizing over multiple TMs \cite{MultiTM};  optimizing  for unpredictable traffic demands \cite{COPE}, and so on. In contrast, online TE  computes routes using online measurements of network conditions \cite{MPLS2,COPE}. The main argument in favor of online TE is that their responsiveness at short time scales can enable them to achieve costs close to the optimal. In contrast to offline or online TE, oblivious routing algorithms seek to compute routes that perform well across all possible traffic matrices thereby obviating TE \cite{Cohen}. 
+
+In contrast to all of this prior work, our work studies TE focusing on application performance metrics instead of link utilization based metrics.
+Prior work has recognized that TE schemes can increase path delay, e.g.. \cite{TEXCP}.  To the best of our knowledge, our work is the first to empirically quantify the impact on TCP throughput and to show that engineering for rare traffic spikes comes at the cost of hurting common-case TCP throughput. He et al \cite{JointCCR2} consider the joint optimization of congestion control and routing and propose a distributed online solution that optimizes an aggregate utility function of TE cost and user-perceived performance. In comparison, we empirically study the interaction of TE and application adaptation with network and transport layer protocols that are widely deployed today.
+
+% In \cite{JointCCR}, authors have explored the joint optimization of congestion control and routing. They propose a distribution online solution for this problem which optimizes an aggregate utility function of traffic engineering and users' performance. In comparison, we consider only application performance as the metric. Later in \cite{JointCCR2}, the authors present a traffic management protocol based on the same objective.  Our analysis only considers the effect of network layer on application performance, while this approach suggests a modification both to transport and network layers to maximize the aggregate utility.
+
+
+%A comparison of their approach of maximizing aggregate utility to the traditional TE model (separation of congestion control and routing) either in terms of network operators metrics such as MLU or the application performance metrics is an open question.
+
+
+
+%This paper considers a utility theoretic model and analyzes the e
+
+%Such a scheme may yield better performance for TCP traffic in some cases. Since links are minimally congested under normal operating conditions, performance gains are less likely.
+
+
+%Further, the TE problem has not been studied while taking into account the location diversity in Internet which, as we have shown, nearly vanishes capacity difference between \opt{} and other TE schemes.
+
+
+%Our work sheds new light on this area and shows that link utilization based metrics are poor predictors of  application performance, and oblivious routing like schemes increase delay and hurt TCP throughput. Further, the problem of TE does not take into account the location diversity in Internet which, as we have shown, nearly vanishes capacity difference between \opt{} and other TE schemes.  
+
+
+%Traffic engineering methods can be broadly classified as using OSPF or MPLS. Another criterion of classification is whether TE is done in online or offline manner.
+
+%A large body of work on traffic engineering precedes this paper. We summarize the methods and results from a subset of them below:
+
+%\textbf{OSPF with Inverse Capacity weights,OSPFInvCap}:  It is also a shortest path routing scheme with edge weights equal to the inverse of the capacity of the corresponding link. This is also the default routing strategy used in Cisco Routers \cite{InvCap}.
+
+
+%Fortz and Thorup \cite{FortzThorup} proposed traffic engineering using OSPF. We refer to their scheme as OspfOptWt. They used a heuristic to computer optimal link weights which minimizes the total cost on all links where the cost of  each link is approximated with a convex cost function. Their results showed that their scheme performs within a few percent of Optimal on their cost metric as well as MLU for AT\&T  Topology and other synthetically generated topology and demand matrices. But, we report upto 66 percent higher MLU than Optimal for OSPFOptWt. One reason for this is that we compute routing based on average traffic matrices for past three hours while their comparison assumes prior knowledge of traffic matrices. In another paper \cite{FortzThorup2} they propose methods to compute weight settings using fewer weight changes. 
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% What are the MPLS TE methods proposed ? What objective functions they use ? What are their results ?
+
+%MATE \cite{MATE1}  is an online traffic engineering method based on MPLS. It can optimize a cost function based on delay and/or loss rates on the links in the network. Its objective to minimize the sum of cost of all links in the network. The cost functions they suggest based on M/M/1/K queue is a cost function is similar to the convex cost function used in \cite{FortzThorup}. %Comparing with such a cost function would require knowing the loss rate and delay function on each link. It is difficult to estimate this function accurately for each link.  Estimating the loss rate and delay function for each link would require multiple simulations for each TM.
+%TeXCP  \cite{TeXCP06}  is another online distributed TE method based on MPLS which seeks to optimize MLU using a distributed routing algorithm and converges faster than MATE. To include online TE schemes in our comparison we include compare with the MLU Optimal scheme and measure its performance. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Another class of algorithms optimize over multiple traffic matrices \cite{MultiTM}. The objective is to compute a routing over multiple traffic matrices in the period  which does not need to be changed due to predictable diurnal or weekly variations.
+
+%Oblivious routing algorithms compute a routing independent of traffic matrices. Applegate and Cohen \cite{ObliviousRouting} present an oblivious routing algorithm which has approximately twice the MLU as compared to the Optimal algorithm for Internet traffic demands. COPE\cite{COPE1} is a traffic engineering method which optimizes routing over multiple traffic matrics. In addition it optimizes for unpredictable traffic spikes in which case its MLU is with in a factor $\alpha$ (a tunable parameter) of the Optimal. Overall COPE's objective is to optimize MLU for predictable demand and have a MLU like Oblivious routing in unpredictable traffic demands. However, our results show that engineering for unpredictable demands hurts TCP throughput in common case.
+
+%In \cite{LinkStateOPT}, the authors propose a link state routing which can achieve Optimal TE. Their notion of optimal traffic engineering is also a convex cost function of link utilization.
+
+\noindent\textbf{Interaction of location diversity and TE:}
+Recent work has explored the joint optimization of TE and content distribution, i.e., choosing the best location(s) to download content. 
+P4P \cite{P4P}  seeks to improve application performance for P2P traffic and also reduces cost for ISP by reducing interdomain traffic and MLU. In \cite{Jiang2009} and  \cite{JohariGameTheory}, the authors study the interaction between TE and content distribution using a game theoretic model and show that without a joint optimization, the equilibrium of this interaction may not be a socially optimal solution. The three node network in  Section~\ref{sec:background} also illustrates this point.In  \cite{Jiang2009}, it is shown that a joint optimization can achieve benefits of up to 20\% for ISPs and up to 30\% for CDNs as compared to the case when there is no cooperation between them. 
+While such coordination-based proposals may be adopted in future, TE and content distribution are done by separate entities today. Our work studies this interaction in the present setting and shows that even without a joint optimization approach, location diversity increases  capacity for TE schemes by up to 2$\times$ and enables all TE schemes to achieve near-optimal capacity.
+
+%Tremendous growth in P2P traffic data has revived the interest in traffic engineering in recent years. To manage this overwhelming traffic, some ISPs have even taken to throttling BitTorrent traffic \cite{ComcastBT07}. Two approaches have been proposed to tame the problem of growing P2P data: One approach is to change BitTorrent or its tracker to choose local peers in the home/local ISP. In \cite{TamingTorrent08}, authors show that an intelligent peer selection using data from content distribution networks can reduce cross ISP traffic. 
+
+%Another approach adopts a joint solution between ISPs and content distribution systems such as BitTorrent and Akamai. Here, ISP and the content distributor cooperate and share information to achieve achieve better performance for both - a lower MLU for ISP and faster content delivery for content provider.
+%P4P \cite{P4P08}  ia an example of this approach.  In \cite{Jiang09} the authors have shown that a joint optimization can achieve benefits of upto 8 \% for ISP and upto 12 \% for content distributor as compared to the case where there is no cooperation between them.
+
+%While these proposals may be adopted in future, Internet today already has location diversity. We measure the impact of location diversity on different TE schemes. Our experiments show that even without any co-operation between content distributor and ISP, a small degree of location diversity can increase the capacity of the network by upto 2.2$\times$ and surprisingly even offline TE using OSPF can achieve the same capacity as Optimal TE.
+
+%\noindent\textbf{Performance evaluation:}
+%A wide variety of techniques have been developed for performance evaluation of large scale networks:
+%Theoretical models such as  fixed point models \cite{fixedpoint}, fluid models \cite{FluidModel} and hybrid models \cite{HybridModel}; network simulators such as ns-2 \cite{ns2} and GTNetS \cite{GTNetS}; emulation environments such as Emulab \cite{Emulab}; virtualized infrastructures  such as VINI and OpenFlow \cite{VINI,OpenFlow}.
+%While a wide variety of performance evaluation techniques are available, to our knowledge, our work is the first to use them to compare application performance metrics of TE schemes based on large-scale simulation of traffic matrices on ISP topologies. 
+
+%Our work shows the feasiblity of this approach, therefore we hope it may invite others in networking community to experiment with this approach.
+
+%Qiu et al \cite{ManyTCPQiu} study the performance of many TCP flows on a dumbbell network topology by varying parameters of simulation. In \cite{LargeScaleParallelDownloading}, authors study the effect of widespread deployment of parallel downloading and report that its widespread deployment will reduce the overall download rate but their workload is not representative of Internet traffic demands.
+
+\noindent\textbf{Path diversity:}
+Path diversity is another form of application adaptation which has been explored in research, e.g., detour routing  \cite{Detour}, and is used in Internet today, e.g. Akamai   \cite{Akamai} which uses detour routes for data transfer within its network of servers, and Skype \cite{Skype}, the popular VoIP application, which uses an overlay network to route data. Our focus in this paper is on location diversity. We intend to analyze the effect of adaptation in the form of path diversity as a part of our future work.
+
+
+%
+%Our focus in this paper is on location diver
+%A broad range of ideas such as detour routing \cite{Detour}, DHTs \cite{Chord}, CDNs, P2P networks falls under the purview of application adaptation.  In the Internet, infrastructure providers such as CDNs  \cite{Akamai}, content hosting services \cite{Carpathia}, cloud computing platforms\cite{GoogleServerLocation}, mirrored websites \cite{MirrorWiki} as well as end-user applications such BitTorrent \cite{BitTorrentRef}, eMule \cite{eMule}, PPLive \cite{PPLive} and Skype \cite{Skype} use adaptation techniques.
+
+%
+%use application adaptation techniques a
+%
+%Examples of applications which use adaptation b
+%
+%In the Internet CDNs, P2P file sharing applications, and 
+%% internet applications
+%%CDNs
+%In the Internet, CDNs use location diversity extensively to serve content to its users; they also use detour routing for data transfer among their servers \cite{Akamai}.
+%%P2P
+%Popular P2P applications such BitTorrent \cite{BitTorrentRef}, eMule \cite{eMule}, PPLive \cite{PPLive} naturally leverage location diversity by downloading content from multiple locations at a time.
+%%mirroring
+%Mirroring  is widely used technique in Internet by websites such as SourceForge, Debian and Ubuntu to provide location diversity benefits \cite{MirrorWiki}.
+%%skype
+%Skype, the most popular VoIP application, connects users using multiple routes and dynamically chooses the one that is best suited at the time \cite{Skype}.
+%
+
+
+
+%\noindent\textbf{CDNs:} 
+%Major content distribution networks such as Akamai \cite{Akamai}, Level-3 \cite{Level-3}, EdgeCast \cite{EdgeCast} have servers at numerous locations in the internet and choose the best set of servers for each user depending on users location, server load as well as congestion in the network. Akamai for example adapts to congestion quickly and changes its set of servers within few seconds to few minutes \cite{akamai-detour}. 
+
+%\noindent\textbf{P2P File Sharing:} Popular P2P file sharing applications such as BitTorrent \cite{BitTorrentRef} also leverage location diversity. A BitTorrent client downloads a file from multiple peers simultaneously which are likely in geographically diverse locations. A peer also keeps changing its set of peers it downloads from and continuously keeps choosing faster peers for download. This mechanism makes it tolerant to congestion in the network.
+
+%\noindent\textbf{Cloud computing and content hosting services:} Major companies which provide services on using cloud computing infrastructure such as Google and Amazon have servers located at geographically distributed locations\cite{GoogleServerLocation}. The same is true for content hosting services such as Carpathia \cite{Carpathia} and Rapidshare \cite{OneClickHosting}. These infrastructures though are less reponsive to congestion in the network.
+
+%\noindent\textbf{Mirroring}  is widely used technique in Internet by websites such as SourceForge and projects such as Debian and Ubuntu to provide location diversity benefits \cite{MirrorWiki}.
+
+%Internet applications also use adaptation which exploits \emph{path diversity} using detour routing like techniques \cite{Detour}. Skype, the most popular VoIP and video calling application, connects users using multiple routes and dynamically chooses the one that is best suited at the time \cite{Skype}. CDNs also use detour routing for data transfer among their servers \cite{Akamai}.
+%
+%
+%We have the effect of location diversity on traffic engineering but application 
+%% 
+%
+%% application adaptation techniques
+%
+%In research literature, RON\cite{RON} and Detour\cite{Detour} are early works which exploit path diversity using overlay nodes for improved latency and fault tolerance. 
+%
+%Overlay networks built using DHTs \cite{Chord} also provide path diversity since routing can be done using multiple nodes in case of node failures. Research on overlay networks uses intelligent application adaptation techniques to improve application performance \cite{TamingTorrent08}.  Recent work such as iPlane provides accurate predictions of Internet paths to improve overlay network performance \cite{iPlane}.
+%
+%Internet applications also use adaptation which exploits \emph{path diversity} using detour routing like techniques \cite{Detour}. Skype, the most popular VoIP and video calling application, connects users using multiple routes and dynamically chooses the one that is best suited at the time \cite{Skype}. CDNs also use detour routing for data transfer among their servers \cite{Akamai}.
+
+
+%Application adaptation in Internet routing is either based on exploiting path diversity or location diversity. 
+%% RON- detour
+%% p2p networks - DHTs
+%Overlay networks built using DHTs  \cite{Chord} also provide path diversity since routing can be done using multiple nodes in case of node failures.
+%% p2p - bittorrent swarming  - location diversity
+%BitTorrent\cite{BitTorrentRef} is the most popular P2P system and it natually exploits location diversity by downloading content from multiple locations simultaneously seamlessly choosing faster peers and adapting to congestion in the internet.
+%%mirroring
+%Mirroring is widely used technique in Internet by websites such as SourceForge and projects such as Debian and Ubuntu to provide location diversity benefits \cite{MirrorWiki}.
+%% skype uses detour routes - 
+%Popular application in internet such as Skype\cite{Skype} also use detour routes to improve VoIP call quality.
+%% akamai and other CDNs use similar mechanisms - both path diversity and location diversity to 
+%Akamai and other CDNs use detour routing in Internet to find better paths and use servers at multiple locations to exploit location diversity in the Internet \cite{Akamai}.
+%% iplane - helps intelligently exploit path diversity
+%Recent work such as iPlane provides accurate predictions of Internet paths to improve overlay network performance \cite{iPlane}.
+
+

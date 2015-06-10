@@ -1,0 +1,160 @@
+\documentclass[a4paper,10pt]{article}
+\title{Paper Title}
+\date{}
+\author{}
+\usepackage{geometry} 
+\usepackage{amsmath}    % need for subequations
+\usepackage{amssymb}
+\usepackage[pdftex]{graphicx}
+
+\geometry{left=1.0in,right=1.0in,top=1in,bottom=1in}
+
+\begin{document}
+Results for Abilene ISP day1 load 1:
+
+
+
+
+ 10 Mbps  links
+Aggregate results for all TMs in the day
+
+
+\begin{figure}[ht]
+\centering
+\begin{tabular}{cc}
+\includegraphics[scale=0.5]{images/Abilene/10Mbps/download_rates_aggregate_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/10Mbps/download_rates_aggregate_5000000.pdf} \\
+\includegraphics[scale=0.5]{images/Abilene/10Mbps/download_ratios_aggregate_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/10Mbps/download_ratios_aggregate_5000000.pdf}
+\end{tabular}
+\caption{Abilene day1 load 1, 100 KB files, 10 Mbps access link}
+\end{figure}
+
+Typical low load TM
+
+\begin{figure}[ht]
+\centering
+\begin{tabular}{cc}
+\includegraphics[scale=0.5]{images/Abilene/10Mbps/download_rate_5764_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/10Mbps/download_rate_5764_5000000.pdf} \\
+\includegraphics[scale=0.5]{images/Abilene/10Mbps/download_ratios_5764_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/10Mbps/download_ratios_5764_5000000.pdf}
+\end{tabular}
+\caption{
+Typical low load TM 100 KB, 5 MB files, 10 Mbps access link}
+\end{figure}
+
+
+
+Typical high load TM
+
+
+\begin{figure}[ht]
+\centering
+\begin{tabular}{cc}
+\includegraphics[scale=0.5]{images/Abilene/10Mbps/download_rate_5961_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/10Mbps/download_rate_5961_5000000.pdf} \\
+\includegraphics[scale=0.5]{images/Abilene/10Mbps/download_ratios_5961_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/10Mbps/download_ratios_5961_5000000.pdf}
+\end{tabular}
+\caption{A high MLU TM 100 KB, 5 MB files, 10 Mbps access link}
+\end{figure}
+
+
+
+
+No access link bottleneck
+
+For large files the download rate above is limited by throughputs, next we plot the download rates when the access link has infinite capacity. This condition though infeasile in internet, helps us compare the highest download rate  a traffic engineering method can achieve. The network is very highly overprovisioned for abilene with typical MLUs even less than 0.1. Here we present results for load = 2.0, i.e. each entry in the traffic matrix is multiplied by 2. With a load of 2.0, the maximum MLU for OSPF InvCap in our experimental dataset pushes to  1.2. 
+
+Aggregate results
+
+\begin{figure}[ht]
+\centering
+\begin{tabular}{cc}
+\includegraphics[scale=0.5]{images/Abilene/nolimit/download_rates_aggregate_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/nolimit/download_rates_aggregate_5000000.pdf} \\
+\includegraphics[scale=0.5]{images/Abilene/nolimit/download_ratios_aggregate_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/nolimit/download_ratios_aggregate_5000000.pdf}
+\end{tabular}
+\caption{Abilene day1 load 1, 100 KB files, no access link bottleneck}
+\end{figure}
+
+Results for a typical low load Traffic matrix
+
+\begin{figure}[ht]
+\centering
+\begin{tabular}{cc}
+\includegraphics[scale=0.5]{images/Abilene/nolimit/download_rate_5764_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/nolimit/download_rate_5764_5000000.pdf} \\
+\includegraphics[scale=0.5]{images/Abilene/nolimit/download_ratios_5764_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/nolimit/download_ratios_5764_5000000.pdf}
+\end{tabular}
+\caption{
+Typical low load TM 100 KB, 5 MB files, no access link bottleneck}
+\end{figure}
+
+Results for a typical high MLU traffic matrix
+
+\begin{figure}[ht]
+\centering
+\begin{tabular}{cc}
+\includegraphics[scale=0.5]{images/Abilene/nolimit/download_rate_5961_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/nolimit/download_rate_5961_5000000.pdf} \\
+\includegraphics[scale=0.5]{images/Abilene/nolimit/download_ratios_5961_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/nolimit/download_ratios_5961_5000000.pdf}
+\end{tabular}
+\caption{
+A high MLU TM 100 KB, 5 MB files, no access link bottleneck}
+\end{figure}
+
+
+
+
+Internet BW
+
+
+
+Aggregate results
+
+\begin{figure}[ht]
+\centering
+\begin{tabular}{cc}
+\includegraphics[scale=0.5]{images/Abilene/internetBW/download_rates_aggregate_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/internetBW/download_rates_aggregate_5000000.pdf} \\
+\includegraphics[scale=0.5]{images/Abilene/internetBW/download_ratios_aggregate_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/internetBW/download_ratios_aggregate_100000.pdf}
+\end{tabular}
+\caption{Abilene day1 load 1, 100 KB files, internet BW}
+\end{figure}
+
+Results for a typical low load Traffic matrix
+
+
+\begin{figure}[ht]
+\centering
+\begin{tabular}{cc}
+\includegraphics[scale=0.5]{images/Abilene/internetBW/download_rate_5764_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/internetBW/download_rate_5764_5000000.pdf} \\
+\includegraphics[scale=0.5]{images/Abilene/internetBW/download_ratios_5764_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/internetBW/download_ratios_5764_5000000.pdf}
+\end{tabular}
+\caption{
+Typical low load TM 100 KB, 5 MB files, internet BW}
+\end{figure}
+
+
+Results for a typical high MLU traffic matrix
+\begin{figure}[ht]
+\centering
+\begin{tabular}{cc}
+\includegraphics[scale=0.5]{images/Abilene/internetBW/download_rate_5961_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/internetBW/download_rate_5961_5000000.pdf} \\
+\includegraphics[scale=0.5]{images/Abilene/internetBW/download_ratios_5961_100000.pdf} &
+\includegraphics[scale=0.5]{images/Abilene/internetBW/download_ratios_5961_5000000.pdf}
+\end{tabular}
+\caption{
+A high MLU TM 100 KB, 5 MB files, internet BW}
+\end{figure}
+
+\end{document}

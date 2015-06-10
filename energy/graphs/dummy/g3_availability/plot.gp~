@@ -1,0 +1,13 @@
+set terminal pdf fisze 14
+
+set ylabel "Availablity"
+
+set xlabel "Load Balancing Frequency (per hour)"
+
+set logscale x
+
+#set logscale y
+
+set output "availability.pdf"
+
+plot "data" u 1:2 w lp ps 2 t columnhead,  "data" u 1:3 w lp ps 2 lc 1 t columnhead,  "data" u 1:4 w lp ps 2 lc 1 t columnhead;

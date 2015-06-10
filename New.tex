@@ -1,0 +1,473 @@
+%% 
+%% This is a sample doctoral dissertation.  It shows the appropriate
+%% structure for your dissertation.  It should handle most of the
+%% strange requirements imposed by the Grad school; like the different
+%% handling of titles of one/many appendices.  It will automatically
+%% handle the linespacing changes.  The body default is double-spaced
+%% (except when you use the singlespace or condensed options).  The
+%% default for quotations is single-space, and the default for tabular
+%% environments is also single-space.  
+%%
+%% This class adds the following commands and environments to the
+%% report class, upon which it is based:
+%% Commands
+%% ------------
+%% \degree{name}{abbrv} -- Sets the name and abbreviation for the degree.
+%%                         These default to ``Doctor of Philosopy''
+%%                         and ``Ph.D.'', respectively.
+%% \copyrightyear{year} -- for the copyright page.
+%% \bachelors{degree}{institution} -- for the abstract
+%% \masters{degree}{institution}   --  "
+%%     if you have other degrees you may use
+%% \secondbachelors{degree}{institution}
+%% \thirdbachelors{degree}{institution}
+%% \secondmasters{degree}{institution}
+%% \thirdmasters{degree}{institution}
+%% \priordoctorate{degree}{institution}
+%%
+%% \committeechair{name}           -- for the signature page
+%% or, if you have two co-chairs:
+%% \cochairs{first name}{second name}
+%%
+%% \firstreader{name}              --  "
+%% \secondreader{name}             --  "
+%% \thirdreader{name}              -- (optional)
+%% \fourthreader{name}             --  "
+%% \fifthreader{name}              --  "
+%% \sixthreader{name}              --  "
+%% \departmentchair{name}          -- for the signature page
+%% \departmentname{name}           --  "
+%%
+%% \copyrightpage                  -- produces the copyright page
+%% \signaturepage                  -- produces the signature page
+%%
+%% \frontmatter                    -- these are required in their various
+%% \mainmatter                     -- appropriate locations
+%% \backmatter                     --
+%%
+%% \unnumberedchapter[toc]{name}   -- like \chapter, except that it
+%%                                    produces an unnumbered chapter;
+%%                                    alternatively, like \chapter*,
+%%                                    except that it lists the chapter
+%%                                    in the table of contents.
+%%
+%% New environments:
+%%   dedication  -- for the dedication
+%%   abstract    -- for the abstract
+%%
+%% The thesis documentclass is built on top of the report document class.
+%% It accepts all of the options that the report class accepts, plus the
+%% following:
+%%     doublespace -- the default, indicates double spacing as per U.Mass.
+%%                    requirements.  You will need this when you do your
+%%                    final copy.
+%%     singlespace -- for earlier work, not acceptable to the Grad school
+%%     condensed   -- for earlier work, not acceptable to the Grad school,
+%%                    creates condensed versions of the frontmatter. 
+%%                    Condensed implies singlespace.
+%%     dissertation - the default, indicates that this document is a
+%%                    dissertation.
+%%     proposal    -- indicates that this document is a dissertation proposal,
+%%                    rather than a dissertation.  This will only change the
+%%                    wording on the title and signature pages.
+%%     thesis      -- indicates that this document is a Master's thesis 
+%%                    rather than a doctoral dissertation.  This also changes
+%%                    the default for \degree to Master of Science, M.S.
+%%     allowlisthypenation -- (the default), allows hyphenation of words in
+%%                    the table of contents, the list of figures, and the list
+%%                    of tables.  I believe that this is acceptable to the 
+%%                    Graduate School.
+%%     nolisthyphenation -- disallows hyphenation of words in the table of
+%%                    contents and the list of figures and tables.  Use this 
+%%                    option if the Grad School doesn't like your hyphenation.
+%%     nicerdraft  -- relaxes some of the Grad School's rules for working with
+%%                    drafts -- has no effect when doublespace is in effect
+%%     nonicerdraft -- the default, leaves things in draft as they will be in
+%%                     the final version
+%% umthesis changes the default font size to 12pt, but you may specify 10pt or
+%%   11pt in the options.
+
+\documentclass[dissertation,condensed]{umthesis}          % for Ph.D. dissertation or proposal
+% \documentclass[thesis]{umthesis}  % for Master's thesis
+
+%%
+%% If you have enough figures or tables that you run out of space for their
+%% numbers in the List of Tables or List of figures, you can use the following
+%% command to adjust the space left for numbers.  The default is shown:
+%%
+%% \setlength{\tablenumberwidth}{2.3em}
+
+%\fontfamily{}\selectfont
+
+\renewcommand*{\familydefault}{ppl}
+
+
+%\usepackage[urw-garamond]{mathdesign}
+%\usepackage[T1]{fontenc}
+
+\usepackage[lined,boxed]{algorithm2e}
+\usepackage{subfigure, verbatim, soul}
+\usepackage{comment,pifont,array,url,amsmath,multirow,latexsym,tabularx}
+\usepackage{ifpdf,rotating,colortbl}
+\usepackage{graphicx}
+%\usepackage[boxed]{algorithm}
+%\usepackage{algorithm}
+\usepackage{wrapfig}
+%\usepackage{algorithmic}
+\usepackage{xspace}
+\usepackage{url}
+\usepackage{bbm}
+ \usepackage{wrapfig}
+ \usepackage{sidecap}
+
+ \usepackage{hyperref}
+%\renewcommand{\rmdefault}{mdugm}
+
+% Abhigyan: These settings ensure latex does not give "too many floats" error. They allow more space for figures per page.
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.95}
+\renewcommand{\floatpagefraction}{0.35}
+\setcounter{totalnumber}{5}
+
+%\newcommand{\tbd}{}
+\newcommand{\tbd}[1]{\textcolor{red}{\bf{[TBD:} #1]}}
+\newcommand{\TBD}[1]{} % will appear in bold font and will be set to null eventually.
+%\newcommand{\TBD}[1]{[{\bf{TBD:}#1}]} % will appear in bold font and will be set to null eventually.
+%\newcommand{\tbd}[1]{\footnote{\bf{TBD:}#1}}
+\newcommand{\eat}[1]{}
+\newcommand{\vsp}{\vspace{-0.1in}}
+\newcommand{\para}[2]{{\bf{[#1]}}\\#2}
+
+% Beyond-MLU macros
+\newcommand{\opt} {Optimal}
+\newcommand{\mplsavg} {MPLS}
+\newcommand{\invcap} {InvCap}
+\newcommand{\optwt} {OptWt}
+\newcommand{\cope} {COPE}
+\newcommand{\mindelay} {MinDelay}
+
+\newcommand{\CAP} {SPF}
+\newcommand{\maxiodiff} {Max-IO-Diff}
+
+
+%\newcommand{\cs}{SwarmServer}
+%\newcommand{\sscs}{CheatSheet}
+%\newcommand{\ssaf}{AntFarm}
+%\newcommand{\ssmm}{Leveler}
+%\newcommand{\ssaiad}{AIAD}
+%\newcommand{\maxmin}{MIN\_MAX}
+%\newcommand{\maxavg}{MIN\_AVG}
+%\newcommand{\mincost}{MIN\_COST}
+%
+%\newcommand{\btcap} {BitTorrent}
+%\newcommand{\eqsplit} {EqualSplit}
+%\newcommand{\propsplit} {PropSplit}
+%\newcommand{\maxminheur} {MaxMinHeur}
+%\newcommand{\Cacd} {Client-assisted content delivery}
+%\newcommand{\cacd} {client-assisted content delivery}
+
+\newcommand{\mudis}{\tilde{\mu}}
+\newcommand{\claim}[1]{{\sc{claim} #1}}
+
+% NCDN macros
+\newcommand{\ncp} {NCDN}
+\newcommand{\ancp} {an NCDN} %change to an NCDN if we go with NCDN
+\newcommand{\Ancp} {An NCDN}
+
+\newcommand{\prfs} {TE}
+\newcommand{\cc} {CC}
+
+%\newcommand{\opt} {Optimal}
+%\newcommand{\mplsavg} {MPLS}
+%\newcommand{\invcap} {InvCap}
+%\newcommand{\optwt} {OptWt}
+%\newcommand{\cope} {COPE}
+
+\newcommand{\setcover} {{{SetCover}}}
+\newcommand{\subsetsum} {{{SubsetSum}}}
+\newcommand{\minsubsetsum} {{{MinSubsetSum}}}
+\newcommand{\optloc} {{{Opt-\ncp}}}
+
+
+\newcommand{\optrpl} {\textsf{OptRP-L}}
+\newcommand{\optrp} {\textsf{OptRP}}
+\newcommand{\optrpfuturel} {\textsf{OptRP-Future-L}}
+\newcommand{\optrpfuture} {\textsf{OptRP-Future}}
+\newcommand{\invlru} {\textsf{InvCap-LRU}}
+\newcommand{\optlru} {\textsf{OptR-LRU}}
+\newcommand{\invoptp} {\textsf{InvCap-OptP}}
+\newcommand{\invoptpfuture} {\textsf{InvCap-OptP-Future}}
+
+
+\newcommand{\unplanned} {unplanned}
+\newcommand{\planned} {planned}
+\newcommand{\Unplanned} {Unplanned}
+\newcommand{\Planned} {Planned}
+
+
+
+% Auspice macros
+\newcommand{\auspice}{Auspice}
+
+\newcommand{\uniform}{Random}
+%\newcommand{\kmedoids}{K-Mediods}
+%\newcommand{\locaware}{Locality}
+%\newcommand{\opt}{Optimal}
+\newcommand{\optimal}{Optimal}
+\newcommand{\beehive}{DHT+Popularity}
+\newcommand{\codons}{DHT+Popularity}
+\newcommand{\staticthree}{Random-M}
+\newcommand{\static}[1]{Random-#1}
+\newcommand{\replicateall}{Replicate-All}
+
+\newcommand{\tbdf}[1]{\footnote{\bf{TBD:}#1}}
+\newcommand{\blue}[1]{#1}
+%\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\rmCR}[1]{}
+
+
+\newcommand{\msocket}{msocket}
+
+\newcommand{\figvsp}{\vspace{-0.2in}}
+
+\newcommand{\indirection}{indirection-based routing}
+\newcommand{\Indirection}{Indirection-based routing}
+\newcommand{\Logcen}{Global name-to-address resolution}
+\newcommand{\logcen}{global name-to-address resolution}
+\newcommand{\namerouting}{name-based routing}
+\newcommand{\Namerouting}{Name-based routing}
+
+
+% Shrink macros
+\newcommand{\shrink}{Shrink}
+
+\begin{document}
+
+
+
+
+
+%%% You must fill in all of these appropriately
+%\title{Hybrid \& Network CDNs:  Cost Optimization for Evolving Content Delivery Architectures}
+%
+%\author{Abhigyan Sharma}
+%\date{August 2012} % The date you'll actually graduate -- must be
+%                     % February, May, or September
+%\copyrightyear{2012}
+%\bachelors{B. Tech.}{Indian Institute of Technology, Kharagpur, India}
+%\masters{M. S.}{University of Massachusetts Amherst}
+%%\secondmasters{M.Ed.}{Antioch College}
+%%\priordoctorate{M.D.}{University of Never-never-land}
+%\committeechair{Arun Venkataramani}
+%%\cochairs{Arun Venkataramani}{}
+%\firstreader{Ramesh Sitaraman}
+%\secondreader{Don Towsley}
+%\thirdreader{Lixin Gao}
+
+
+
+%\title{A joint control plane for network management and content delivery in Network-CDNs}
+\title{Role of placement schemes on the interaction between network and content delivery}
+%\title{Planned vs. unplanned approaches to optimize performance and cost objectives of content delivery}
+\author{Abhigyan Sharma}
+\date{July 2014} % The date you'll actually graduate -- must be
+                     % February, May, or September
+\copyrightyear{2014}
+\bachelors{B. Tech.}{Indian Institute of Technology, Kharagpur, India}
+\masters{M. S.}{University of Massachusetts Amherst}
+%\secondmasters{M.Ed.}{Antioch College}
+%\priordoctorate{M.D.}{University of Never-never-land}
+% \committeechair{B. B. Bahh}
+\committeechair{Arun Venkataramani}
+%\cochairs{B. B. Bahh}{I. M. A. Wolf}
+\firstreader{Ramesh Sitaraman}
+\secondreader{Don Towsley}
+\thirdreader{Lixin Gao}
+%\fourthreader{Mary Lamb}   % Optional
+%\fifthreader{}            % Optional
+%\sixthreader{}            % Optional
+\departmentchair{Lori Clarke}
+\departmentname{School of Computer Science}
+
+%\fourthreader{Mary Lamb}   % Optional
+%\fifthreader{}            % Optional
+%\sixthreader{}            % Optional
+%\departmentchair{Pete Shearer}
+%\departmentname{Department of Computer Science}
+
+%% If your degree is something other than a Ph.D. (for a dissertation), or
+%% an M.S. (for a thesis), you will need to uncomment the appropriate
+%% following line:
+%%
+%% \degree{Doctor of Education}{Ed.D.}
+%\degree{Doctor of Philosophy}{Ph.D.}
+%%
+%% \degree{Master of Arts}{M.A.}
+%% \degree{Master of Arts in Teaching}{M.A.T.}
+%% \degree{Master of Business Administration}{M.B.A.}
+%% \degree{Master of Education}{M.Ed.}
+%% \degree{Master of Fine Arts}{M.F.A.}
+%% \degree{Master of Landscape Architecture}{M.L.A.}
+%% \degree{Master of Music}{M.M.}
+%% \degree{Master of Public Administration}{M.P.A.}
+%\degree{Master of Public Health}{M.P.H.}
+%% \degree{Master of Regional Planning}{M.R.P.}
+%% \degree{Master of Science}{M.S.}
+%% \degree{Master of Science in Accounting}{M.S. Acctg.}
+%% \degree{Master of Science in Chemical Engineering}{M.S. Ch.E.}
+%% \degree{Master of Science in Civil Engineering}{M.S.C.E.}
+%% \degree{Master of Science in Electrical and Computer Engineering}{M.S.E.C.E.}
+%% \degree{Master of Science in Engineering Management}{M.S. Eng. Mgt.}
+%% \degree{Master of Science in Environmental Engineering}{M.S. Env. E.}
+%% \degree{Master of Science in Industrial Engineering and Operations Research}{M.S.I.E.O.R.}
+%% \degree{Master of Science in Manufacturing Engineering}{M.S. Mfg. Eng.}
+%% \degree{Master of Science in Mechanical Engineering}{M.S.M.E.}
+%%
+%% \degree{Professional Master of Business Administration}{P.M.B.A.}
+
+
+%%
+%% These lines produce the title, copyright, and signature pages.
+%% They are Mandatory; except that you could leave out the copyright page
+%% if you were preparing an M.S. thesis instead of a PhD dissertation.
+\frontmatter
+\maketitle
+\copyrightpage 
+\signaturepage
+
+
+%% Dedication is optional -- but this is how you create it
+%\begin{dedication}              % Dedication page
+%  \begin{center}
+%    \emph{To those little lost sheep.}
+%  \end{center}
+%\end{dedication}
+
+%%
+%% Epigraph goes here...(aka frontispiece)
+%% \chapter{Epigraph}?????
+
+%%
+%% Acknowledgements are optional...yeah, right.
+%\chapter{Acknowledgments}             % Acknowledgements page
+%  Thanks to all those fine shepherds. Not to mention all the great
+%  border collies and suchlike fine animals. 
+
+%%
+%% Abstract is MANDATORY. -- Except for MS theses
+
+\input{abstract}
+%%
+%% Preface goes here...would be just like Acknowledgements -- optional
+%% \chapter{Preface} 
+%% ...
+
+
+%%
+%% Table of contents is mandatory, lists of tables and figures are 
+%% mandatory if you have any tables or figures; must be in this order.
+\tableofcontents                % Table of contents
+\listoftables                   % List of Tables
+\listoffigures                  % List of Figures
+
+
+%%
+%% We don't handle List of Abbreviations
+%% We don't handle Glossary
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Time for the body of the dissertation
+\mainmatter   %% <-- This line is mandatory
+
+%%
+%% If you want an introduction, which is not a numbered chapter, insert
+%% the following two lines.  This is OPTIONAL:
+%\unnumberedchapter{Introduction}
+\input{intro}
+%\input{intro-other}
+\input{background}
+%\input{related}
+
+% new chapter
+%\input{newchapter/newchapter}
+
+%\input{tepaper/section1}
+%\input{ncdnpaper/Introduction}
+%\input{shrink}
+%\input{auspice/intro}
+
+% application-centric comparison
+\input{tepaper/section1}
+\input{tepaper/section2}
+%\input{LocationDiversity}
+\input{tepaper/section3}
+\input{tepaper/section4}
+\input{tepaper/section5}
+\input{tepaper/app_performance_and_capacity}
+%\input{tepaper/newsection}
+%\input{section6}
+%\input{tepaper/section7}
+\input{tepaper/section8}
+%\input{tepaper/section9}
+
+% ncdn
+\input{ncdnpaper/Introduction}
+\input{ncdnpaper/Schemes}
+\input{ncdnpaper/LinearPrograms}
+\input{ncdnpaper/Dataset}
+\input{ncdnpaper/Evaluation}
+\input{ncdnpaper/Evaluation2-alt}
+%\input{ncdnpaper/RelatedWork-alt}
+\input{ncdnpaper/Conclusions}
+
+
+
+
+
+\input{shrink}
+
+%%%\input{energy/abstract} % comment abstract 
+%\input{energy/intro}
+%\input{energy/background}
+%\input{energy/design}
+%%\input{design-extra} % contains description of optimal (incomplete) 
+%\input{energy/implementation}
+%\input{energy/datasets}
+%\input{energy/eval}
+%\input{energy/related}
+%\input{energy/conclusions}
+
+\graphicspath{ {./auspice/} }
+
+\input{auspice/newintro}
+\input{auspice/design}
+
+\input{auspice/implementation}
+\input{auspice/eval}
+\input{auspice/eval-part2}
+\input{auspice/related}
+\input{auspice/conclusion}
+
+\input{proposed}
+
+%
+%\appendix
+%\chapter{THE FIRST APPENDIX TITLE}
+%...
+%\chapter{THE SECOND APPENDIX TITLE}
+%...
+
+%%
+%% Beginning of back matter
+\backmatter  %% <--- mandatory
+
+%%
+%% We don't support endnotes
+
+%%
+%% A bibliography is required.
+\bibliographystyle{umthesis}
+\bibliography{New}
+\end{document}
+

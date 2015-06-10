@@ -1,0 +1,16 @@
+\chapter{Demand-Aware Geo-Distributed Placement for Low Latency}
+\label{ch:auspice}
+
+Geo-distributed computing clouds such as Amazon EC2, Google offer a scalable, fault tolerant and flexible solution for hosting web services that cater to users world-wide. The easy availability of these platforms provides opportunities to several applications to leverage the performance benefits of geo-distribution.
+
+A challenge for a web service in switching to a geo-distributed cloud is the cost of replication of the ``data-tier''. Several web services today generate dynamic content such as weather information, stock prices, and status updates posted by users on a social networking website. Data replication is necessary to reduce latency of content accesses but is a costly operation for dynamic content. The reason is that the cost of propagating updates to dynamic content increases linearly with the number of locations. State-of-art replication alternatives either provide poor cost-vs-performance tradeoffs or leave data placement to be done manually by web-services which increases human cost and effort. For example, DHT-based designs make a constant number of replicas but result in high latency of content accesses.
+
+
+Our key insight is that replication of dynamic data should be done in a demand-aware manner such that a limited number of data replicas placed close to pockets of demand are sufficient to reduce latency of content accesses. A demand-aware placement implicitly assumes geo-locality of workloads, an assumption we believe is justified based on recent studies of workload characteristics. We have developed a heuristic placement strategy that decides number of replicas based on read-to-write ratio of a name and selects replica locations based on geo-distribution of demand to provide low lookup latency, low update cost, and high availability.
+
+
+Our system, \auspice, is implemented as a geo-distributed key-value store that stores arbitrary JSON objects as records. Like several other key-value stores \cite{mongodb,Escriva,cassandra}, \auspice\ exposes a simple GET/PUT interface to clients. \auspice\ provides flexible consistency semantics for accesses to a single object. However, \auspice\ is not a general-purpose database and lacks several features that are common in a database, e.g., support for running SELECT queries efficiently, or support for transactions. 
+\auspice\ is scalable to a large number of locations and data items due to a fully decentralized design both in the data plane and and the control plane that makes data placement decisions. 
+
+An application suited for \auspice\ is a global name service that provide name-to-address mapping for mobile devices. We have evaluated \auspice\ extensively for an expected workload of such a global name service. Our experiments show that \auspice\ provides  5.4$\times$-11.2$\times$ lower lookup latency than a DHT-based design for DNS. In a comparison to commercial managed DNS providers, we find that \auspice\ 
+provides a median update latency that is 1.1 sec to 24.7 sec lower than three top-tier providers.

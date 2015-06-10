@@ -1,0 +1,117 @@
+
+
+%\documentclass{sig-alternate-10pt}
+%\documentclass[10pt,nocopyrightspace,preprint]{sigplan-proc-varsize}
+
+\documentclass[journal]{IEEEtran}
+%% INFOCOM 2011 addition: 
+
+\makeatletter
+\def\ps@headings{%
+%\def\@oddhead{\mbox{}\scriptsize\rightmark \hfil \thepage}%
+%\def\@evenhead{\scriptsize\thepage \hfil \leftmark\mbox{}}%
+%\def\@oddfoot{}%
+%\def\@evenfoot{}}
+
+\def\@oddhead{}%
+\def\@evenhead{}%
+\def\@oddfoot{\hfil \thepage \hfil}%
+\def\@evenfoot{\hfil \thepage \hfil}}
+
+\makeatother
+%\pagestyle{headings}
+
+%\documentclass[10pt,nocopyrightspace,preprint]{sigplan-proc-varsize}
+
+\usepackage{subfigure, verbatim, soul}
+\usepackage{comment,pifont,array,url,amsmath,multirow,latexsym,tabularx}
+\usepackage{ifpdf,rotating,colortbl}
+\usepackage{graphicx}
+\usepackage[boxed]{algorithm}
+\usepackage{algorithmic}
+\usepackage{xspace}
+\usepackage{url}
+\usepackage{bbm}
+\usepackage{wrapfig}
+
+\newcommand{\eat}[1]{}
+
+
+\title{Beyond MLU: An Application-Centric Comparison of Traffic Engineering Schemes}
+
+\date{}
+%\numberofauthors{1} 
+%\author{\alignauthor Abhigyan Sharma,Aditya Mishra,Vikas Kumar, Arun Venkataramani \\
+%\affaddr{Dept. of Computer Science, University of Massachusetts} \\ \affaddr{ Amherst, MA, USA} \\
+%\email{abhigyan@cs.umass.edu, adityam@cs.umass.edu,vikas@cs.umass.edu,arun@cs.umass.edu}
+%}
+
+\author{Abhigyan Sharma, Aditya Mishra, Vikas Kumar, Arun Venkataramani%
+\thanks{The authors are with the Department of Computer Science, University of Massachusetts, Amherst, MA 01003 USA (e-mail: abhigyan@cs.umass.edu; vikas@cs.umass.edu; adityam@cs.umass.edu; arun@cs.umass.edu)}% <-this % stops a space
+\thanks{Manuscript received Oct 27, 2012.}}%
+
+
+%\author{\IEEEauthorblockN{Abhigyan Sharma, Aditya Mishra, Vikas Kumar, Arun Venkataramani}
+%\IEEEauthorblockA{Dept. of Computer Science, University of Massachusetts Amherst}
+%}
+
+%\author{Abhigyan Sharma,Aditya Mishra,Vikas Kumar, Arun Venkataramani}
+%\affiliation{University of Massachusetts Amherst}
+
+
+%\markboth{Journal of \LaTeX\ Class Files,~Vol.~6, No.~1, January~2007}%
+%{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for Journals}
+
+%\Email{abhigyan,adityam,vikas,arun,@cs.umass.edu}
+%\usepackage{geometry} 
+%\usepackage{amsmath}    % need for subequations
+%\usepackage{amssymb}
+%%\usepackage[pdftex]{graphicx}
+%\usepackage{subfigure}
+%\usepackage{marvosym}
+%\geometry{left=1.0in,right=1.0in,top=1in,bottom=1in}
+
+%\newcommand{\tbd}[1]{\footnote{[{\bf{#1}}]}}
+\newcommand{\tbd}[1]{}
+
+\newcommand{\opt} {Optimal}
+\newcommand{\mplsavg} {MPLS}
+\newcommand{\invcap} {InvCap}
+\newcommand{\optwt} {OptWt}
+\newcommand{\cope} {COPE}
+\newcommand{\mindelay} {MinDelay}
+
+\newcommand{\CAP} {SPF}
+\newcommand{\maxiodiff} {Max-IO-Diff}
+
+\begin{document}
+
+\maketitle
+
+\input{abstract}
+
+\begin{IEEEkeywords}
+Computer network management,  cost function, IP networks, optimization, routing.
+\end{IEEEkeywords}
+
+
+\input{section1}
+\input{section2}
+%\input{LocationDiversity}
+\input{section3}
+\input{section4}
+\input{section5}
+\input{app_performance_and_capacity}
+\input{newsection}
+%\input{section6}
+\input{section7}
+\input{section8}
+\input{section9}
+%\input{multisource_capacity}
+
+%\bibliographystyle{plain}	% (uses file "plain.bst")
+%\bibliography{reference}		% expects file "myrefs.bib"
+
+\end{document}
+
+

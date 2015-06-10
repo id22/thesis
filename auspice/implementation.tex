@@ -1,0 +1,407 @@
+\eat{
+\subsection{Instantiating a global name service}
+\label{sec:impl}
+
+We have implemented a prototype of the global name service with support for all of the functions described in Section \ref{sec:MF} using \auspice. A service in \auspice\ is a resolver for a name (or GUID). Each resolver is replicated with primary and active replicas and the number and locations of these replicas is determined by the mapper. We have implemented both uncoordinated, heuristic algorithms as well as the coordinated, optimal placement algorithms as described in the previous two sections.
+
+The name service ensures sequential consistency for each resolution service by establishing a total order across all writes to attributes keyed by the service's GUID. When an active replica receives a write to any GUID attribute, it initiates Paxos (unrelated to Paxos between primaries for placement decisions as in Section \ref{sec:design}) and gets all other active replicas responsible for that GUID to agree on a sequence number for that write. A read request at a replica sees the result of the most recent committed write at that replica. A total ordering of writes at all replicas is insufficient to ensure the desirable property that replicas will {eventually} return the most current (in real time) network address of a mobile device  if no further updates take place (e.g., a mobile may issue an update at replica A and subsequently an update at replica B, but it is theoretically possible for the system to commit the latter before the former). To ensure this property in single-writer scenarios, a client includes a client-local sequence number to each write and the acceptors in Paxos ensure that they do not accept a proposed sequence number for a write $w_1$ if they have already accepted a write $w_2$ with a higher client-local sequence number, thereby causing the proposed write $w_1$ to fail to commit.
+
+The name service currently only supports eventual consistency for operations spanning multiple GUIDs as each resolver service is responsible for a single GUID and there is no coordination between different resolver services. In operations involving addition/deletion of a GUID $X$ to/from a group GUID $Y$, a node that happens to be responsible for both $X$ and $Y$ may for a brief duration see $X$ as being redirected to $Y$ but $Y$'s membership set not including $X$.
+}
+
+%\subsubsection{Extensibility} \label{sec:extsec}
+
+%For extensibility, \auspice\ is implemented as a general-purpose, geo-distributed key value store. An \auspice\ {\em name} acts as the primary key and is an arbitrary bounded-length string while a {\em name record} is the value represented as an associative array of ``super columns''. This super-column family representation allows us to store a flexible set of attributes that do not have to be defined a priori. For example, \auspice\ can store context attributes like geolocation in MobilityFirst \cite{MobilityFirst-UMASS} or represent evolvable addresses in XIA \cite{XIA}. Indeed, a name record can be anything that can be represented as a JSON object. 
+
+%In line with the vision of the MobilityFirst future Internet architecture \cite{MobilityFirst-UMASS,GNRS-comsnets}, our position is that a logically centralized global name service should capitalize on its role as the first step in network communication and go beyond simple name-to-address resolution; Venkataramani et al \cite{GNRS-comsnets} describe how a global name service can significantly enhance network-layer functionality. As part of this broader effort, we have internally used \auspice\ to develop novel network-layer functions such as simultaneous mid-connection mobility and context-aware communication and used the latter to develop an emergency geocast application (see YouTube demo \cite{MobilityFirst-UMASS}).
+
+
+%\subsubsection{Access control and privacy} 
+%\vspace{-0.1in}
+%We have developed extensive and intrinsic support for self-certifying GUIDs (or globally unique identifiers) as one type of name in \auspice. Each human-readable name in \auspice\ is first translated to a GUID that is simply a hash of the public key associated with the name. {\em Every} top-level column in \auspice\ has access control lists that could either be a whitelist (or blacklist) of GUIDs allowed (disallowed) to perform a read or write operation (in some cases, we have found an append-only ACL distinct from the write ACL to be useful). By default, all columns and network addresses in particular can be read by all but written to only using the private key corresponding to the GUID. Some {\em keyword} attributes like netAddress and geoLocation have special support (unlike developer-defined attributes), for example, in order to efficiently maintain indexes for attribute-based reverse lookups or for non-default privacy policies like allowing only whitelisted reads for geoLocation.
+
+
+%\subsubsection{Deployment path}\label{sec:deploy}
+
+%With modest additional effort, \auspice\ can be deployed today as a massively scalable managed DNS provider. In order to use \auspice, a domain name owner simply has to set their authoritative name servers to any number of \auspice\ name servers. Name owners can use the DNSSEC DNSKEY record to derive the GUID and continue to rely on delegation-server based chain of trust model.  In architectures like MobilityFirst, XIA, or HIP, we expect \auspice\ to be deployed in a federated manner where multiple providers may run separate \auspice\ instances and mobile endpoints can obtain global name service from a provider of their choice. These architectures implicitly assume a name certification service (NCS) that first translates a human-readable name to a self-certifying GUID; this NCS can also supply the name of the provider that provides global name service for that GUID. Currently, we have rolled in a simple NCS into \auspice\ itself, which through a developer portal (\verb+http://gnrs.name+) binds a user-specified or system-selected GUID to a human-readable name that is simply an email address, i.e., our proof-of-concept NCS is a poor man's CA relying on email-based verification.
+
+%Clients currently have to use a custom Auspice developer library to perform lookup and update operations. We are currently in the process of developing a simple proxy to translate between BIND and \auspice's wireline protocol so as to interoperate with DNS.
+
+
+%\vsp
+\subsubsection{Implementation status}
+
+%\begin{table}[t]
+%\centering
+%\small{
+%\begin{tabular}{c|c}
+%{\bf \auspice\ parameter} & {\bf Value}\\ \hline
+%Min number of replicas ($M$) & 3 \\ \hline
+%Number of replicas placed \\according to locality ($K$) & 5 \\ \hline
+%\end{tabular}
+%}
+%\caption{Parameters for \auspice.}
+%\vspace{-0.3in}
+%\label{tab:auspiceparam}
+%\end{table}
+
+%\auspice\ is implemented as a general purpose key-value store, and its unique feature is to automatically replicate objects close to pockets of high demand.  We have implement support for users to  store a flexible set of attributes  in the name record. 
+%This flexibility allows \auspice\ to provide name resolution in present Internet as well as in future Internet architectures. For example, \auspice\ can store an evolving set of principals as proposed in the XIA architecture. In today's context, this functionality is meant to support mobile app development, e.g., a user could store its GPS coordinates in \auspice, which a mobile app could use to provide location based services.   
+
+We have implemented \auspice\ as described in Java with 28K lines of code. We have been maintaining an alpha deployment for research use for many months across eight EC2 regions. We have implemented support for two pluggable NoSQL data stores, MongoDB (default) and Cassandra, as persistent local stores at servers. We do not rely on any distributed deployment features therein as the coordination middleware is what \auspice\ provides. 
+
+
+%Even for eventual consistency, each name needs at least one Paxos instance maintained by each of its replica-controllers to perform group changes correctly, which would nominally result in an average of $MN/S$ instances per name server (where N is the total number of names; S and M are respectively the total and minimum number of replicas required for fault-tolerance). To reduce the number of Paxos instances for eventual consistency, we have integrated consistent hashing with a combined Paxos implementation that maintains just $M$ instances per name server. The set of replica-controllers for a name computed using consistent hashing is the same for roughly N/S names, so a single Paxos instance can be used for all of these names. Group change operations across these N/S (otherwise unrelated) names must be committed sequentially but can be issued in parallel.
+
+%a tradeoff that is acceptable as group change operations occur infrequently and a group change operation for a name stalls write operations for only that name just for a few RTTs.
+
+%\tbd{Are there supporting scripts in other languages? Not for experiments, but for EC2 deployment etc.}
+
+%A natural choice of the data store to store flexible set of attributes for a record are the modern NoSQL data stores. 
+
+
+
+%We implemented the two-tier Paxos engine from scratch. Each \auspice\ name server manages a very large number of Paxos instances, one for every active replica and replica controller at the node.  Our Paxos implementation requires a small constant amount of state\footnote{This in-memory state is distinct from Paxos logs used for recovery after crashes that must be maintained on disk for correctness.} for each instance that is currently stored in-memory as a Java object. However, it is feasible to store this state in the data store with some reduction in per-node throughput; this would reduce memory pressure and allow a single server to store a much larger number of name records.
+
+
+
+%  Although, this change is expected a reduce the per-node throughput with such an implementation. 
+%\subsubsection{Logging and recovery}
+
+
+%Paxos logs are used to provide both durability of data and are necessary to provide consistency guarantees. Messages for all Paxos instances at a name server are stored in a shared log file. A separate log file stores which Paxos instances are currently active at this node. Periodically, the complete state (both data as well as internal Paxos state)  for all Paxos instances is also stored to disk, which allows for deletion of older log files.  \auspice\ relies on Paxos logs to recover data after a name server crashes. Recovery is started by reading the most recent check pointed state of every Paxos instance at that node. Thereafter, log messages after the check pointed state are replayed to recreate the internal state of all Paxos instances as well as data for each Paxos instance. The recovered data (name records and records kept by replica-controllers) is reinserted into the database to complete the recovery process.
+
+
+ 
+%\textbf{Default parameters:} The fraction of replicas, $f$, that are placed close to pockets of high demand is 50\%. The number of replica-controllers \& the minimum number of active replicas are set to $M=3$. 
+
+%We plan to integrate an IP geo-location database at each name server for the active replicas to infer the geo-distribution of the users. Our current implementation assumes that all end-user queries are routed through a fixed set of local name servers . 
+%In our current implementation, replica-controllers estimate  geo-distribution of requests based on local name servers' report of the number of lookups received by them. 
+
+
+
+%end-users queries are routed through a local name server module  relies on 
+%
+%instead to report the request geo-distribution to replica-controllers.  
+%
+%Replica-controllers estimate  geo-distribution of requests based on local name servers' report of the number of lookups received by them; 
+
+
+%The name resolution functionality provided by \auspice\ is supported by the implementation of  a geo-distributed key-value store, which automatically replicates objects close to pockets of high demand.   \auspice\ is implemented in Java with 46K lines of code, and is currently deployed  on Amazon EC2 for users to query via the HTTP interface \cite{gnrswebsite}. Our implementation consists of two modules, name server and local name server, whose features are described below.
+
+%\textbf{Data store:} Name servers support persistent storage  using three pluggable data stores for which we have implemented support in \auspice: MongoDB (v2.4.6, default data store), Cassandra (v1.2.9), and MySQL (v5.1, deprecated in favor of the flexibility of NoSQL).  
+
+%\textbf{Name record format:} A name record in \auspice\ stores a set of user-defined keys, and for each key, stores an ordered list of values. A key, and each entry in the list of values that the key maps to, could be arbitrary strings.   
+%The set of keys can be defined by the name record owner. 
+
+%\textbf{Message format:} Local name server receives end-user requests and sends responses using an HTTP interface.  Messages between two name servers and between a local name server and a name server are exchanged in the form of JSON objects.
+
+%In its current deployment on EC2, clients can query \auspice via the HTTP interface. 
+
+%Messages Name server  and receives requests and sends responses to local name servers and to  formatted as JSON objects. 
+
+%\textbf{TTL-cache:}   Local name server implements a TTL-based cache of name records  using Google's Guava library \cite{guava}.
+
+
+%\textbf{Default parameters:} The fraction of replicas, $f$, that are placed close to pockets of high demand is 50\%. The number of replica-controllers \& the minimum number of active replicas are set to $M=3$. 
+
+%Messages between name servers and between name servers and local name servers are sen in  JSON format. 
+
+
+%The timeout value for lookups is decided adaptively based on latency of past lookups \cite{Jacobson}. 
+
+
+
+
+
+
+%To enable multihoming, \auspice\ stores  multiple locations for each identifier using  value-as-a-list feature in Cassandra and MongoDB.  
+
+
+
+
+
+
+
+
+%Name servers expose the interface shown in Table \ref{tab:API} to a local name server.  Name server receives requests and sends responses formatted as JSON objects. 
+%\begin{table}[h]
+%\centering
+%\small{
+%\begin{tabular}{c|l}
+%\hline
+%
+%ADD & Add name record \\
+%REMOVE & Delete name record \\
+%LOOKUP & Return network locations for name\\
+%UPDATE & Update one or more network locations\\
+%UPSERT & If name exists, then UPDATE, \\ &else ADD (INSERT)\\
+%GET\_ACTIVE & Return active replicas for name\\\hline
+%\end{tabular}
+%}
+%\label{tab:API}
+%\caption{Auspice name server API}
+%\end{table}
+%\vsp
+
+
+%\auspice\ provides consistency guarantees using a custom Paxos implementation. %based on Renesse's description of Paxos \cite{Renesse}. 
+
+%The key feature of this implementation is that we can run tens of thousands of Paxos instances (one for each name) at a name server  to support a highly flexible replication policy. 
+
+%By default, top $K=5$ replicas are chosen in a locality-aware manner. The number of replica-controllers \& the minimum number of active replicas are set to $M=3$.  The local name server module implements a TTL-based cache of name records  using Google's Guava library \cite{guava}.    The timeout value for lookups is decided adaptively based on latency of past lookups \cite{Jacobson}. 
+
+
+%Some parts of the implementation are work in progress at this point. (1) Replica-controllers estimate  geo-distribution of requests based on local name servers' report of the number of lookups received by them; we plan to integrate an IP geo-location database for active replicas instead to report the request geo-distribution to replica-controllers.  (2) A local name server maintains load-induced latency estimates for each name server by querying them for their current load every 5 mins instead of tracking load-induced latency at name servers based on response time of past lookups  as described in $\S$\ref{sec:routing_client_requests}. 
+
+%\textbf{Evaluation version:} We have implemented a full-featured prototype of \auspice\ as described above, but our evaluation uses an earlier stable version of our code with some differences.  This evaluation version is implemented in Java with 22K lines of code, and is currently deployed  on Amazon EC2 for users to query via HTTP \cite{gnrswebsite}. This version differs from the described design as follows: (1) An update involves the set of message exchanges described in $\S$$\ref{sec:consistency}$ without assigning any update sequence numbers.  This emulates the message and latency overhead of Paxos between replica-controllers and between active replicas, but Paxos with consistency guarantees is still under performance testing.  (2) Replica-controllers estimate  geo-distribution of requests based on local name servers' report of the number of lookups received by them; we plan to integrate an IP geo-location database for active replicas instead to report the request geo-distribution to replica-controllers.  (3) A local name server maintains load-induced latency estimates for each name server by querying them for their current load every 5 mins instead of tracking load-induced latency at name servers based on response time of past lookups ($\S$\ref{sec:routing_client_requests}). 
+
+
+
+
+
+
+
+%We infer the geo-distribution of lookups for a name, earlier code relied on local name servers to report the number of lookups  they receive for a name to the replica-controllers. We plan to integrate an IP-geolocation database at name servers so that active replicas can directly report the geo-distribution of lookups.
+
+%In this version,  (1) we infer the geo-distribution of lookups for a name, earlier code relied on local name servers to report the number of lookups  they receive for a name to the replica-controllers. We plan to integrate an IP-geolocation database at name servers so that active replicas can directly report the geo-distribution of lookups. (2) Replication control parameter ($\beta$) is currently specified as a fixed configuration parameter and not calculated automatically based aggregate lookup and update rates across name servers.   (3)  A local name server maintains load-induced latency estimates for each name server by querying them for their current load every 5 minutes, instead of tracking load-induced latency at name servers based on response time of past lookups (Section \ref{sec:routing_client_requests}).
+
+%The current version which implements Paxos between replica-controllers and active replicas to provide consistency guarantees,  is under testing phase. In addition, the current version also address following We also plan to add the following features to the current version:  (1) To infer the geo-distribution of lookups for a name, earlier code relied on local name servers to report the number of lookups  they receive for a name to the replica-controllers. We plan to integrate an IP-geolocation database at name servers so that active replicas can directly report the geo-distribution of lookups. (2) Replication control parameter ($\beta$) is currently specified as a fixed configuration parameter and not calculated automatically based aggregate lookup and update rates across name servers.   (3)  A local name server maintains load-induced latency estimates for each name server by querying them for their current load every 5 minutes, instead of tracking load-induced latency at name servers based on response time of past lookups (Section \ref{sec:routing_client_requests}). 
+
+
+%Some features of the implementation are still work-in-progress at this point. (1) To infer the geo-distribution of lookups for a name, we currently rely on local name servers to report the number of lookups  they receive for a name to the replica-controllers. We plan to integrate an IP-geolocation database at name servers so that active replicas can directly report the geo-distribution of lookups. (2) Replication control parameter ($\beta$) is currently specified as a fixed configuration parameter and not calculated automatically based aggregate lookup and update rates across name servers.   (3)  A local name server maintains load-induced latency estimates for each name server by querying them for their current load every 5 minutes, instead of tracking load-induced latency at name servers based on response time of past lookups (Section \ref{sec:routing_client_requests}). 
+
+
+
+%Some parts of the implementation are still work-in-progress at this point. (1) To infer the geo-distribution of lookups for a name, we currently rely on local name servers to report the number of lookups  they receive for a name to the replica-controllers. We plan to integrate an IP-geolocation database at name servers so that active replicas can directly report the geo-distribution of lookups. (2) Replication control parameter ($\beta$) is currently specified as a fixed configuration parameter and not calculated automatically based aggregate lookup and update rates across name servers.   (3)  A local name server maintains load-induced latency estimates for each name server by querying them for their current load every 5 minutes, instead of tracking load-induced latency at name servers based on response time of past lookups (Section \ref{sec:routing_client_requests}). 
+
+
+%The current version which implements Paxos between replica-controllers and active replicas to provide consistency guarantees,  is under testing phase. 
+
+
+
+
+
+
+%\textcolor{blue}{The most challenging parts of implementation were the operations involving both replica-controllers and active replicas: ADD, REMOVE, UPSERT, and dynamically changing the set of active replicas. We needed to consider a greater number of failure scenarios in implementing these operations.}
+
+
+
+% and rest of the replicas are chosen randomly.
+
+
+%The replica-controller computes a new placement of replicas once every 5 minutes in our implementation and resolvers submit summary reports to the replication controllers once every 5 minutes. 
+
+%\textbf{Consistency:} \auspice\ uses a custom Paxos implementation, which we have tested to run tens of thousands of Paxos instances (one for each name) at a single name server. Our implementation is based on Renesse's description of Paxos \cite{Renesse}.
+
+%\textbf{Local name server:} 
+
+
+
+%\textcolor{blue}{To infer the geo-distribution of lookups for a name, we currently rely on local name servers to report the number of lookups  they receive for a name to the replication controllers. We plan to integrate an IP geolocation database at name servers so that active replicas can directly report the geo-distribution of lookups.}
+
+%\textcolor{blue}{Local-name server maintains load-induced latency estimates by actively requesting the name servers for their current load once every 5 minutes. This approach adds a small overhead for our largest deployment of 80 name servers and 80 local name servers. To eliminate this overhead, we will implement the approach described in Section \ref{sec:routing_client_requests}, which is to estimate load-induced latency based on response time of past lookups.}
+
+
+
+%, which is to estimate load-induced latency based on response time of past lookups
+
+%Local name servers maintain server latency estimates by querying name severs for their current server latency once every 5 minutes.  To this end, a name server records server latency for each query by measuring the time difference between when a query is received and when a response is sent. Local name servers query name servers once every five minutes to obtain current load at name servers. The name server  reports a moving window average of server latencies over the previous 1000 queries to the local name server. 
+
+
+
+%Connection migration library 1.6K lines of code. Java MSocket abstraction.
+
+%The \auspice\ implementation consists of two stand-alone modules called name server and local name server.  The name server module implements persistent storage of name records and our locality and load-aware resolver placement algorithm.  The local name server implements request redirection for clients requests, and maintains a TTL-based cache of name records.   
+
+
+
+
+%The replication parameter  $M$ to determine the number of requests is determined globally based on three factors: the request workload, the total server capacity and an upper bound on the total update cost. 
+%In our experiments, the number of replica-controllers and the minimum number of active replicas for fault-tolerance are set to $M=3$.
+%By default, \auspice\ chooses the top $K=5$ replicas in a locality-aware manner and rest of the replicas are chosen randomly.
+
+
+
+
+%\textbf{MSocket library:} 
+\eat{
+\subsection{Mid-session mobility} The design described so far has focused on using geo-replication to enable low lookup latencies at connection initiation time. In order to address mid-session mobility, \auspice\ first relies on a bilateral option, which renegotiates connection state and binds the corresponding sockets to a different (IP, port) combination.  This scheme is similar in spirit to previous approaches for bilateral connection migration \cite{ECCP,Migrate,TCP-R}. 
+We have implemented support for mid-session mobility as a user-level Java library, called MSocket, in about 3.9K lines of code in addition to the core \auspice\ module (with a detailed description omitted for lack of space). %Handling mid-session mobility at the user-space level eases the deployment, as the application developers don't need to make any changes to the kernel networking stack.  
+A developer can include  the MSocket library like any other java library  to support mid-session mobility for her applications.
+Developers use a modified \verb+MSocket()+ interface (and a corresponding \verb+MServerSocket()+ call) that are otherwise similar to the existing API, but also support an additional call, \verb+migrate_local(IP, port)+ that allows either side to migrate the local end of its connection to the specified (IP, port) combination. In order to support concurrent mobility, clients fall back to  \auspice. 
+}
+
+%For persistent storage, \auspice\ uses Cassandra \cite{cassandra}. Optionally, name records can be stored in-memory using Java data structures. 
+
+%Say how multihoming is supported in the implementation: each NA can be a list of NAs. This is implemented in Cassandra as well as Mongo in Westy's prototype.
+
+
+
+
+%The number of replicas of an object is decided by multiplying the read to write ratio by a constant value, called the replication parameter.  The replication parameter  $\alpha$ is determined globally based on three factors: the current  load on the system, the total server capacity and an upper bound on the total update cost. 
+
+
+\eat{
+
+Local name servers estimate latencies to name servers by periodically (once every hour) measuring round trip latencies to all name servers using the ping tool, and proactive query a set of frequently contacted name servers to obtain the current load at name servers, which they use to balance load among 
+
+Local name servers also a smaller number of frequently con name servers once every five minutes to obtain current load at name servers. 
+
+To support load balancing among replicas, a name server monitors its own load and responds when a local name servers queries the name server to obtain its . 
+
+a name server records server latency for each query by measuring the time difference between when a query is received and when a response is sent. 
+
+Local name servers query name servers once every five minutes to obtain current load at name servers. 
+
+The name server  reports a moving window average of server latencies over the previous 1000 queries to the local name server. 
+
+
+
+Local name server decides the query timeout value adaptively based on response latencies of past queries.
+
+Local name servers pro-actively query a set of frequently contacted name servers to obtain their current server-load induced latency.   In our PlanetLab deployment of 80 name servers and 
+
+To this end, a name server records server latency for each query by measuring the time difference between when a query is received and when a response is sent. 
+
+Local name servers query name servers once every five minutes to obtain current load at name servers. 
+
+The name server  reports a moving window average of server latencies over the previous 1000 queries to the local name server. 
+
+
+
+
+\subsection{Request redirection}
+
+Local name servers pro-actively query a set of name servers to obtain their current server latency.   To this end, a name server records server latency for each query by measuring the time difference between when a query is received and when a response is sent. Local name servers query name servers once every five minutes to obtain current load at name servers. The name server  reports a moving window average of server latencies over the previous 1000 queries to the local name server. 
+Local name server decides the query timeout value adaptively based on response latencies of past queries.
+
+Local name servers pro-actively query a set of name servers to obtain their current server latency.   
+
+To this end, a name server records server latency for each query by measuring the time difference between when a query is received and when a response is sent. 
+
+Local name servers query name servers once every five minutes to obtain current load at name servers. 
+
+The name server  reports a moving window average of server latencies over the previous 1000 queries to the local name server. 
+
+
+Local name servers pro-actively query a set of name servers to obtain their current server latency.   To this end, a name server records server latency for each query by measuring the time difference between when a query is received and when a response is sent. Local name servers query name servers once every five minutes to obtain current load at name servers. The name server  reports a moving window average of server latencies over the previous 1000 queries to the local name server. 
+
+
+
+
+A local name server in \auspice\ redirects end-users requests to a resolver chosen in a locality and load-aware manner. To achieve both these properties, local name servers maintain latency estimates to name servers that reflect both network latency and server-load induced latency (or server latency). Among a set of resolvers, 
+a local name server always redirects requests to the closest name server based on  the latency estimates. 
+Network latency estimates change slowly and therefore every local name server maintains round-trip latency estimates to all name servers using infrequent measurements. Server latency changes frequently due to dynamic workloads.  In an Internet scale deployment with tens of thousands of name servers, maintaining server latency information would add significant overhead.  Hence, server latency  is maintained only for a smaller number of frequently contacted name servers. 
+
+Local name servers pro-actively query a set of name servers to obtain their current server latency.   
+
+To this end, a name server records server latency for each query by measuring the time difference between when a query is received and when a response is sent. 
+
+Local name servers query name servers once every five minutes to obtain current load at name servers. 
+
+The name server  reports a moving window average of server latencies over the previous 1000 queries to the local name server. 
+
+}
+%format of things: nosql, super column family, name and id representation, domain name, id, ipaddresss, guide
+
+
+%migration stuff
+
+%support HTTP based interface 
+
+
+%remove Jacobson/Karels TCPÉ
+
+
+
+%remove Address updates
+
+%underlying data store
+
+
+
+
+%Read comsnets paper for format of things, implementation
+
+
+
+%The local name server module acts the intermediary between clients and name server.  local name server receives requests from and sends responses to clients, sends requests to and receives responses from name server instances, caches the name records received, and sends votes for the locality-aware replication. 
+
+
+
+
+%\subsection{Replica placement algorithm}
+%
+%
+%\textbf{Resolver placement algorithm:} The resolver placement algorithm in \auspice\  proceeds in three steps: aggregation, voting, and replication.
+%
+%\emph{Aggregation}: The aggregation step is used to calculate the lookup rate and and the update rate  of name records.  To this end, the resolvers for a name record send the lookup and update rates for this name record to the replication controller  once every epoch.
+%
+%\emph{Voting}:  The geo-distribution of requests for a name record is obtained using votes sent by local name servers to the replication controllers. A vote consists of a tuple {(\textsf{namerecord}, \textsf{nameserverID}, \textsf{votecount}). The \textsf{nameserverID} is the ID of the name server closest to this local name server based on latency estimates. The \textsf{votecount} is equal to the number of requests for \textsf{namerecord} sent to name servers by this local name server since the last time the voting step was executed.
+%
+%\emph{Replication:}  This step executes at replication controller for a name record. Resolvers are selected based on lookup and update rates, and votes received in the past one hour using the algorithm in Section \ref{sec:heuristic}. Any change in the set of resolvers replicas since last execution of replication step is communicated to the new and the old set of resolvers. By default, all three steps are executed once every five minutes. 
+
+
+
+%Local name servers  estimate latencies to name servers to choose the closest name server.
+%A local name server's estimate of latency  to a name server is equal to the sum of network latency calculated from ping measurements and server latency reported by the name server. 
+
+
+%Latency estimates to a name server are also updated in case a request sent to that name server exceed a timeout value. If a local name server frequently times out on a name server, it is indicative of either network congestion or that the server is overload. Local name server increases its latency estimate to a name server on a timeout; if timeouts occur frequently, a local name server stops sending requests to that name server. 
+
+
+
+
+%  We use TCP's timeout calculation formula by Jacobson/Karels to calculate the timeout value \cite{Jacobson}.  While a fixed timeout value may be chosen, the timeout parameter must be manually tuned for every local name server   to minimize the number of unnecessary retransmissions and  to avoid high latencies for requests that do time out.
+%Our implementation maintains single  timeout value across all name server instances.  However, name server specific timeout values can also be maintained if there are sufficient number of response latency samples for each name server.
+
+\eat{
+\textbf{Request redirection:}  The request redirection implementation at local name servers has two main components: name server latency estimation and adaptive timeout calculation. 
+
+% Server latency  are a component of name server latency estimates maintained by local name servers.
+Local name server maintain latency estimates to name servers using RTT measurements with the ping tool and actively querying name servers to obtain their current server latency.   To this end, a name server records server latency for each query by measuring the time difference between when a query is received and when a response is sent. Local name servers query name servers once every five minutes to obtain current load at name servers. The name server  reports a moving window average of server latencies over the previous 1000 queries to the local name server. 
+
+Local name server decides the query timeout value adaptively based on response latencies of past queries.  We use TCP's timeout calculation formula by Jacobson/Karels to calculate the timeout value \cite{Jacobson}.  While a fixed timeout value may be chosen, the timeout parameter must be manually tuned for every local name server   to minimize the number of unnecessary retransmissions and  to avoid high latencies for requests that do time out.
+Our implementation maintains single  timeout value across all name server instances.  However, name server specific timeout values can also be maintained if there are sufficient number of response latency samples for each name server.
+
+}
+
+\eat{ % seems obvious
+\textbf{Handling lookups:} 
+A local name server responds to clients queries for name records as follows. If a local name server's cache does not contain the queried name record, it contacts a nearest primary replica for that name to fetch the name record, and responds to the client. If the cache contains the queried name record and its TTL has not expired, the address in the cached name recored is returned to the client. If the cached name record's TTL has expired, local name server queries the nearest active replica in the name record. The next closest active replica is queried if a response is not received until a timeout interval. In our implementation, up to three active replicas are queried before an error response is sent to the client. In case the queried active replica is no longer an active replica for this name, it responds with an error message to local name server. local name server deletes the cached name record and queries the nearest primary replicas for the current name record.
+}
+
+
+%\textbf{Address updates:} 
+%The name service ensures sequential consistency by establishing a total order across all updates to attributes keyed by the name record's unique identifier. When a resolver receives an address update request, it initiates a Paxos  and gets all other resolvers  of that name record to agree on a sequence number for that update. A lookup request at a resolver sees the result of the most recent committed update at that resolver. A total ordering of updates at all resolvers is insufficient to ensure the desirable property that resolvers will {eventually} return the most current (in real time) network address of a mobile device  if no further updates take place (e.g., a mobile may issue an update at replica A and subsequently an update at replica B, but it is theoretically possible for the system to commit the latter before the former). To ensure this property in single-writer scenarios, a client includes a client-local sequence number to each update and the acceptors in Paxos ensure that they do not accept a proposed sequence number for a update $w_1$ if they have already accepted a update $w_2$ with a higher client-local sequence number, thereby causing the proposed update $w_1$ to fail to commit.
+
+
+%Workload
+%316 domain names in top-10k , DNS name records.
+%geo-distribution from alexa,
+%1000 requests per domain name.
+%100 local name servers sent requests for 316 domain names. 
+%Wildcard.
+
+
+
+%TBD: add references to managed dns
+
+\eat{
+
+\bp{Figure  \ref{fig:meanlatencyvsload}: \auspice\ has best latency and scales well to load because of load-aware replication}
+In this subsection, we evaluate \auspice\ under varying load. 
+Figure \ref{fig:meanlatencyvsload} shows the median latency across names for different replication schemes as the total lookup and update rate increases from 10 request per second to 100,000 request per second. 
+\auspice\ scales well at growing load and achieves the best latency performance. It reduces latency by 2$\times$ over \codons\ and \replicateall\ under low load and by up to 8$\times$ over \staticthree\ under high load. This result demonstrates the effectiveness of \auspice's load-aware replication: it replicates name services at a large number of locations and achieves low lookup latency when the load is low and there is enough network capacity, and it dynamically reduces the number of replicas when the load increases. It is also worth noticing that when the load exceeds $10^{4}$ request per second where \staticthree, a replication scheme that incurs the least amount of update load, starts to have infinite latency, \auspice\ is still able to have lower latency than it. This is because \auspice''s locality-aware replication makes more efficient use of the network resource by placing replicas close to pockets of demands for different services, whereas \staticthree's random placement wastes network capacity and hurt performance.
+
+\bp{\codons\ and \replicateall\ have poor latency and  fail to scale to load}
+The figure also shows that \codons\ and \replicateall\ have poor latency performance and fail to scale to load. 
+\codons\ has higher latency than \auspice\ because its DHT overlay fails to place replicas according to the locality feature of service demand; 
+its latency increasing quickly when load is greater than 100 req/sec shows that  it is less effective at load adaptation.
+\replicateall\ has the worst performance at scaling to load because it places services at all locations and has the highest update load.
+}
+
+%TBD: discuss authoritative name servers or lack thereof somewhere.
+
+%TBD: API that services must support in order to use \auspice: What is the easiest way for services to use \auspice\ that involves minimum modification to existing implementations? Is \auspice\ implemented as library that services link to and are responsible for creating and terminating replicas? Or does \auspice\ itself create and terminate service replicas and services are expected to support the required API?

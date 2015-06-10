@@ -1,0 +1,53 @@
+
+%\section{Limitations and Future Work}
+%
+%In this section, we discuss limitations of our \ncp\ model and our experimental approach. 
+%
+%(1) Our \ncp\ model models only the CDN traffic and not the transit traffic which present in an ISP network. Since, an ISP cannot control content placement for transit traffic, traffic engineering will help reduce network cost for transit traffic.
+%
+%(2) Minimizing network cost in face of link failures, either planned or accidental, is one of the goals of traffic engineering. \Ancp\ could suffer from link failures as well as server failures at the PoPs. We intend to study the effect of link failures as well as server failures for \ancp\ in our future work.
+
+
+
+\section{Related Work}
+\label{sec:related}
+
+Traffic engineering and content distribution have both seen an enormous body of work over more than a decade. To our knowledge, our work is the first to pose the \ncp\ problem, wherein a single entity seeks to address both concerns, and empirically evaluate different content-aware traffic engineering strategies. Nevertheless, a significant body of recent research has studied the interaction of content distribution and traffic engineering in various forms, and we explain below how our work relates to and builds upon this prior work.
+
+%\noindent\textbf{Interaction of location diversity and TE:}
+
+{\paragraph{Joint Optimization} Recent work has explored the joint optimization of traffic engineering and "content distribution'', where the latter term refers to the {\em server selection} problem.
+P4P proposed by Xie et al.  \cite{P4P} seeks to improve application performance for peer-to-peer (P2P) traffic while also reducing cost for the ISP. P4P assumes a cooperative model where the ISP supplies hints called {\em p-distances} to P2P applications that when used by them improves their performance and also reduces interdomain transit costs and the MLU for the ISP. In  \cite{Jiang2009} and  \cite{JohariGameTheory}, the authors study the interaction between traffic engineering and content distribution using a game-theoretic model and show that, without a joint optimization, the equilibrium of this interaction may not result in a socially optimal solution. In  \cite{Jiang2009}, it is shown that a joint optimization can achieve benefits of up to 20\% for ISPs and up to 30\% for CDNs as compared to the case when there is no cooperation between them. 
+
+Compared to all of these works that equate content distribution to server selection (or request redirection in our parlance), the \ncp\ optimization formulation additionally considers content placement itself as a degree of freedom. As our results show, optimizing placement is powerful and can single-handedly reduce the MLU significantly even in conjunction with simplistic request redirection and routing strategies. 
+
+%\noindent\textbf{Content Placement in ISP networks:}
+% content pl
+%\noindent\textbf{Network CDNs:}
+%Major ISP/Telco organizations such as AT \& T \cite{att-cdn}, Level-3 \cite{level3-cdn}and Verizon \cite{verizon-cdn} are building hosting and content delivery infrastructure into their networks.  ISPs enjoy a natural advantage for a CDN since they can place content within their networks at close proximity to their own customers. ISPs can integrate CDN infrastructure such as storage and server clusters at their PoP locations. The falling prices of bandwidth are providing the push to these companies to enter CDN market. 
+
+\paragraph{Placement Optimization}
+Applegate et al. \cite{Applegate2010} study the content placement problem for a VoD system that seeks to minimize the aggregate network bandwidth consumed assuming a {\em fixed routing} in the network.  They  compare different video placement algorithms and find that an optimized, demand-aware placement strategy with a small local cache (similar in spirit to our "hybrid'' strategy in $\S$\ref{sec:hybrid}) outperforms purely demand-oblivious LRU-like strategies. Our work differs from theirs with respect to both the problem addressed and the qualitative findings as follows. We model an \ncp\ that in addition to placement also controls routing, and assessing the interaction and relative importance of routing and placement strategies is one of our contributions. 
+
+Furthermore, unlike \cite{Applegate2010}, we find that a simple, demand-oblivious, LRU-like strategy significantly outperforms an optimized, demand-aware (static or hybrid) placement strategy. There are two explanations for this seeming disparity. First, we consider a comprehensive trace of CDN requests with a variety of on-demand video as well as download traffic that exhibits significant daily churn; in comparison, their workload appears to be reasonably predictable even over weekly timescales. Second, the optimized, demand-aware placement strategy they consider also has some benefit of future knowledge and is therefore somewhat comparable to the optimized scheme we analyze with future knowledge (OPT-R/OPT-P/Future in $\S$\ref{sec:ncdn-eval}). In general, obtaining knowledge about future demand may not be practical for all types of content, e.g., news videos, for a large \ncp.  Furthermore, our analysis of different storage ratios suggests that LRU performs worse only at small storage ratios,  and the difference between  LRU and optimized content placement reduces significantly on increasing the storage ratio.
+
+% of additional storage makes it comparable to an optimized scheme with near-perfect future knowledge. 
+
+%In this paper, we study the relative importance of optimizing content placement, flow split and routing on the backbone traffic in an ISP network, and not just a comparison of different content placement algorithms.
+
+
+\paragraph{Traffic Engineering}  Traffic engineering schemes have seen a long line of work and a variety of schemes such as OSPF link-weight optimization \cite{fortz2000internet}, MPLS flow splitting \cite{MPLS2},  optimizing routing using multiple traffic matrices \cite{COPE, multiTM}, online engineering strategies \cite{TEXCP,MPLS2}, and provably near-optimal oblivious routing \cite{Cohen,Racke} have been studied. All of these schemes assume that the demand traffic is a given to which routing must adapt. However, we find that \ancp\ is in a powerful position to change the demand traffic matrix, so much so that even a naive scheme like InvCap, i.e., no engineering at all, suffices in conjunction with a judicious placement strategy and optimizing routing further adds little value. In this respect, our findings are comparable in spirit to Abhigyan et al. \cite{Abhigyan}. However, they focus on the impact of location diversity, assuming a fixed number of randomly placed replicas of each content, and find that even a small number of random replicas suffice to  blur differences between different traffic engineering schemes with respect to a capacity metric (incomparable to MLU), but find that engineering schemes still outperform static InvCap routing. 
+
+
+\eat
+{
+\paragraph{Content-aware Traffic Engineering} 
+
+In CaTE \cite{CATE}, authors evaluate the benefits of content aware traffic engineering for a variety of objectives, such as network cost, latency etc. CaTE's model assumes a co-operation between an ISP and top content providers (CPs) in terms of the volume of traffic on the ISP network. CPs servers are available at multiple locations in the Internet, an observation which the authors substantiate based on traces collected at multiple PoPs of a Tier1 ISP.  They find that if top 10 major CPs make optimal request redirection decisions based on network information provided by ISPs, it can reduce network cost for ISPs as well as latency for the CPs.  In contrast, we study the effect of routing and content placement, in addition to request redirection for a NCDN. Our findings show that demand oblivious content placement and routing, along with simple redirection strateiges suffice to optimize network cost for a CDN. 
+
+}
+%OSPF, MPLS based schemes, online schemes. these schemes are based on a notion of traffic matrix which is known apriori. in our model traffic matrix is not fixed but it depends on the content placement and flow split in the network. Our work compares the performance of naive traffic engineering InvCap and Optimal traffic engineering in a network for a variety of content placement and flow split strategies. we arrive at the conclusion that traditonal traffic engineering makes little different when content placement and flow split is optimized in the network.
+
+%\noindent\textbf{Facility Location:} \tbd{Ramesh: do you want to write something here?}
+
+

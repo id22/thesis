@@ -1,0 +1,67 @@
+%!TEX root = New.tex
+
+\section{Other work}
+
+\subsection{Energy minimization}
+\label{sec:cdnenergy}
+
+Due to growing concerns over energy use of Internet-scale systems such as CDNs, their energy minimization has become a hot research topic. As performance optimization is still the primary objective of content delivery, an energy-minimizing strategy must ensure small or no impact on user-perceived performance. 
+
+%Energy-minimization strategies work both at a datacenter-level as well as across data centers. Analysis of traces within a data center has shown that servers are typically lightly loaded. Motivated by this observation, several papers \cite{mathew12,Jain,lin12,lu13}, based on trace-driven experiments,  have explored how much energy savings can be obtained by using only a fraction of the servers at a given time, and by shutting-off remaining servers or switching them to a low power state. The spare capacity available at every data center also enables geographical load-balancing across data centers. These schemes exploit the differences in electricity prices and in renewable energy availability at various locations to reduce energy costs, energy use, or non-renewable energy use \cite{qureshi2009cutting,Liu11,Gao12,Rao10}. In some cases, complete data centers can be shut-off to avoid cooling costs associated with operation of data centers \cite{,}.
+
+Servers in many datacenters are typically lightly loaded, which opens up the large potential energy savings by using only a fraction of the servers at a given time, and by shutting-off remaining servers or switching them to a low power state as shown in \cite{mathew12,JainEnergy,lin12,lu13}. A key shortcoming of these efforts is that they do not consider impact of shutdown policies on cache miss rates. For this reason, it is unclear if the projected energy savings are indeed achievable without degrading user-perceived performance.  To address this concern, we propose to evaluate how load-balancing and server shutdown policies impact cache miss rates, and present preliminary results in Chapter 5. 
+
+
+\subsection{Traffic engineering for energy optimization}
+\label{sec:teenergy}
+A recent line of work has studied TE algorithms for optimizing network energy use for ISP networks and data center networks\cite{response, elasticTree, greenTE, Chiaraviglio, Andrews}. These approaches save energy by  concentrating the traffic on a subset of links and switches, and shutting off remaining switches and links. In \cite{response} and \cite{elasticTree}, authors demonstrate using Click and OpenFlow based prototypes respectively, the feasibility of implementing these routing protocols in today's switches. 
+
+The energy-saving TE approaches known today work independently of server shutdown policies used in datacenters. 
+However, server shutdown policies  determine which part of the network topology must be kept active, and in turn influence the potential network energy savings.
+%This leads us to ask if there are some server shutdown policies that enable greater network energy savings than others.
+In this thesis, we explore joint optimization of server shutdown and energy-saving TE in a datacenter scenario. 
+In Chapter 5, we present preliminary results showing that joint optimization indeed yields greater network energy savings for a CDN datacenter.
+
+
+\section{Related Work}
+
+
+This paper proposes techniques for reducing energy use of content-serving clusters by deciding content placement and routing to meet the performance requirements while allowing a large fraction of servers and network components to be shut-off. We build on many previous proposed techniques for reducing energy of  an individual server, a cluster, geo-distributed clusters, and  switches and routers in ISP and data center networks . Other related works include load-balancing systems, and papers that have shown benefits of leveraging content placement flexibility.  
+
+%** add a simple distinguishing sentence **
+
+
+\textbf{Switch power management:} Nedevschi et al. \cite{Nedevschi08} study power management algorithms for switches that support sleep states or several power/performance states similar to today's CPUs. Authors show that if switches do support these features, their power management algorithms can halve the network energy consumptions for lightly loaded networks. Power management algorithms for switches, as well as in servers \cite{serverpower}, are complementary to ours, can be used along with techniques in this work.
+
+
+\textbf{Energy-minimizing routing:} Several papers  \cite{response, elasticTree, greenTE, Chiaraviglio, Andrews} have proposed network energy minimizing routing algorithms for ISP networks and data center networks.   These approaches save energy by  concentrating the traffic, which is input in the form of a traffic matrix, on a subset of links and switches, and shutting off remaining switches and links. In \cite{response} and \cite{elasticTree}, authors demonstrate using Click and OpenFlow based prototypes respectively, the feasibility of implementing these routing protocols in today's switches. In comparison to approaches that optimize routing for a given traffic matrix, this paper shows that a joint optimization of content placement and routing for content-serving clusters yields greater network energy savings.
+
+%These approaches assume that both endpoints of a flow are fixed, while in the context of content-serving clusters,  any available server can act as the source of a flow. 
+% The flexibility of choosing the source allows greater network energy savings compared to approaches that optimize routing for a given traffic matrix.
+%********* add work on data-center traffic engineering *********
+
+\textbf{Energy-proportional clusters:} Analysis of data center traces have shown that servers in clusters are  lightly loaded in many cases. Motivated by this observation, several papers \cite{mathew12,JainEnergy,lin12,lu13}, based on trace-driven experiments,  have explored how much energy savings can be obtained by using only a fraction of the servers at a given time, and by shutting-off remaining servers or switching them to a low power state. Their goal is to estimate  the fraction of servers to be kept in active state to handle the demand at any given time, while also limiting the frequency of transitions between different power states to reduce server wear-and-tear. These papers implicitly assume that the total load across servers is independent of the fraction of servers that are active,  and that the load will be evenly distributed across the active set of servers. In this paper, we show how these properties can be satisfied for content-serving clusters. First,  we orchestrate movement of content before server shutdown and after server startup events to ensure that cache hit rates are minimally affected before and after server shutdown and startup events. Second, we make content placement and redirection decisions to evenly distribute the load across the active servers.  
+
+%**** Also, add no network. *****
+
+%****** dig up data on P state and C state ******
+
+%****** experiment with DVFS ******
+
+
+%These papers propose algorithms  to save server energy use in a cluster by shutting-off or switching to a low power state a fraction of servers, while (i) keeping 
+
+%For content-serving clusters, the load on a server depends on cache how often a server is able to serve content from its local cache and cannot be assumed to be constant, and for load to be evenly distributed across servers, content placement algorithms must be suitably designed as we show in this paper.
+
+
+\textbf{Energy-reduction via geographic load-balancing:} Many papers \cite{qureshi2009cutting,Liu11,Gao12,Rao10} have shown that geographical load-balancing across data centers can exploit the differences in electricity prices and in renewable energy availability at various locations to reduce energy costs,  energy use, or non-renewable energy use. In comparison, our work focus on improving energy-efficiency of a single cluster by maximizing shut-down periods of servers and network components by  suitably designing placement and routing algorithms.
+
+
+%\textbf{Load-balancing algorithms:}  Consistent-hashing based replication techniques \cite{consistent-hashing,chord,dynamo} have been used widely to build applications where load-balancing and fault tolerance are required. If a high percentage of servers have been made inactive to save energy then naively applying these techniques could result in highly unbalanced load across servers. In this work, we will study how consistent-hashing based techniques can be adapted to provide load-balancing when a large number of nodes are inactive.  
+
+\textbf{Load-balancing systems:} State-of-the-art load balancing systems such as ETTM \cite{ettm} and  Ananta \cite{ananta} provide a scalable load-balancing solution by moving stateful packet-processing functionality, e.g., NAT translation, to the end-hosts. Our work focuses less on the scalability of the load-balancing system, and more on designing load-balancing policies that reduce cluster energy use by allowing a large fraction of servers and network components to be shut off.
+
+\textbf{Leveraging placement flexibility:} Choudhary et al. \cite{Chowdhury}  show that cluster file systems, e.g., HDFS, GFS, etc., can leverage the flexibility to choose the destination of their writes to avoid congested network links and improve write latencies. Sharma et al \cite{beyondmlu} show that location diversity of content in ISP networks can significantly enhance the performance of traffic engineering algorithms. In the context of  network CDNs, Sharma et al \cite{NCDN} show that content placement flexibility is a powerful degree of freedom and effective content placement in combination with simple static routing algorithms gives close to optimal results for traffic engineering and content distribution objectives. 
+%*** none of them consider energy minimization *** 
+
+

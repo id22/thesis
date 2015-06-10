@@ -1,0 +1,31 @@
+Reviewer A :
+
+Answer to A-1: Dynamic content (e.g. a dynamically generated web page) is outside the scope of this work. That said,  dynamic content  generates a much smaller volume of traffic compared to static content which includes on-demand video and downloads. An NCDN will see a significant reduction in MLU from caching only the static content.
+
+Answer to A-2: The total storage provisioned at all nodes for a storage ratio of 1 is in the range 228 GB (News Trace) to  895 GB (Downloads Trace). The provisioned storage is likely to be much larger if an NCDN were to cache  content from all content providers. Since it is difficult to estimate the total storage requirement, discussing results in terms of storage ratios is more relevant.
+
+A TE scheme with a lower MLU is better. It enables an ISP to reduce its capital cost by delaying link upgrades. A very high link utilization can adversely affect performance by increasing loss rate and queuing delay.
+
+We plan to improve the presentation of Section 5 as suggested by the reviewer.
+
+Central thesis ??
+
+Reviewer B:
+
+The reviewer correctly observes that LRU caching achieves a high cache hit rate which reduces network traffic significantly. But, this does not explain why InvCap routing achieves nearly the same network cost as an optimized routing.  For the traffic due to cache misses,  optimized routing is expected to achieve a lower network cost compared to InvCap routing. Our results show otherwise.  
+
+Our next contribution is to quantify the difference between InvCap+LRU and possibly the ``ideal'' strategy Opt(R+P)Future; we show InvCap+LRU achieves close to the best possible network cost in most cases.
+
+We have performed all our experiments with smaller sized chunks of content  instead of complete content. These experiments do not qualitatively change our findings (Graphs omitted from paper due to lack of space). In fact, we find that chunking of content  helps InvCap+LRU move closer to Opt(R+P)Future.
+
+
+Reviewer C:
+
+NCDN architecture is more compelling now than it was a few years ago because a greater 
+
+
+The driving factor for an NCDN architecture is the growth of on-demand video (excluding IPTV) on the Internet such as Youtube, Netflix, Hulu. References 5, 15,  in paper show the recent and projected growth of this traffic . Licensed-CDN software for NCDNs from Akamai, EdgeCast, and HP also use the growth in over the top video as the motivating example while marketing their products.
+
+We use the Akamai traces to experiment with a realistic pattern of content requests which a network receives across PoPs over time. To this end, we map each entry in the trace irrespective of the ISP which they originated from to the geographically closest PoP on the current ISP topology we are experimenting with,  Abilene or AT\&T.
+
+We have performed our experiments on the real AT\&T topology as well. We could not include the results in our submission since we did not have formal approval to publish results based on the data. Our results are similar to those on the AT\&T topology from RocketFuel. We expect to have formal approval to use AT\&T topology by the time of the final version of the paper.
