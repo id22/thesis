@@ -1,0 +1,242 @@
+\chapter{Introduction-new}
+\eat{
+Infrastructure: servers, links, routers, switches
+
+Infrastructure service: software that manages the resources available in the infrastructure to achieve a particular goal. Services needs to be designed, implemented, and evaluated.
+
+Degrees of freedom available to infrastructure services: set of independent decisions that a service can make as a part of its design. Placement, redirection, and routing.
+
+Infrastructure-heavy businesses tend to have lower profit margins. Hence, it falls 
+}
+
+This thesis is motivated by two prominent trends in the context of the Internet. First, users are accessing increasing amounts of digital content over the Internet. It is estimated that a vast majority of network traffic on the Internet is content, with videos alone expected to account for 80\% of all traffic by 2018. Second, Internet-connected hosts that show a high network mobility, or frequent changing of network addresses, are increasingly common. By 2020, the number of Internet connected mobile end hosts is expected to grow to nearly 10 billion.
+
+A content-dominated, highly mobile Internet needs several forms of infrastructure support. It needs network infrastructure with sufficient capacity to carry traffic to end users. It needs server infrastructure to sustain and accelerate delivery of content. We believe, it needs infrastructure support for handling mobility as well. Such an infrastructure that is currently poorly developed in the Internet as discussed later. Integral to any infrastructure are the \emph{infrastructure services} that manage the resources available in the infrastructure to achieve the desired goals. It is these infrastructure services that form the topic of study of this thesis.
+
+A key goal in the design of infrastructure service is cost reduction. Infrastructure-based businesses tend to have high capital and operational costs, and as a consequence low-profit margins. Internet service provider networks being a case in point. As a result, there is a relentless push for making infrastructure cost-effective to maximize profits. Thus, cost reduction while meeting performance and other constraints is a central design problem that we address in this thesis. 
+
+\textbf{Degrees of freedom in infrastructure services design:}
+
+Due to their geo-distributed deployment, these infrastructure services commonly make three sets of decisions: \emph{content placement}, \emph{request redirection}, and \emph{network routing}. As each of these decisions can be made relatively independently of others, we call them ``degrees of freedom'' available to a service. Figure 1 illustrates these degrees of freedom. Content placement refers to selecting the locations at which a content is placed. Request redirection refers to selecting a location to send a content request to, with a preference for selecting a location that is likely to have the requested content. Network routing refers to selecting the physical path between pairs of nodes in the network.
+
+USE IMAGE:
+
+Each of these decisions contributes towards improving user-perceived performance in an infrastructure service. Content placement reduces the latency between an end-user and the nearest copy of the content that it is requesting. Request redirection complements content placement by sending a request to a nearby location with the requested content. Network routing selects paths with low congestion and delay.
+
+\section{Thesis statement}
+
+We state the thesis statement as follows: \emph{Placement is a more powerful degree of freedom than redirection and routing in shaping traffic for geo-distributed infrastructure services in a content-dominated, highly mobile Internet, and simple placement schemes are effective in improving cost-, performance- and energy-related metrics for these services.}
+
+
+
+\section{Why placement is more powerful than redirection, routing}
+
+A key purpose of geo-distribution in infrastructure services is to maintain service deployment locations close to end-users.  Such deployments can reduce user-perceived latency only if the requested content is available at nearby locations. 
+Content placement is powerful because it determines the availability of content at nearby locations, thereby deciding whether a geo-distributed deployment will be effective in reducing user-perceived latencies. We illustrate with a couple of examples why placement can be a more powerful degree of freedom than redirection and routing.
+
+
+\subsection{Placement vs. redirection}
+
+USE FIG
+
+Among the set of locations with the content, redirection chooses a location to send request. If the content is placed only at a far-away location, irrespective of how redirection is done, a user will observe a high latency to fetch content from the remote location. On the other hand, content placement can create more options to the redirection scheme to choose a location that is nearby. Thus, effective placement is a pre-requisite for a redirection scheme to provide low latencies.
+
+
+\subsection{Placement vs. routing}
+
+We briefly explain the \emph{traffic engineering} problem that is pertinent to our discussion of placement vs. routing. 
+The goal of traffic engineering is to configure network routing. 
+The inputs to this problems are the network topology, link capacities, and a \emph{traffic matrix}. 
+The i,j-th entry in this matrix is the traffic from node i to node j in the network topology.
+A traffic engineering scheme computes routing to satisfy traffic demands while optimizing a cost function dependent on link utilization. For example, a common cost function is the maximum link utilization, MLU. 
+
+USE FIG
+
+Content placement is more powerful than routing because it can change the traffic matrix for which the routing is to be computed. Let us take an example traffic matrix for which routing is to be computed (Figure 3). If all content that a node in a network needs is placed at the same node, there is no traffic to be sent to any other node, then the traffic matrix only as entries whose value is 0. The routing problem becomes trivial in this case. While this is an extreme example, and one may not have sufficient resources to place content at all locations in the network, this examples demonstrates that the ability to change the traffic matrix makes content placement more powerful than routing.
+
+\section{Research contributions}
+
+We study content placement across network points-of-presense in a large Internet service provider. Moreover, the content is static as it contribtues to a vast majority of network traffic in the internet.
+
+We study content placement across servers inside a datacenter. Effictive placement that ensures that despite server shutdown techniques for reducing energy, content availability reduces only by a small margin.
+
+We study placement of name records that store name-to-address mapping for mobile devices, in a geo-distributed key-value store that forms the basis of our name resolution service.
+
+The research in this thesis ranges from performance evaluation to the design and implementation of these infrastructure services, often based on real world datasets.
+
+
+\subsection{Traffic engineering in content-dominated networks}
+
+
+\subsection{Global name service for highly mobile Internet}
+
+
+\subsection{Energy optimization in content datacenters}
+
+
+
+\section{Thesis organization}
+
+
+Thus, cost minimization under performance and other constraints is a key goal for infrastructure services, which also 
+forms a key challenge in the design of infrastructure our work. Next, we provide brief context of the three types of infrastructures that we consider in this thesis.
+ a key challenge for infrastructure services is to reduce cost, 
+
+As a result, there is a relentless push to design cost-effective and performant infrastructure services that m
+generate additional profits and revenue. 
+Accordingly, there is a need for cost-effective infrastructure service design. 
+We illustrate the cost minimization problems that arises for managing three types of infrastructure considered in this thesis. 
+
+%We explain our motivation in the context of three type of infrastructure considered in this thesis. 
+------
+
+Internet service provider network:
+
+Rapid increase in content traffic puts burden on network infrastructure provisioned by operators.
+
+Network operators have been generating low profits due to falling bandwidth prices.
+
+Premium content and services generate most revenue.
+
+Network operators are interested in moving up the value chain by offering content-based services.
+
+Network operators use traffic engineering techniques that configure network for improving network cost, performance and fault tolerance.
+
+Network routing decisions interact with application-level adaptation techniques used for content delivery.
+
+We study how application adaptation for content delivery affects traffic engineering objectives.
+
+How should content delivery be done to aid traffic engineering objectives.
+
+----
+
+Content datacenters:
+
+Energy is a key component of the operational costs for servers running inside datacenters.
+
+Energy-efficient datacenters also contribute to sustainability of the planet.
+
+Content datacenters are used for storing and serving content. 
+
+Rapid traffic and content growth is contibuting to an increase in the datacenter energy use.
+
+Key difference: ensure that availability of content isn't degraded as it can reduce hit rates and degrade user-perceived performance. 
+
+We study how content datacenters can use energy optimization while mitigating the performance impact due to reduced energy.
+
+--------
+
+Global name resolution service:
+
+The Internet has poor support for mobility, which affects end-users as well as application developers.
+
+There have been a number of efforts towards handling mobility.
+
+Naming service can help address mobilty.
+
+Challenge: how to design a name resolution service that can stand up to orders of magnitude higher load and yet response times within milliseconds.
+
+--------
+
+Our work in this thesis is motivated by following two prominent trends in the context of the Internet. First, users are accessing increasing amounts of digital content over the Internet. It is estimated that a vast majority of network traffic on the Internet is content, with videos alone expected to account for 80\% of all traffic by 2018. Second, Internet-connected hosts that show a high network mobility, or frequent changing of network addresses, are increasingly common. By 2020, the number of Internet connected mobile end hosts is expected to grow to nearly 10 billion.
+
+In particular, we focus on services that manage the infrastructure to support a content-dominated, high mobility Internet. Infrastructure services are usually low profit businesses owing to high capital and operational costs. As a result, there is a relentless push to generate additional profits and revenue. Accordingly, there is a need for cost-effective infrastructure service design. We give the following examples relevant to this thesis to illustrate this point. 
+
+Nowhere is this more true than in the case of Internet service providers. As ISPs do the plumbing work of providing pipes across the Internet, only for premium content and applications to generate most of the profits. Google generating revenue via YouTube ads while ISPs provisioing massive amounts of capacity and yet generating lower profits is a common gripe for Internet service profits. No wonder, ISPs have a keen interest in moving up the value chain by designing their network infrastucture to offer content based services. The fact that most of Internet traffic is generated by users accessing content, and therefore there are profit opportunities to be had further serves this argument. Nonetheless, the net infrastructure needs to be managed in a cost effective manner, 
+
+Another important source of costs for today's large Internet infrastructures, particularly datacenters, is the energy costs. Consider content datacneters for example. These are datacenters used primarily for storing and serving content to end users. This is an important class of datacenters given that content and its delivery is a primary activity on the Internet. These are deployed by CDNs, NCDNs and others as well. As such reducing energy costs serves to increase profits for infrastructure owner, in this case, the CDN or the NCDN, which can help them stay competitive. Further, such reductions contribute to making the Internet green as well. 
+
+As a third example, consider a name resolution service for mapping name to network addresses for all devices in the Internet. It has been argued by many that such a global naming service can help 
+
+provide a solution for handling mobility in the Internet. 
+
+
+
+The Internet was originally designed for providing connectivity between two end points that whose network addresses changed infrequently. Over time, the way Internet is used has drifted signficantly from its original intended use. 
+First, the primary purpose main of Internet of Internet has changed from connectivity to content delivery. It is estimated that a vast majority of network traffic on the Internet is content, with videos alone expected to account for 80\% of all traffic by 2015. Second, changing of network addresses, or network mobility, is today a norm for end hosts in the Internet, rather than an exception. 
+A key reason for high mobility is that extremely portable devices that are Internet-connected, and possibly via multiple interfaces are ubiquitous. 
+
+The gap between Internet's current use and its original intented use has had important consequences for network operators, who own and manage parts of the Internet, and for application developers. Network operators today earn revenue from its subscribers for providing Internet connectivity. But, users are inclined more towards the content and services that they obtain over their connection than the connection itself. As such, premier content and services are major revenue earners in the Internet today, and network connectivity has become a low-profit service for network operators. Application-level services similarly suffer due to poor support for mobility in the Internet today. A key evidence of it is that communication inititaion on the Internet is mostly unidirectional, i.e., from the highly mobile end-hosts to the fixed hosts. Service providers develop redundant application-specific mobility support and applications that lack such a support face ungraceful connection disruptions in face of network of mobility of one or both end points.
+
+
+Content placement as key to infrastructure design in a content-dominated.
+ 
+Content-focused internet and its consequences for network operators
+
+Mobile internet and its consequences for application developers
+
+
+Content focused
+
+Context:
+- context: content is common, and a very important class of traffic, and likely to remain common in future also. network CDNs, CDNs, etc.
+- scenario 1: networks with content-mostly traffic. focus on traffic engineering. important problems has key implication on cost, performance, and fault-tolerance of the network. 
+- scenario 2: datacenter focusing on content traffic. an important class of datacenters and point of presence locations. 
+
+Challenges: 
+- interaction betwen overlay and undelay
+- managing content footprint on servers
+
+
+
+Mobile Internet
+
+Context:
+
+- mobile: very common.
+- today: piecemeal solutions
+- future: complete solution to mobility.
+
+
+
+Challenges:
+- large number of names
+- high update load
+- poor cacheability
+
+
+
+Thesis statement:
+
+- content placement is key to 
+
+Traffic engineeing: content placement in a wide-area network
+Content datacenter: content placement in a datacenter network
+Global naming service: placement of name records on a geo-distributed system
+
+
+Contributions:
+
+Traffic engineering:
+
+
+Traffic engineering to beyond just a network routing problem for optimizing a link utilization-based cost function. 
+
+
+Break it into finer granurality and into content flows. 
+(1) model the effect of application-level adaption, enabled by content placement at multiple locations and request redirection.
+
+(1) What content placement?
+(2) Relative importance?
+(3) Jointly optimizing
+(4) Effect of traffic engineering on end-user application performance?
+
+
+
+
+
+
+Content placement as a key to 
+
+- 
+
+- placement decisions are important
+
+- 
+
+Thesis: 
+
+1. Traffic engineering in content-focused networks
+2. Energy management in content datacenters
+3. A global name service for a highly mobile internet
+
