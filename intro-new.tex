@@ -11,7 +11,8 @@ Infrastructure-heavy businesses tend to have lower profit margins. Hence, it fal
 
 This thesis is motivated by two prominent trends in the context of the Internet. First, users are accessing increasing amounts of digital content over the Internet. It is estimated that a vast majority of network traffic on the Internet is content, with videos alone expected to account for 80\% of all traffic by 2018. Second, Internet-connected hosts that show a high network mobility, or frequent changing of network addresses, are increasingly common. By 2020, the number of Internet connected mobile end hosts is expected to grow to nearly 10 billion.
 
-A content-dominated, highly mobile Internet needs several forms of infrastructure support. It needs network infrastructure with sufficient capacity to carry traffic to end users. It needs server infrastructure to sustain and accelerate delivery of content. We believe, it needs infrastructure support for handling mobility as well. Such an infrastructure that is currently poorly developed in the Internet as discussed later. Integral to any infrastructure are the \emph{infrastructure services} that manage the resources available in the infrastructure to achieve the desired goals. It is these infrastructure services that form the topic of study of this thesis.
+A content-dominated, highly mobile Internet needs several forms of infrastructure support. It needs network infrastructure with sufficient capacity to carry traffic to end users. It needs server infrastructure to sustain and accelerate delivery of content. 
+Network mobility presents a challenge to establishing end-to-end communication because it changes the network location of connection end-points. As such, infrastructure support becomes necessary for establishing and maintaining connections. Such an infrastructure is currently poorly developed in the Internet as discussed later. Integral to any infrastructure are the \emph{infrastructure services} that manage the resources available in the infrastructure to achieve the desired goals. It is these infrastructure services that form the topic of study of this thesis.
 
 A key goal in the design of infrastructure service is cost reduction. Infrastructure-based businesses tend to have high capital and operational costs, and as a consequence low-profit margins. Internet service provider networks being a case in point. As a result, there is a relentless push for making infrastructure cost-effective to maximize profits. Thus, cost reduction while meeting performance and other constraints is a central design problem that we address in this thesis. 
 
@@ -54,21 +55,67 @@ USE FIG
 
 Content placement is more powerful than routing because it can change the traffic matrix for which the routing is to be computed. Let us take an example traffic matrix for which routing is to be computed (Figure 3). If all content that a node in a network needs is placed at the same node, there is no traffic to be sent to any other node, then the traffic matrix only as entries whose value is 0. The routing problem becomes trivial in this case. While this is an extreme example, and one may not have sufficient resources to place content at all locations in the network, this examples demonstrates that the ability to change the traffic matrix makes content placement more powerful than routing.
 
-\section{Research contributions}
+\section{Research overview}
 
-We study content placement across network points-of-presense in a large Internet service provider. Moreover, the content is static as it contribtues to a vast majority of network traffic in the internet.
+The research in this thesis is categorized into three topics: 
 
-We study content placement across servers inside a datacenter. Effictive placement that ensures that despite server shutdown techniques for reducing energy, content availability reduces only by a small margin.
+(1) Traffic engineering is an important task for network operators and is responsible for cost and congestion reduction and fault tolerance. While traditionally traffic engineering is viewed as a routing problem, we study the role of content placement in shaping traffic engineering objectives in content-dominated networks.
 
-We study placement of name records that store name-to-address mapping for mobile devices, in a geo-distributed key-value store that forms the basis of our name resolution service.
+(2) The lack of support for handling mobility in the Internet is well-documented. Towards building infrastructure support for mobility in the Internet, we present the design and implementation of Auspice global naming service that meets the scalability and consistency requirements posed due to high mobility.
 
-The research in this thesis ranges from performance evaluation to the design and implementation of these infrastructure services, often based on real world datasets.
+(3) To reduce the energy use of datacenters used for storing and serving content, we design and implement a system shrink that uses server consolidation and content migration to reduce energy use while meeting operator-specified service level agreements.
 
 
 \subsection{Traffic engineering in content-dominated networks}
+Our key insight in the traffic engineering problem in content-dominated networks is that the traffic is generated due to demand for content at each location. Thus, instead of using traffic matrix to represent demand in the network, the demand in such networks is better expressed in the form of a \emph{content matrix}. Each entry in this matrix represents the demand for a content at a given node in the network. In content-dominated networks, the desination of network flows due to a content is fixed, but the location of sources can be moved around depending upon the content placement strategy. Thus, content placement becomes a traffic engineering tool in content-dominated network.
+
+The above observation leads to several questions that we address in this thesis: How do existing placement and routing schemes compare in improving cost and performance metrics in content-dominated networks? What is the relative importance of placement vs. routing in these networks? How to jointly optimize placement and routing, and does it provide benefits over independent optimization?  We address these questions in two settings with varying degrees of flexibilty in placing content as discussed below. 
+
+\subsubsection{ISP with content replicated randomly}
+First, is an ISP network in which content is placed at a few random locations. In doing so, we model the fact that content is often present at multiple locations in the Internet, but that an ISP has little control over its placement. We seek to answer how should ISPs perform network routing in such content-dominated networks. To that, we compare several well-known traffic engineering schemes based on large scale experiments simulating network traffic as a collection of TCP flows. 
+
+Our key findings, based on real network topologies and traffic matrices, are as follows: (1) We find that all traffic engineering schemes, including shortest-path routing, multi-path label switching routing, routing robust to unpredictable variations as well as optimal traffic engineering, achieve similar application performance and network capacity.   (2) We find that even a static shortest-path routing, or in other words no-TE scheme is also 30\% sub-optimal in terms of network capacity. Overall, these results suggest that even a limited placement flexibility reduces the value of sophisticated TE schemes, e.g., optimal TE, over simpler TE schemes, e.g., shortest path routing. These results are further strengthed in the case of a network CDN where the content placement flexibility is even greater.
+
+\subsubsection{Network CDN}
+A network CDN (NCDN) is an ISP that offers content delivery to users on its network. Indeed, ISPs have shown a great interest in deploying NCDNs to monetize their CDN service and to achieve network traffic reduction due to content caching. Unlike a traditional ISP, an NCDN enjoys full control over placement and routing in their network. Accordingly, our work evaluates several combinations of placement and routing schemes that an NCDN can deploy. First, a simple caching scheme for placement and a static-shortest path routing. Second, a joint optimization of placement and routing based on historic demand patterns. Third,  an ideal joint optimization with future knowledge of content demand.  Of particular interest to NCDNs are demand-oblivious schemes such as the first scheme, as they make placement and routing decisions without measurement of content demand and simplify network management for the operators. 
+
+Our key findings, based on real network topologies, and extensive traces from Akamai CDN, demonstrate the effectiveness of a demand-oblivious scheme. First, the demand-oblivious scheme significantly outperforms a scheme that optimizes placement and routing jointly based on historical content demand and performs close to an ideal joint-optimization strategy with knowledge of future content demand.  Second, optimizing routing matters little in NCDNs: whether a static shorted-path routing or a routing optimized based on measured traffic demands is used along with a caching scheme, the network cost differs by less than 10\%. 
+
+
+\textbf{Summary:} Network operators have traditionally focused on optimizing routing to achieve their objectives, but my research shows that in a content-dominated network, they are better served by leveraging placement flexibility using simple demand-oblivious placement schemes.
 
 
 \subsection{Global name service for highly mobile Internet}
+
+A key reason for Internet's poor support for moblity is that communication on the Internet is based on IP addresses that keep changing due to mobility. On the other hand, what remains unchanged is the name or identity of communication end-points. If we can enable communication over names, we can handle mobility. A  global name service (GNS) handle mobility maintaining an up-to-date mapping from names to network addresses for all names. If such a GNS were to exist, an end-point A would be able to establish a connection with another end-point B by querying the GNS for B's adresss as shown in Figure GNSFIG. 
+
+GNSFIG
+
+To appreciate the challenges in implementing such a GNS, we discuss the limitation of Internet's existing naming service DNS as a solution for mobility. (1) DNS relies heavily on passive caching based on TTLs for reducing both system load and client-perceived latency. However, high mobility severely limits effectiveness of TTL-caching. Handling mobility requires up-to-date responses, so the load and client-perceived latency increase with the mobility rate irrespective of the TTL. (2) Under high mobility, the latency to an authoritative name server determines client-perceived query latency in the common case. Today, authoritative name server locations are chosen statically irrespective of where the query demand is coming from, which could results in highly sub-optimal query latencies. (3) Due to DNS's hierarchical design, the implementation of DNSSEC extensions for DNS's security depends on a single root of trust, a root that is tightly controlled today by ICANN and the US Department of Commerce, a state-of-affairs that is inherently anti-competitive and geo-politically problematic. 
+
+Our work makes two main contributions:
+
+We present the design of a global naming system -- a clean slate naming system design -- 
+
+
+%Second, the hierarchy implies that DNS is not well suited to supporting arbitrary names, e.g., ``Alice's phone". Our position is that how endpoint principals are named can affect application flexibility in subtle ways, so a name service must not restrict how applications choose names.
+
+
+
+(1) analayzes three approaches to handle mobility, and discuss why a global name service is a good way to handle them
+
+(2) global naming system: - alleviates the single root of trust problem in dns, while providing federation, and flexibilty over DNS's design
+
+(3) name resolution service for mapping names to address under high mobility: - instances of auspice can be deployed under gns or under dns today, making incremental solution to mobilty feasible.
+
+key challenge boils down to a placement problem of records at a global scale that are being updated several times per day. we contribute a placement algorithm for records 
+
+A placement engine that orchestrates the above demand-aware placement.
+
+Experimental results: - outperforms several existing solutions.
+
+
+
 
 
 \subsection{Energy optimization in content datacenters}
@@ -76,6 +123,25 @@ The research in this thesis ranges from performance evaluation to the design and
 
 
 \section{Thesis organization}
+
+Chapter 1
+
+Chapter 2
+
+Chapter 3
+
+Chapter 4
+
+Chapter 5
+
+Chapter 6
+
+Chapter 7
+
+------
+
+The research in this thesis ranges from performance evaluation to the design and implementation of these infrastructure services, often based on real world datasets.
+
 
 
 Thus, cost minimization under performance and other constraints is a key goal for infrastructure services, which also 
