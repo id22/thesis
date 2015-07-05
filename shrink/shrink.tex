@@ -1,0 +1,64 @@
+\documentclass{sig-alternate-10pt}	
+%\documentclass[letterpaper,twocolumn, 10pt]{article}
+%\usepackage{usenix,endnotes}
+
+%\renewcommand*\rmdefault{ppl}
+%\selectfont
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{verbatim, soul}
+\usepackage{comment,pifont,array,url,amsmath,multirow,latexsym,tabularx}
+\usepackage{ifpdf,rotating,colortbl}
+\usepackage{graphicx}
+\usepackage[lined,linesnumbered,noend]{algorithm2e}
+\usepackage{wrapfig}
+\usepackage{xspace}
+\usepackage{url}
+\usepackage{bbm}
+ \usepackage{wrapfig}
+ \usepackage{sidecap}
+ \usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage[font={sl,small},labelfont=bf,skip=7pt,labelsep=quad]{caption}
+
+
+\newcommand{\TBD}[1]{\textcolor{red}{[\bf{TBD:}#1]}}
+%	
+%} % will appear in bold font and will be set to null eventually.
+\newcommand{\tbd}[1]{\footnote{\bf{TBD:}#1}}
+\newcommand{\eat}[1]{}
+\newcommand{\vsp}{\vspace{-0.1in}}
+
+
+\newcommand{\shrink}{Shrink}
+\newcommand{\cdc}{CDC}
+
+
+\begin{document}
+\title{\shrink: Quantifying and Leveraging Energy-Performance Tradeoff in Content Datacenters}
+
+
+%\author{
+%{\rm Abhigyan Sharma$^\dagger$ \quad Vijay Pasikanti$^\dagger$ \quad Arun Venkataramani$^\dagger$ \quad Ramesh Sitaraman$^{\dagger\star}$}\\
+%$^\dagger$University of Massachusetts Amherst\quad $^\star$Akamai Technologies
+%} % end author
+
+\maketitle
+
+\input{abstract}
+\input{intro}
+
+\input{background}
+\input{analysis}
+\input{design}
+\input{eval}
+\input{related}
+\input{conclusions}
+\input{optimal}
+
+\vfill\eject
+\bibliographystyle{abbrv}
+\bibliography{shrink} 
+
+\end{document}

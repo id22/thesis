@@ -1,8 +1,9 @@
+%!TEX root = new.tex
+
 
 \section{Conclusions}
 
 \label{sec:concl}
 
-We presented the design, implementation, and evaluation of \auspice, a scalable, geo-distributed, key-value store. At the core of \auspice\ is a placement engine for replicating  records to achieve low lookup latency, low update cost, and high availability. We have extensively evaluated \auspice\ for a representative application: a global name service to provide name-to-address mapping for mobile devices. Our evaluation shows that \auspice's placement strategy can significantly improve the performance-cost tradeoffs struck both by commercial managed DNS services employing simplistic replication strategies today as well as previously proposed DHT-based replication alternatives with or without high mobility. 
- 
- 
+In this paper, we presented the design, implementation, and evaluation of \auspice, a scalable, geo-distributed, federated global name service for any Internetwork where high mobility is the norm. The name service can resolve flexible identifiers (human-readable names, self-certifying identifiers, or arbitrary strings) to network locations or other attributes that can also be defined in a flexible manner. At the core of \auspice\ is a placement engine for replicating name records to achieve low lookup latency, low update cost, and high availability. Our evaluation shows that \auspice's placement strategy can significantly improve the performance-cost tradeoffs struck both by commercial managed DNS services employing simplistic replication strategies today as well as previously proposed DHT-based replication alternatives with or without high mobility. Our case studies confirm that \auspice\ can form the basis of an end-to-end mobility solution and also enable novel context-aware communication primitives that generalize name- or address-based communication. A pre-release version of \auspice\ on EC2 can be accessed through the developer portal at \verb+http://gns.name+.
+

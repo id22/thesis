@@ -1,0 +1,55 @@
+%!TEX root = shrink.tex
+
+\section{Discussion}
+\label{sec:discussion}
+
+\textbf{Energy use vs. energy cost:} There are three types of \cdc s in terms of their energy cost to an operator. 
+
+\emph{(1) Operator-owned facility:} If a \cdc\ operator owns the datacenter facility, it directly pays to the electricity companies based on its usage. In such datacenters, a reduction in energy use by \shrink\ is likely to bring a reduction in electricity costs as well.
+
+\emph{(2) Co-location facility:} A \cdc\ at a co-location facility typically pays by the provisioned power and not the electricity used \cite{qureshi2009cutting}. Therefore, a reduction in energy use will not bring cost savings to \cdc\ operator with the existing pricing models. However, it is possible a \cdc\ operator may use the reduced energy as a leverage for negotiating a cheaper pricing. 
+
+\emph{(3) Co-location inside ISP networks:} A \cdc\ at a co-location facility maintained by an ISP often has a symbiotic relation with the ISP, where the \cdc\ caches content to reduce the inter-domain traffic for the ISP while an ISP provides co-location free of charge \cite{google-caching}. In such \cdc s, energy savings do not translate to cost savings to the \cdc\ operator.  Although, energy savings do benefit the ISP, who eventually pays for the electricity.
+
+The type of usage-based energy pricing also determines the cost savings for an operator. Specifically, we distinguish between flat rate pricing and time-of-use pricing \cite{pge-website}. With a flat rate pricing, a given percentage reduction in the energy use results in the same percentage reduction in the energy cost. With a time-of-use pricing, the percentage reduction in the energy use and the energy cost may not be the same. For example, if the peak load on a \cdc\ coincides with the peak hour of electricity prices, the percentage reduction in the energy cost would be lower than the percentage reduction in the energy use.
+
+%\textbf{\shrink\ as a dynamic provisioning tool:} \shrink\ can be used as a dynamic provisioning tool by an operator that is running a content delivery site on infrastructure rented from a cloud-computing platform such as Amazon EC2. In such a setting, the operator may use \shrink\ to dynamically provision the number of active servers in accordance with incoming request load. In such a setting, the operator may not be able to perform network consolidation, but it can run the server energy optimization and load balancing sub-systems of \shrink\ and dynamically provision the number of active servers in accordance with incoming request load.  While functioning as a dynamic provisioning tool, \shrink\ can help reduce infrastructure costs for the operator.
+
+\textbf{Impact on web-page load time:} Our prototype-based experiments evaluate the response time for individual HTTP requests, and hence do not capture a key metric that is more relevant from an end-user's perspective: web-page load time. However, we expect the inflation in web-page load time to be lower than the inflation in response times given that computation in web browsers constitutes up to 35\% of the critical path of a web-page load time \cite{wprof}.
+
+
+
+\section{Related work}
+
+Our effort distinguishes from prior work in quantifying the energy-response time tradeoff  in \cdc s, presenting the design and implementation of a system to leverage this tradeoff and proposing a network-aware server consolidation scheme to reduce network energy use.  Prior work on reducing energy of datacenters can be divided into three topics: (1) power-proportionality of servers and switches.  (2) server and network consolidation in a datacenter and (3) global load balancing across datacenters.
+
+\textbf{Power-proportional servers and switches:}  Several efforts have focused on reducing energy use of a server's sub-systems such as CPU \cite{dvfs}, disk \cite{lu1999adaptive}, and memory \cite{fan2001memory}. Similarly, Nedevschi et al. \cite{Nedevschi08} study power management for switches that support sleep states or several power/performance states similar to CPUs. Nonetheless, today's servers and switches are far from power-proportional. Mahadevan et al. show that networking equipment consumes 62\%-91\% of their peak energy in idle state \cite{mahadevan2009power} and servers consume 32\% to 42\% of maximum power at a small utilization of 10\% \cite{spec}. Until the ideal of power-proportionality is achieved, consolidation remains a promising approach to save energy.
+
+\textbf{Server consolidation:} Given the long line of work in server consolidation, our work does not focus on saving more energy than the existing consolidation schemes, but instead on accurately quantifying the impact on response times of a simple consolidation scheme.
+%Both analytical and experimental studies of server consolidation have been previously explored. 
+
+%A long line of work has studied consolidation techniques to reduce datacenter energy, including efforts that are analytical in nature as well as implementation-based efforts. 
+
+The analytical work in this area shares similar goals as us.  Lin et al. \cite{lin12} propose an algorithm for optimizing a cost metric that incorporates energy costs, on-off switching costs and cost of degradation in performance. Mathew et al. \cite{mathew12} propose an algorithm that balances energy use, reliability and availability of servers, which they evaluate based on load traces from Akamai datacenters. In comparison, our implementation-based approach enables us to accurately model the relation between server utilization and response time, impact of server consolidation on cache hit rates, and non-ideal load balancing, to accurately quantify the impact of consolidation on response time for \cdc s.
+
+Several efforts have conducted an implementation-based evaluation of server consolidation for stateless systems. Chase et al. \cite{chase2001managing} allocate resources among multiple co-hosted services in a cluster while reducing energy via consolidation. Pinheiro's \cite{pinheiro2001load} system proposes consolidation and load balancing algorithms given a bound on the performance degradation that is acceptable.  Rajamani et al. \cite{rajamani2003evaluating} evaluate consolidation schemes for a modified TPC-W workload. In comparison, our effort focuses on \cdc s that maintain a large amount of state in the form of cached content. In \cdc s, the effect of consolidation on response times cannot be evaluated accurately without accounting for the effect of consolidation on the availability of cached content and the resulting cache hit rates.
+%One of our key findings is that consolidation results in a small impact on cache hit rates, which helps \shrink\ achieve a good energy-response time tradeoff.
+
+Trushkowsky et al. \cite{Trushkowsky:2011}  dynamically allocate servers and reconfigure the data stored on the servers to meet service-level objectives such as 99-th percentile request latency.  However, there are two key differences between their work and ours. First, they focus  on a workload exclusively of small (256B) objects stored in-memory, whereas  \cdc s need to deal with orders of magnitude of heterogeneity in object sizes and extensively use a disk cache to improve hit rates.  Second, their system appears to be a backend data store, which always has content available within the datacenter. In comparison, \cdc s have a significant fraction of traffic to remote datacenters due to cache misses, and the impact of consolidation on response time in \cdc s depends on the increase in traffic to remote datacenters that consolidation causes. For these reasons, it is not clear if their findings on the impact of dynamic server allocation on request latency would be applicable for \cdc s.
+%One of our key findings is that consolidation results in a small increase in cache miss rates, which helps \shrink\ achieve a good energy-response time tradeoff. 
+
+%\TBD{we optimize network energy use also}
+
+\textbf{Network consolidation:} Network  consolidation has been studied for both wide-area and data center networks \cite{response, elasticTree, greenTE, Chiaraviglio, Andrews}. Network consolidation concentrates traffic, represented in the form of a traffic matrix, on a subset of links and switches, and turns off remaining switches and links to save energy. Our work differentiates from prior work in two ways. First, prior work evaluates schemes mostly using traffic engineering metrics such as link utilization, while we evaluate actual end user response time for a real application and show that network consolidation can be performed with a small performance impact in \cdc s. Second, we show network consolidation is closely related to server consolidation. Our network-aware server consolidation saves up to 45\% more network energy over a network-unaware server consolidation scheme.
+%network-aware server consolidation increase the potential savings that a network consolidation scheme can achieve. 
+%
+%
+%
+%
+%
+%
+% with little effort on measuring response times for real applications
+%
+%While previous work has studied server and network consolidation as independent problems, we show that these problems are closely related. For the same number of servers, which set of servers is chosen affects potential energy savings that a network consolidation scheme can achieve. Further, we propose a simple network-aware server consolidation scheme saves up to 45\% more network energy over a network-unaware server consolidation scheme.
+
+\textbf{Global load balancing:} Many papers \cite{Liu11,qureshi2009cutting,Gao12,Rao10}  have shown that geographical load-balancing across data centers can exploit the differences in electricity prices and in renewable energy availability at various locations to reduce energy costs, energy use, or non-renewable energy use.  In comparison, our work focus on improving energy-efficiency of a single \cdc\ by the use of consolidation. We believe that global load balancing can complement \shrink\ in reducing energy use and its cost across datacenters.

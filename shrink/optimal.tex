@@ -1,0 +1,75 @@
+
+
+
+\section{Network energy lower bound}
+\label{sec:netlb}
+We derive lower bounds on the network energy use for FatTree \cite{fattree} and VL2 \cite{vl2} under the constraint that $n$  servers that are active must be able to simultaneously send traffic to clients equal to the external bandwidth $E$ via the set of active switches only.
+
+\textbf{VL2:} Let the energy use of each core, aggregation and ToR switch be $PC$, $PA$ and $PT$ respectively.
+Let $L$ be the capacity of links between each pair of core and aggregation switches. 
+If  $c$ core switches and $a$ aggregation switches be active, then
+the maximum number of servers that can be supported is $ \textit{nmax} = (a\times c\times L/E)$ and the total energy use of core and aggregation switches is $\textit{etotal} = (c \times PC + a \times PA)$. 
+We select the optimal values of $\textit{a\_opt}$ and $\textit{c\_opt}$ (by enumerating all values) such that \textit{etotal} is minimized under the constraint that $\textit{nmax} > n$. 
+Assuming each ToR switch connects to $k$ servers,  the minimum number of ToR switches needed is $\lceil n/k \rceil$. 
+Thus, a lower bound on the total network energy use is $(\lceil n/k \rceil PT) + (\textit{c\_opt} \times PC + \textit{a\_opt} \times PA)$.
+
+
+\textbf{FatTree:} Switches are identical in a FatTree. So, a lower bound the number of active switches gives a lower bound on network energy use also.
+
+
+
+
+Let $m_1, \cdots m_k$ be the active servers in the $k$ pods so that $m_1 + \cdots + m_k = n$.  In a pod with $m$ active servers, at least $2 \sqrt{m}$ switches must be active. Thus, a total of $(2 (\sqrt{m_1} + \cdots + \sqrt{m_k} ))$ pod switches must be active. 
+
+Let $c$ be the number of active core switches. We claim that the number of active servers in any pod can at most be $c$. The reason is that a core switch has only one link to switches in each pod, and hence can receive traffic from only one server sending traffic at its outgoing link capacity to external clients. The values of $m_1, \cdots m_k$ that minimizes the number of active pod switches is given by $m_1 = m_2 = \cdots = m_l = c$,  $m_{l+1} = (n \bmod c)$, and $m_{l+2} = m_{l+3} = \cdots  m_{k} = 0$, where $l = \lfloor n/c \rfloor$.  Let $p$ be minimum number of active pod switches thus computed. Then, the minimum number of total active switches active is given by $(p+c)$.
+
+
+
+% If $m_1, \cdots m_k$ are the active servers in the $k$ pods, then a total of $(2 (\sqrt{m_1} + \cdots + \sqrt{m_k} ))$ pod switches must be active.
+
+
+%If $c$ core switches are active, the values of $m_1, \cdots m_k$ where $m_1 + \cdots + m_k = n$ that minimizes the number of active pod switches is given by $m_1 = m_2 = \cdots = m_l = c$,  $m_{l+1} = (n \bmod c)$, and $m_{l+2} = m_{l+3} = \cdots  m_{k} = 0$, where $l = \lfloor n/c \rfloor$.  Let $p$ be minimum number of active pod switches thus computed. Then, the minimum number of total active switches active is given by $(p+c)$.
+
+Computing the minimum number of switches for all possible values of $c\ (c \leq n, c \leq k^2/4)$ and taking their minimum gives a lower bound on the number of active switches for this topology.
+
+%taking the least possible value of $c$ for which 
+
+
+
+%\textbf{FatTree:} A $k$-FatTree is built using identical switches with $k$ ports of equal capacity. We compute the least number of core, upper-level pod and lower-level pod switches that are active. Each lower-level pod switch is connected to $k/2$ servers. Therefore, at least $\lceil n/(k/2) \rceil$ lower-level pod switches are active. Each upper-level pod switch has $k/2$ ports to lower-level pod switches and hence it can receive traffic from at most $k/2$ servers sending traffic at their outgoing link capacity to external clients. Thus, $\lceil n/(k/2) \rceil$ upper-level pod switches are active. Each core switch has only one link to switch in each pod, and hence can receive traffic from only one server sending traffic at its outgoing link capacity to external clients. Thus, the minimum number of core switches is equal to the maximum number of servers that are active in any pod. There at least one out of $k$ pods has at least $\lceil n/k \rceil$ active servers. In total, $(\lceil n/k \rceil + 2 \lceil n/(k/2) \rceil)$ switches must be active.
+
+%Since each  lower-level pod switch and upper-level pod switch supports at most $k/2$ active servers, at least $\lceil n/(k/2) \rceil $ lower-level pod switches and upper-level pod switches must be active.
+
+
+
+\eat{
+\section{Characteristic time approx.}
+\label{sec:approximation}
+The characteristic-time approximation computes the hit rates of each content served by an LRU cache \cite{che2002hierarchical}. This approximation has proved accurate for workloads with a Zipf content popularity distribution.  Let $O$ be the set of unit-sized content served by a cache of size $S$ units and $l_j$ denote the request rate for content $j \in O$. Solving the equations below using fixed-point approximation yields the hit rates, $h_j$, for content $j \in O$ and, $T$, the characteristic time of the cache. The cache hit rate across all content is $\frac{\sum_{j\in O}h_j l_j}{\sum_{j\in O} l_j}$. 
+\[h_i = 1 - e^{l_j T}\quad \forall j \in O\]
+\[\sum_{j \in O} h_j = S \]
+}
+
+\eat{
+\section{MIP for energy optimal node selection}
+\label{sec:optimal}
+
+We describe the optimal strategy for selecting servers and switches that minimize network energy use given the number of active servers in a datacenter and the traffic flow from each active server to the client node. Let $N$ be the set of all nodes in a 3-level datacenter topology, with servers $S$ as leaves  and switches $R$, and a virtual client node $c$. We assume a tree-like datacenter topology in which all links are between nodes with a difference of one in their heights. The virtual client node is the root node in the topology is connected via infinite capacity links to all core-switches. Let $E$ be the set of unidirectional edges in the datacenter in the direction from leaves to root, such that $e_{ij}$ is the link from node $i\in N$ to node $j \in N$ with link capacity $C_{ij}$. Let $O(j)$ and $I(j)$ are incoming and outgoing links at switch $j$. 
+ Let $f$ be the traffic flow from each active server to the client node. Further, the number of servers to be kept active is $A$. Switch $i \in R$ consumes power $P_i$ and the power use of ports at the two ends of link $e_{ij}$ $Q_{ij}$  and $Q_{ji}$.  Let $s_i$ denote a binary variable indicating whether server $i \in S$ is turned on. Let $r_i$ denote a binary variable indicating whether switch $i \in R$ is turned on. Let, $t_{ij}$ denote a  binary variable indicating whether link $e_{ij} \in E$ is active.
+
+
+\[\textit{Minimize:}\quad\sum_{i \in R} r_i P_i+\sum_{e_{ij} \in E} t_{ij} (Q_{ij} + Q_{ji})\]
+
+\emph{Constraints:}
+
+\[\sum_{i \in R} s_i = A \quad\textit{\small{\# Number of active servers is A}}\]
+\[f_{ij} = s_i f\ \ \forall i \in S, j \in \textit{O(i)}\ \  \textit{\small{\# Active server sends f traffic units}}\]
+\[\sum_{e_{ij} \in O(j)}f_{ij}=\sum_{e_{jk} \in I(j)} f_{jk}\ \forall j \in R \ \textit{\small{\# Flow conservation at switch}}\]
+\[f_{ij} \leq C_{ij} t_{ij} \ \forall e_{ij} \in E\ \textit{\small{\# Link, if on, carries traffic up to capacity}}\]
+\[t_{ij} \leq r_j \  \forall j \in R, e_{ij} \in I(j)\ \textit{\small{\# Incoming links off, if switch is off}}\]
+\[t_{jk} \leq r_j \  \forall j \in R, e_{jk} \in O(j)\ \textit{\small{\# Outgoing links off, if switch is off}}\]
+\[r_j \leq \sum_{e_{ij} \in I(j) } t_{ij} \ \textit{\small{\# If all incoming links are active, switch is off}}\]
+%\[r_j \leq \sum_{e_{jk} \in  O(j) } t_{jk}\ \textit{\# } \]
+%\[s_i, r_k,  = \{0,1\} \forall i \in S, r_i = \{0,1\} \forall i \in R, t_{ij} = \{0,1\} \forall e_{ij} \in E\]
+
+}

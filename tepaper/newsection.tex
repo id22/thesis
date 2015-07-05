@@ -8,7 +8,7 @@ In experiments until now, users leverage location diversity by downloading a fil
 This adaptation is inspired by redirection schemes that are widely used by CDNs today \cite{Akamai2002,donar}.
 These experiments reinforce our earlier finding that all TE schemes achieve nearly the same SPF values when applications adapt to location diversity.
 With least latency adaptation, an increase in location diversity yields little improvement in SPF of any TE scheme.
-Least latency adaptation reduces the SPF of \opt\ to bridge the gap between \opt\ and sub-optimal schemes such as \optwt.
+This adaptation reduces the SPF of \opt\ to bridge the gap between \opt\ and sub-optimal schemes such as \optwt.
 
 
 
@@ -143,7 +143,7 @@ We select additional replica locations of a file such that the probability of pl
 \subfigure{\includegraphics[scale=0.5]{newimages/ATT2/k7_MLU.pdf}}
  \end{center}
  \vspace{-0.2in}
-\caption{\label{fig:latency_adapt} [US-ISP] Mean SPF values of TE schemes with least latency adaptation. Error bars show the maximum and minimum SPF values over 20 repetitions. At higher location diversity, SPF values do not increase, in some cases even reduce, as location diversity increases from k = 1 to k = 7.}
+\caption{[US-ISP] Mean SPF values of TE schemes with least latency adaptation. Error bars show the maximum and minimum SPF values over 20 repetitions. At higher location diversity, SPF values do not increase, in some cases even reduce, as location diversity increases from k = 1 to k = 7.}
 \vspace{-0.2in}
 \label{fig:leastlatspf}
 \end{figure}
@@ -154,7 +154,7 @@ We select additional replica locations of a file such that the probability of pl
 \includegraphics[scale=0.5]{newimages/ATT2/TM27_totalTraffic.pdf}
 \end{center}
 \vspace{-0.2in}
-\caption{\label{fig:latency_adapt} [US-ISP, Traffic matrix TM-1, surge factor = 1]  Due to least latency adaptation, total traffic reduces to one-third as location diversity increases from k = 1 to k = 7.  Despite reduction in total traffic, SPF does not improve.}
+\caption{[US-ISP, Traffic matrix TM-1, surge factor = 1]  Due to least latency adaptation, total traffic reduces to one-third as location diversity increases from k = 1 to k = 7.  Despite reduction in total traffic, SPF does not improve.}
 \vspace{-0.2in}
 \label{fig:totaltraffic}
 \end{figure}
@@ -187,47 +187,24 @@ These observations are consistent with our findings in earlier set of experiment
 Contrary to expectation, increasing location diversity yields little improvement in SPF of any TE scheme.
 In Figure \ref{fig:leastlatspf}, the bars for each TM in the top graph (k = 1) are nearly as  tall as the bars in the bottom graph (k = 7). 
 In some cases, bars in the bottom graph are slightly shorter, that is, SPF worsens on increasing location diversity, e.g.,  TM-2 for \opt.
-To explain this unexpected behavior, we show, in Figure \ref{fig:totaltraffic}, the total traffic on all links at different levels of location diversity for a US-ISP traffic matrix.
-We find that the total traffic on all links at k = 7 is one-third of the total traffic at k = 1 for every scheme.
-Least latency adaptation to location diversity is able to reduce traffic of most links, but it is unable to reduce the peak link utilization.
-The most utilized link is the first to experience congestion at higher surge factors.
-This explains why SPF does not improve despite a reduction in total traffic.
 
-Least latency adaptation does not respond to congestion by moving traffic from the most utilized link to other under-utilized links.
-It always downloads from the least propagation delay location, irrespective of the congestion on the path from that location.
-An implication of this finding is that an adaptation scheme must be responsive to network congestion to leverage location diversity and increase the network's tolerance to traffic demand surges.
 
-%An increase in location diversity, however, reduces the traffic on most links dramatically.
-%This is evident from Figure 15, which shows the total traffic on all links at different levels of location diversity for a US-ISP traffic matrix.
-%The total traffic on all links at k = 7 is one-third of the total traffic at k = 1 for every scheme.
-%
-%Despite a reduction in link utilization  of most links, the peak link utilization does not reduce.
-%
-%But the peak link utilization does not reduce, it even increases in some cases, as location diversity increases.
-%The most utilized link is the first to experience congestion at higher surge factors.
-%This explains why SPF does not improve despite a reduction in total traffic. 
-
-\eat{Least latency adaptation does not respond to congestion by moving traffic from the most utilized link to other under-utilized links.
-It always downloads from the least propagation delay location, irrespective of the congestion on the path from that location.
+With more location diversity, the utilization  of most links reduces dramatically.
+This is evident from Figure 15, which shows the total traffic on all links at different levels of location diversity for a US-ISP  traffic matrix.
+The total traffic on all links at k = 7 is one-third of the total traffic at k = 1 for every scheme.
+But the peak link utilization does not reduce, it even increases in some cases, as location diversity increases.
+This is why SPF does not improve despite a reduction in total traffic. 
 
 Contrary to expectation, SPF yields no improvement with increasing location diversity.
 In Figure \ref{fig:leastlatspf}, the bars for each TM in the top graph (k = 1) are nearly as  tall as the bars in the bottom graph (k = 7). 
 In some cases, bars in the bottom graph are slightly shorter, that is, SPF worsens on increasing location diversity, e.g.,  TM-2 for \opt.
-}
 
 
-
-
-
-\eat{
 Figure 15 shows the total traffic on all links at different levels of location diversity for a US-ISP  traffic matrix. In this graph, the surge factor is always equal to 1, so the aggregate demand at end-nodes remains the same. But, the total traffic on all links at k = 7 is one-third of the total traffic at k = 1 for every scheme.
-
 
 %For a single traffic matrix (TM-1), Figure \ref{fig:totaltraffic} shows the total traffic on all links for all location diversity levels. 
 
 %On the other hand, the total traffic on all links  reduces to one-third for all TE schemes as location diversity increases from k = 1 to k = 7 (Figure \ref{fig:totaltraffic}). 
-
-
 With more location diversity, users, on average, download files from a location closer than before.
 This reduces the total traffic on all links, and reduces utilization of most links.
 But the maximum link utilization does not reduce, it even increases in some cases, as location diversity increases. 
@@ -237,7 +214,7 @@ It always downloads from the least propagation delay location, irrespective of t
 This is why SPF does not improve despite a reduction in total traffic. 
 An implication of this finding is that an adaptation scheme must be responsive to network congestion to leverage location diversity and increase the network's tolerance to traffic demand surges.
 
-}
+
 
 %Figure 15 shows a different metric: the total traffic on all links at different levels of location diversity for a US-ISP  traffic matrix.
 %In this graph, the surge factor is always equal to 1, so the aggregate demand at end-nodes remains the same. 
@@ -257,6 +234,9 @@ An implication of this finding is that an adaptation scheme must be responsive t
 %But the maximum link utilization does not reduce, it even increases in some cases, as location diversity increases. 
 %The most utilized link is the first to experience congestion at higher surge factors.
 
+Least latency adaptation does not respond to congestion by moving traffic from the most utilized link to other under-utilized links.
+It always downloads from the least propagation delay location, irrespective of the congestion on the path from that location.
+An implication of this finding is that an adaptation scheme must be responsive to network congestion to leverage location diversity and increase the network's tolerance to traffic demand surges.
 
 %Location diversity blurs differences between TE schemes.
 

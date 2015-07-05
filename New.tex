@@ -87,7 +87,7 @@
 %% umthesis changes the default font size to 12pt, but you may specify 10pt or
 %%   11pt in the options.
 
-\documentclass[dissertation,condensed]{umthesis}          % for Ph.D. dissertation or proposal
+\documentclass[dissertation,singlespace]{umthesis}          % for Ph.D. dissertation or proposal
 % \documentclass[thesis]{umthesis}  % for Master's thesis
 
 %%
@@ -241,6 +241,8 @@
 
 % Shrink macros
 \newcommand{\shrink}{Shrink}
+\newcommand{\cdc}{CDC}
+
 
 \begin{document}
 
@@ -270,10 +272,10 @@
 %\title{A joint control plane for network management and content delivery in Network-CDNs}
 \title{Role of placement schemes on the interaction between network and content delivery}
 %\title{Planned vs. unplanned approaches to optimize performance and cost objectives of content delivery}
-\author{Abhigyan Sharma}
-\date{July 2014} % The date you'll actually graduate -- must be
+\author{Abhigyan}
+\date{September 2015} % The date you'll actually graduate -- must be
                      % February, May, or September
-\copyrightyear{2014}
+\copyrightyear{2015}
 \bachelors{B. Tech.}{Indian Institute of Technology, Kharagpur, India}
 \masters{M. S.}{University of Massachusetts Amherst}
 %\secondmasters{M.Ed.}{Antioch College}
@@ -385,9 +387,10 @@
 %% the following two lines.  This is OPTIONAL:
 %\unnumberedchapter{Introduction}
 \input{intro-new}
-\input{intro}
+%\input{intro}
 %\input{intro-other}
-\input{background}
+\input{background-new}
+%\input{background}
 %\input{related}
 
 % new chapter
@@ -406,7 +409,7 @@
 \input{tepaper/section4}
 \input{tepaper/section5}
 \input{tepaper/app_performance_and_capacity}
-%\input{tepaper/newsection}
+\input{tepaper/newsection}
 %\input{section6}
 %\input{tepaper/section7}
 \input{tepaper/section8}
@@ -426,7 +429,7 @@
 
 
 
-\input{shrink}
+
 
 %%%\input{energy/abstract} % comment abstract 
 %\input{energy/intro}
@@ -441,19 +444,30 @@
 
 \graphicspath{ {./auspice/} }
 
-\input{auspice/newintro}
+\input{auspice/intro}
+\input{auspice/bg}
 \input{auspice/design}
-
 \input{auspice/implementation}
 \input{auspice/eval}
+\input{auspice/eval-case}
 \input{auspice/eval-part2}
 \input{auspice/related}
 \input{auspice/conclusion}
 
-\input{proposed}
+\graphicspath{ {./shrink/} }
+\input{shrink/intro}
 
-%
-%\appendix
+\input{shrink/background}
+\input{shrink/analysis}
+\input{shrink/design}
+\input{shrink/eval}
+\input{shrink/related}
+\input{shrink/conclusions}
+
+\input{conclusion}
+\appendix
+\input{ncdnpaper/Appendix}
+\input{shrink/optimal}
 %\chapter{THE FIRST APPENDIX TITLE}
 %...
 %\chapter{THE SECOND APPENDIX TITLE}
@@ -470,5 +484,6 @@
 %% A bibliography is required.
 \bibliographystyle{umthesis}
 \bibliography{New}
+%\bibliography{shrink/shrink} 
 \end{document}
 

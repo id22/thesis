@@ -1,0 +1,4 @@
+Scheme	"Server\nIdle" "Server\nClientTraffic" "Server\nOtherTraffic" Network
+Shrink 16 10 4 5
+RandomServerShutdown 17 10 6 10
+AlternateLB 18 10 7 6

@@ -1,0 +1,71 @@
+background:
+
+key points of the paper:
+
+- Energy savings are possible via consolidation, but what is the performance impact?
+ 
+- Performance impact is due to increased load and due to increased miss rates. to what extent do each of these affect performance?
+
+- Do simple server provisioning and load balancing techniques provide an acceptable tradeoff?
+
+- explain 
+
+What should the background section say?
+
+- what is a cdc?
+
+- how do CDCs optimize performance?
+
+- why is energy a concern for CDCs?
+
+GOAL:
+
+- reduce energy
+- improve performance
+- improve reliability
+
+challenge: tradeoff
+
+
+limitation of prior work:
+
+- do not model the interaction between server consolidation and load balancing, and hence do not accurately capture the performance impact.
+
+why is it necessary?
+
+1. determines cache hit rates with consolidation
+
+2. determines load-dependent latency. in the ideal, load evenly distributed. for the same level of consolidation, minimal load-dependent latency. uneven distribution could increase load-dependent latency and the performance degradation due to consolidation.
+
+
+design:
+
+- server consolidation & adapts load balancing, which enables an accurate quantification of energy-performance tradeoff.
+
+- provides knobs to operators to achieve the desired tradeoff between energy use, performance and reliability.
+
+
+analysis:
+
+under what conditions are good tradeoffs achievable.
+
+summary: suggests enouraging tradeoffs are achievable for zipfian workloads provided utilization increases at a slow rate.
+
+
+ 
+
+evaluation:
+
+1. quantify the tradeoff and compare it to the best achievable.
+2. relative contribution of the two factors
+3. sensitivity of findings to system parameters and available resources.
+
+
+discussion:
+
+1. power cost: 
+
+- 
+
+------
+p

@@ -31,7 +31,11 @@ This thesis builds on prior research in three areas: traffic engineering, conten
 
 The goal of traffic engineering (TE)  is to avoid congestion hotspots in the network by optimizing routes based on network topology and expected traffic demand. In the context of large Internet service provider (ISP) networks, traffic engineering decides both intra-domain (within the ISP) and inter-domain routing (across ISPs). We focus here on intra-domain routing and refer the reader to  \cite{Feamster2003,rexford} for a survey of inter-domain traffic engineering. 
 
-We classify traffic engineering schemes based on the frequency at which they update routing. By this attribute, TE schemes can be grouped into three categories: (1) \emph{Oblivious TE} uses static routes that are seldom updated \cite{Cohen,Racke}. (2) \emph{Offline TE}  updates routes periodically, e.g., every few hours or every few days, based on recent history of traffic demand \cite{fortz2000internet,fortz2002traffic}. (3) \emph{Online TE} updates routes at timescales of hundreds of milliseconds, reacting instantaneously to traffic demand changes \cite{TEXCP}.
+
+
+
+
+We classify traffic engineering schemes based on the frequency at which they update routing. By this attribute, TE schemes can be grouped into three categories: (1) \emph{Demand-oblivious TE} uses static routes that are seldom updated \cite{Cohen,Racke}. (2) \emph{Demand-aware TE}  updates routes periodically, e.g., every few hours or every few days, based on recent history of traffic demand \cite{fortz2000internet,fortz2002traffic}. (3) \emph{Online TE} updates routes at timescales of hundreds of milliseconds, reacting instantaneously to traffic demand changes \cite{TEXCP}.
 
 TE schemes are evaluated based on link utilization based metrics, e.g., a widely used metric is maximum link utilization \cite{COPE}. A TE scheme is usually compared against the optimal solution that minimizes the given metric by solving a multi-commodity flow optimization  \cite{TEXCP,fortz2000internet}.
 By this measure, oblivious routing schemes perform poorly and can be shown to be arbitrarily worse compared to the optimal strategy  \cite{fortz2000internet}. For many ISPs networks, simple oblivious routing schemes are sub-optimal by a small constant factor  \cite{COPE,MultiTM,TEXCP}.

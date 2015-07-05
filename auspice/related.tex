@@ -1,4 +1,4 @@
-
+%!TEX root = Main.tex
 %\section{Limitations and future work}
 %\vspace{-0.1in}
 %\subsection{Limitations and future work}
@@ -20,11 +20,11 @@
 %\textbf{Estimating network distances:} \auspice's placement engine relies on efficiently estimating network distances based on the network addresses of clients or local name servers. Our current implementation involves infrequently measuring ping latencies between name servers and local name servers; as part of ongoing work, we are evaluating  other alternatives including using IP-to-geo distances or iPlane \cite{iplane} in conjunction with EDNS \cite{EDNS} options to efficiently estimate network distances to both local name servers and originating end-hosts.
 
 \eat {
-\textbf{Deployment:}  We discuss deployment possibilities of \auspice\ in a multi-provider scenario, unlike the single provider scenario described earlier in the paper. Existence of multiple providers of \auspice\ would foster competition resulting in better quality of service, and would give a customer the freedom to choose the provider she considers most trustworthy. 
-
-To resolve a name X to its address in the presence of multiple providers, a client first needs to \emph{pre-resolve} X to its \auspice\ provider P. Pre-resolving a name is trivial in the special case when names are structured and a fixed part of name identifies its provider, e.g.. all names of the provider ``microsoft'' are of the form ``microsoft.userXYZ''. In general,  for a flat name X, the pre-resolution can be achieved by a federated DHT across the set of \auspice\ providers. The result of the pre-resolution, i.e., the tuple [X, P], can be cached by any intermediary or endpoint as \auspice\ providers are expected to change infrequently. 
-The task of resolving names to \auspice\ providers may seem similar to that of resolving names to addresses. However, the former is an easier problem because the
-update costs associated with storing name-to-\auspice\ provider mappings are much smaller. 
+	\textbf{Deployment:}  We discuss deployment possibilities of \auspice\ in a multi-provider scenario, unlike the single provider scenario described earlier in the paper. Existence of multiple providers of \auspice\ would foster competition resulting in better quality of service, and would give a customer the freedom to choose the provider she considers most trustworthy. 
+	
+	To resolve a name X to its address in the presence of multiple providers, a client first needs to \emph{pre-resolve} X to its \auspice\ provider P. Pre-resolving a name is trivial in the special case when names are structured and a fixed part of name identifies its provider, e.g.. all names of the provider ``microsoft'' are of the form ``microsoft.userXYZ''. In general,  for a flat name X, the pre-resolution can be achieved by a federated DHT across the set of \auspice\ providers. The result of the pre-resolution, i.e., the tuple [X, P], can be cached by any intermediary or endpoint as \auspice\ providers are expected to change infrequently. 
+	The task of resolving names to \auspice\ providers may seem similar to that of resolving names to addresses. However, the former is an easier problem because the
+	update costs associated with storing name-to-\auspice\ provider mappings are much smaller. 
 }
 %  \auspice\ provider for a name is expected to change much more slowly than its address. Hence, update costs for storing name-to-\auspice\ provider mappings are much smaller. 
 
@@ -73,19 +73,19 @@ update costs associated with storing name-to-\auspice\ provider mappings are muc
 
 
 \eat{
-\textbf{Security:}
-
-\textbf{Mid-session mobility:}
-
-\textbf{Paxos overhead:}
+	\textbf{Security:}
+	
+	\textbf{Mid-session mobility:}
+	
+	\textbf{Paxos overhead:}
 }
 \vspace{-0.1in}
-\section{Related work}
+\section{Related Work}
 \label{sec:related}
 
 %To our knowledge, this is the first paper to study the problem of locality-aware service replica placement and use the insights to drive the design and implementation of a global name service. Nevertheless, an enormous body of prior research has studied naming, server selection, and placement issues in large-scale distributed systems, as discussed below.
 
-Our work draws on lessons learned from an enormous body of prior work on distributed systems as discussed below.
+Our work draws on lessons learned from an enormous body of prior work on network architecture as well as distributed systems, as described in $\S$\ref{sec:intro} and $\S$\ref{sec:bg}. We discuss related work not covered elsewhere in the paper here.
 
 %Compared to the former, the novel contribution in \auspice\ is an engine to {automate} geo-distributed replica placement to achieve low-latency, low-cost, and high availability.  Compared to the latter, our contribution is a global name service with intrinsic support for mobility for the Internet as well as ``future'' Internet or endpoint architectures such as MobilityFirst, XIA, or HIP.
 %in a low-cost, locality- and load-aware manner.
@@ -96,8 +96,8 @@ Our work draws on lessons learned from an enormous body of prior work on distrib
 %Since then, 
 {\bf{DNS.}} Many have studied issues related to performance, scalability, load balancing, or denial-of-service vulnerabilities in DNS's resolution infrastructure \cite{Pappas,codons-paper,Brownlee,dnssec}. Several DHT-based alternatives have been put forward \cite{codons-paper,cox,DHTdns} and we compare against one representative proposal, Codons \cite{codons-paper}. In general, DHT-based designs are ideal for balancing load across servers, but are less well-suited to scenarios with a large number of service replicas that have to coordinate upon updates, and are at odds with scenarios requiring placement of replicas close to pocket of demand. In comparison, \auspice\ uses a planned placement approach.
 
-Vu et al. describe DMap \cite{VuICDCS12}, an in-network DHT scheme 
-that is similar in spirit to \staticthree\ as evaluated in our experiments ($\S$\ref{sec:eval}) (with a more direct comparison in \cite{techreport}), showing that demand-aware placement can dramatically outperform randomized placement. 
+Vu et al. describe DMap \cite{VuICDCS12}, an in-network DHT scheme %to map a self-certifying identifier to a fixed number of resolver locations using different consistent hash functions with clients choosing the closest mapped resolver. This approach 
+that is similar in spirit to \staticthree\ as evaluated in our experiments ($\S$\ref{sec:eval}) (with a more direct comparison in \cite{techreport}), showing that demand-aware placement can dramatically outperform randomized placement. A more important qualitative distinction is that DMap ties federation to the interconnection structure between ISPs, which entails commensurate lookup latency penalties and potential incentive mismatches by mapping GUIDs to non-provider ISPs. In comparison, the \auspice\ approach decouples the federation structure between GNS providers from that between ISPs.
 
 
 %In contrast, our work targets scenarios with potentially high update rates and seeks to place replicas to achieve low-latency, low-cost and high availability.
@@ -130,8 +130,8 @@ share our goals of proximate server selection and load balance given a fixed pla
 %Spanner provides database like features, e.g., distributed transactions, 
 %implements general purpose database features such as distributed transactions for globally replicated data. \auspice\ provides limited support for operations spanning multiple records, its primary focus is to automatically determine placement of 
 
- 
- %TBD: Other DNS enhancements, e.g., piggybacking domain names, and non-DHT architectures?
+
+%TBD: Other DNS enhancements, e.g., piggybacking domain names, and non-DHT architectures?
 
 %\textbf{XIA:} Like MobilityFirst, the XIA future Internet architecture \cite{XIA} also uses self-certifying identifiers and network locations. Self-certifying identifiers are not new and have been used in a variety of distributed systems \cite{Mazieres,BitTorrent} as well as  specifically in the context of Internet architecture \cite{AIP,DONA}. In both XIA and MobilityFirst, a self-certifying identifier can be used to represent a variety of principals. For evolvability, XIA represents addresses as a directed acyclic graph of self-certifying identifiers. Paths in this graph correspond to possible ``source routes'' to reach the destination, but not all routers need be capable of processing every identifier and could instead fallback to the default address of the form [GUID, NA]. In comparison, MobilityFirst is designed with more explicit support for mobility-centric services while keeping addresses and packet headers simple. Evolvability comes from the support for indirection and grouping in the global name resolution service that can resolve a GUID to a set of one or more GUIDs. 
 
@@ -141,49 +141,49 @@ share our goals of proximate server selection and load balance given a fixed pla
 %\textbf{Geo-distributed clouds:} TBD: Not sure what we have to say about them here. Just place a list of these references earlier: PlanetLab \cite{planetlab},  Akamai Edge Computing \cite{edgecomputing}, Amazon EC2 \cite{amazonec2}, Google app engine \cite{google-app-engine}, Windows Azure \cite{windowsazure}.
 
 \eat {
-\textbf{DNS:}
-
-- CODONS \cite{codons}
-
-- Design and Implementation of an Intentional Naming System
-
-- A comparative study of the DNS design with DHT-based alternatives
-
-- Piggybacking related domain names to improve DNS performance
+	\textbf{DNS:}
+	
+	- CODONS \cite{codons}
+	
+	- Design and Implementation of an Intentional Naming System
+	
+	- A comparative study of the DNS design with DHT-based alternatives
+	
+	- Piggybacking related domain names to improve DNS performance
 }
 
 \eat {
-- OASIS: Maps users based on IP addresses to best server by comparing latency and server load. \cite{oasis}
+	- OASIS: Maps users based on IP addresses to best server by comparing latency and server load. \cite{oasis}
 	
-- ClosestNode:  An open access, scalable, shared geocast service for distributed systems.
+	- ClosestNode:  An open access, scalable, shared geocast service for distributed systems.
 	
-- DONAR: Provides customization of mapping policies for various content providers. \cite{donar}
-
-Our primary contribution is a system that automatically decides server placement considering popularity and geographic distribution of requests. 
+	- DONAR: Provides customization of mapping policies for various content providers. \cite{donar}
+	
+	Our primary contribution is a system that automatically decides server placement considering popularity and geographic distribution of requests. 
 }
 
 \eat {
-\textbf{VM Placement:}
-
-- Sandpiper: solves VM placement problem \cite{sandpiper}
-
-\textbf{Data Placement:}
-
-
-Placement for static data: 
-
-- Do We Need Replica Placement Algorithms in Content Delivery Networks?
-
-- Constrained Mirror Placement on the Internet
-
-- Optimal Content Placement for a Large-Scale VoD System
-
-Placement for dynamic data: 
-
-- Volley. \cite{volley}
+	\textbf{VM Placement:}
+	
+	- Sandpiper: solves VM placement problem \cite{sandpiper}
+	
+	\textbf{Data Placement:}
+	
+	
+	Placement for static data: 
+	
+	- Do We Need Replica Placement Algorithms in Content Delivery Networks?
+	
+	- Constrained Mirror Placement on the Internet
+	
+	- Optimal Content Placement for a Large-Scale VoD System
+	
+	Placement for dynamic data: 
+	
+	- Volley. \cite{volley}
 }
 
- 
+
 %- Approximation algorithms for facility location problems. \cite{facilitylocationapprox}
 
 

@@ -1,7 +1,9 @@
 %!TEX root = Main.tex
-\vsp
-\section{Introduction}
-\label{sec:intro}
+
+\chapter{A Global Name Service for a Highly Mobile Internetwork}
+\label{ch:intro-auspice}
+
+
 ``Mobile'' has long arrived, but the Internet remains unmoved. Today, there is roughly one cellphone per human; the number of smartphones sold last year alone roughly equals the number of wired hosts on the Internet \cite{gartner}; and the total traffic originated by mobiles is poised to approach that by wired devices \cite{cisco-vni}. However, the current Internet continues to operate as it did when dominated by tethered hosts, simply ignoring frequent endpoint mobility.
 
 Today, an application developer can not easily initiate communication with a smartphone even when it has a public IP address as there is no global infrastructure support for locating it. Applications like smartphone notification systems, playback video, or cloud storage have to develop application-level support to enable a seamless experience for their users even as they change addresses several times a day, or let connections break (as popular VoIP apps do today).   The lack of intrinsic support for mobility means that developers are forced to redundantly develop and maintain common-case functionality. Furthermore, we are paying an unknowable price in terms of long-term growth and innovation by straitjacketing communication initiation to be unidirectional.
@@ -35,15 +37,15 @@ Our position is that seamless support for mobility requires a logically centrali
 We have implemented a prototype of \auspice\ as a geo-distributed key-value store to serve as a flexible name resolution service for the current Internet as well as several ``future'' Internet or endpoint architectures such as MobilityFirst\cite{MobilityFirst}, HIP\cite{HIP}, or XIA\cite{XIA}. We have extensively evaluated \auspice\  using a combination of Planetlab, emulation clusters, and Amazon EC2.  Our contributions are as follows.
 \begin{enumerate}
 \item A case for a global name service as an indispensable part of any Internetwork design with intrinsic support for high mobility ($\S$\ref{sec:case}).
-\vsp
+
 \item \auspice, a scalable, geo-distributed, federated global name service that significantly reduces the time-to-connect under any given resource constraints despite high mobility and arbitrary endpoint identifiers ($\S$\ref{sec:design},$\S$\ref{sec:eval}). 
-\figvsp
+
 \item A proof-of-concept demonstration of intrinsic support for---{\em(i)} all four types of endpoint mobility; {\em(ii)} novel context-aware delivery primitives that generalize name- or address-based communication---over the current Internet as well as MobilityFirst \cite{MobilityFirst} ($\S$\ref{sec:e2e}). 
-\vsp
+
 \item Comparison against several best-of-breed managed DNS services showing that \auspice's  demand-aware approach significantly lowers time-to-connect and/or update cost even for today's (hardly mobile) domain names ($\S$\ref{sec:managed}).
-\vsp
+
 \end{enumerate}
-\vsp
+
 
 To provide a historical perspective, until the early 80s, the Internet relied on a system called \verb+HOSTS.TXT+ for name resolution, which was simply a centrally maintained text file distributed to all hosts. The current Internet's distributed DNS  arose in response to the rapidly increasing file size and distribution costs. Mockapetris and Dunlap \cite{DNS} point to TTL-based caching to reduce load and response times as a key strength, noting that ``{\em{the XEROX system {\em [Grapevine \cite{grapevine}]} was then ... the most sophisticated name service in existence, but it was not clear that its heavy use of replication, light use of caching ... were appropriate}}''. We have since come a full circle, turning to  active replication ($\S$\ref{sec:whyNotDNS}) in \auspice\ in order to address the challenges of mobility, a concern that wasn't particularly pressing  in the 80s. Compared to classical systems like Grapevine or ClearingHouse, \auspice\ enables support for automated {\em demand-aware} replica placement for {\em arbitrary names} (using several modern design elements such as consensus, the key-value abstraction, self-certifying names, consistent hashing, etc).  \auspice, through its support for context-aware delivery, is also a step towards addressing some of the challenges to which Lampson alludes on representing ``descriptive names" \cite{Lampson}.
 

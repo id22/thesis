@@ -1,34 +1,5 @@
+%!TEX root = Main.tex
 
-
-\begin{figure*}[ht]
-\vspace{0.05in}
-\begin{minipage}[b]{0.48\linewidth}
-\centering
-\includegraphics[scale=0.55]{graph/newgraphs/managed-lookup.pdf}
-\figvsp
-\caption{Lookup latency:  \auspice\ with 5 replicas is comparable to UltraDNS (16 replicas); \auspice\ with 15 replicas has 60\% lower latency than UltraDNS.}
-\label{fig:managed-lookup}
-\end{minipage}
-\hspace{0.2in}
-\begin{minipage}[b]{0.48\linewidth}
-\centering
-\includegraphics[scale=0.55]{graph/newgraphs/managed-update.pdf}
-\figvsp
-\caption{Update propagation delay: \auspice\ with 5 replicas is  1.0 to 24.7 secs lower than three top-tier managed DNS service providers. }
-\label{fig:manageddnsupdate}
-\end{minipage}
-%\hspace{0.3cm}
-%\begin{minipage}[b]{0.3\linewidth}
-%\centering
-%\includegraphics[width=2in,height=1.5in]{graph/medianlatencyVSlocality.pdf}
-%\figvsp
-%\caption{[Simulator] Workload sensitivity: \auspice\ lowers latency by 2--5$\times$  over \staticthree\ at all geo-locality levels.}
-%\label{fig:varylocality}
-%\end{minipage}
-\vspace{-0.25in}
-\end{figure*}
- 
- 
 \vsp
 \subsection{\auspice\ vs. managed DNS providers}
 \label{sec:managed}
@@ -101,10 +72,8 @@ To measure update latencies for \auspice, we replicate 1000 names at a fixed num
 
 \auspice\ incurs lower update propagation latencies than all three providers for an equal or greater number of replica locations for names. We were unable to ascertain from UltraDNS why their update latencies are an order of magnitude higher than network propagation delays, but this finding is consistent with a recent study \cite{dnscompare} that has shown latencies of up to tens of seconds for these providers. Indeed, some providers even distinguish themselves by advertising shorter update propagation delays than competitors \cite{dnscompare}.
 
-
-\subsection{Sensitivity analyses and other results.} 
-\label{sec:other} 
-We have conducted a comprehensive evaluation of the sensitivity of \auspice's performance-cost trade-offs to workload and system parameters across scales varying by several orders of magnitude. These include workload parameters such as geo-locality, read-to-write rate ratio, ratio of device-to-service names, etc. and system parameters such as the fault-tolerance threshold, capacity utilization, perturbation knob, the tunable overhead of replica reconfiguration, etc. using a combination of simulation and system experiments. These results do not qualitatively change the above findings, and are deferred to the technical report \cite{techreport}.
+\vspace{-0.1in}
+{\paragraph{Sensitivity analyses and other results}} \label{sec:other} We have conducted a comprehensive evaluation of the sensitivity of \auspice's performance-cost trade-offs to workload and system parameters across scales varying by several orders of magnitude. These include workload parameters such as geo-locality, read-to-write rate ratio, ratio of device-to-service names, etc. and system parameters such as the fault-tolerance threshold, capacity utilization, perturbation knob, the tunable overhead of replica reconfiguration, etc. using a combination of simulation and system experiments. These results do not qualitatively change the findings in this paper, and are deferred to the technical report \cite{techreport}.
 
 %To assess the sensitivity of \auspice's benefits to a broad range of system and workload parameters and scales, we develop a custom simulator that simulates round-trip delays, loss, and server load-vs-response time behavior, and have verified \cite{techreport} that the median latencies for all simulated schemes are within 8\% of those in $\S$\ref{sec:comparison}. We present one such experiment here, deferring others to a technical report \cite{techreport}.
 

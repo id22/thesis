@@ -71,12 +71,6 @@ $\Omega$(\#identifiers) for small stretch over shortest-path routing \cite{compa
 
 }
 
-\newcommand{\indirection}{indirection-based routing}
-\newcommand{\Indirection}{Indirection-based routing}
-\newcommand{\Logcen}{Global name-to-address resolution}
-\newcommand{\logcen}{global name-to-address resolution}
-\newcommand{\namerouting}{name-based routing}
-\newcommand{\Namerouting}{Name-based routing}
 
 {\textbf \Indirection} schemes are simple as an endpoint remains oblivious to the mobility of other endpoints. No name-to-address\footnote{We use the terms {\em name} and {\em identifier} interchangeably; likewise for the terms {\em address} and {\em location}.} lookup is needed at connection initiation time as a human-readable name maps to a {\em home address} (an IP address in Mobile IP \cite{MIP} or a flat identifier's consistent-hash location in i3 \cite{i3}) that rarely changes by design. Mid-connection mobility, even when both endpoints move concurrently, is seamless to endpoints. However, the data plane pays the price for this simplicity---every data packet must be routed via an indirection agent at the home address, potentially causing significant routing stretch, e.g., two participants at a conference may in each direction need to detour packets halfway across the world despite being in the same  room. %In the case of i3, routing stretch is incurred both at the overlay DHT layer (to reach a rendezvous point) in addition to stretch in the data plane because of mobility, so the authors suggest several alternatives to optimize this stretch  (e.g., choosing the closest of several rendezvous points;  caching IP addresses to handle the conference room scenario, etc.). 
 %Mobile IP's sender-oblivious design works well for mobility but is forced to either offer an inflexible design for multihoming or sacrifice sender-obliviousness.  
