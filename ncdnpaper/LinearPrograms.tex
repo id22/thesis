@@ -45,7 +45,7 @@ Next, we present hardness and inapproximability results for this problem. Finall
 %In this section, we describe our solutions to the traffic engineering strategies discussed in Section \ref{sec:tescheme}. Our primary contribution is a MIP formulation which jointly optimizes the content placement and routing in the network based on network parameters, content size and content demand at each node. First we present our Network-CDN model, followed by a MIP formulation for optimal traffic engineering in our model. Finally, we discuss our solutions for TE schemes other than the optimal TE scheme. 
 
 
-\begin{table}[t]
+\begin{figure}[t]
 \begin{small}
 \begin{center}
 \begin{tabular}{|p{4.65in}|} 
@@ -83,11 +83,12 @@ $f_{ije}$ & Traffic from node $j$ to node $i$ crossing link $e$.\\
 $t_{ijk}$ & Traffic demand at node $i \in V$ for content $k\in K$ served from node $j \in V \cup \{o\}$ \\\hline
 \end{tabular}
 \end{center}
-\end{small}
 \label{table:paramtable}
+\end{small}
 \caption{List of input  and decision variables for the \ncp\ problem formulation.}
 \vspace{-0.2in}
-\end{table}
+\end{figure}
+
 
 \subsection{\ncp\ model}
 \label{sec:model}
@@ -272,7 +273,7 @@ This cost function is similar to that used by Fortz and Thorup \cite{fortz2000in
 
 We present here a joint optimization strategy for NCDN-management formulated as a MIP. 
 This formulation takes as input a content matrix, i.e., the demand for each content at each network point-of-presence (PoP), and  computes content placement, request redirection and routing that minimizes an NCDN cost function  while respecting link capacity and storage constraints.
-The decision variables for this problem are listed in  Table 1. The MIP to minimize an NCDN cost function $C$ (either MLU or latency) is as follows:
+The decision variables for this problem are listed in  Figure \ref{table:paramtable}. The MIP to minimize an NCDN cost function $C$ (either MLU or latency) is as follows:
 \begin{equation}
 \min  C
 \end{equation}
@@ -324,7 +325,7 @@ Constraint (8) specifies that all content is placed at the virtual origin node $
 Constraints (9) and (10) specify that at least one copy of content $k$ is placed within the network if $z_k = 1$, otherwise $z_k = 0$ and no copies of $k$ are placed at any node. Constraint (11) specifies that the flow from a source to a sink for some content should be zero if the content is not placed at the source (i.e., when $x_{jk} = 0$), and the flow should be at most the demand if the content is placed at the source  (i.e., when $x_{jk} = 1$).
 Constraint (12) specifies that if some content is placed within the network, the traffic from the origin for that content must be zero. 
 
-Updating the content placement itself generates traffic and impacts the link utilization in the network. For ease of exposition, we have deferred a formal description of the corresponding constraints to a techreport  \cite{techreportNCDN}.  Finally, a simple extension to this MIP presented in a techreport \cite{techreportNCDN}  jointly optimizes routing given a TTM as well a CM.  We have presented a CM-only formulation here as our findings (in Section \ref{sec:eval}) show that a joint optimization of the CM and TTM is not useful for NCDNs.
+Updating the content placement itself generates traffic and impacts the link utilization in the network. For ease of exposition, we have deferred a formal description of the corresponding constraints to a techreport  \cite{techreportNCDN}.  Finally, a simple extension to this MIP presented in a techreport \cite{techreportNCDN}  jointly optimizes routing given a TTM as well a CM.  We have presented a CM-only formulation here as our findings (in Section \ref{sec:ncdn-eval}) show that a joint optimization of the CM and TTM is not useful for NCDNs.
 %\subsubsection{ISP Transit Traffic Optimization}
 
 \subsection{Computational hardness}

@@ -618,7 +618,7 @@
 \def\sixthreader#1{\gdef\@sixthreader{#1}\sixthtrue}
 % To change Department Chair to Chair, call like this:
 % \departmentchair[Chair]{Jane Doe}.
-\newcommand{\departmentchair}[2][Department Chair]{
+\newcommand{\departmentchair}[2][Chair]{
   \gdef\umthesis@chairtitle{#1}
   \gdef\@departmentchair{#2}
   }

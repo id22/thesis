@@ -61,7 +61,7 @@ Our primary contribution is to empirically analyze the above questions for reali
 %\item Simple hybrid strategies (partly demand-aware and partly demand-oblivious) do not improve upon a completely demand-oblivious strategy; and optimizations such as chunking do not qualitatively change our findings.
 
 
-In the rest of this chapter, we first overview the \ncp\ architecture highlighting why it changes traditional ISP and CDN concerns (Section \ref{sec:background}). Next, we formalize algorithms that jointly optimize content placement and routing in an NCDN (Section \ref{sec:optimize}). We then describe how we collected real CDN traces (Section \ref{sec:dataset}) and evaluate our algorithms using these traces and real ISP topologies (Section \ref{sec:ncdn-eval}). 
+In the rest of this chapter, we first overview the \ncp\ architecture highlighting why it changes traditional ISP and CDN concerns (Section \ref{sec:ncdn-background}). Next, we formalize algorithms that jointly optimize content placement and routing in an NCDN (Section \ref{sec:optimize}). We then describe how we collected real CDN traces (Section \ref{sec:dataset}) and evaluate our algorithms using these traces and real ISP topologies (Section \ref{sec:ncdn-eval}). 
 
 % We provide background material on content-aware traffic engineering for NCDNs  (Section~\ref{sec:background}). We then provide algorithms for content-aware traffic engineering that perform content placement, request redirection, and traffic routing to minimize MLU (Section~\ref{sec:optimize}).  Next, we evaluate our algorithms using extensive real-world traces from a large commercial CDN (Section~\ref{sec:empirical}). Finally, we present related work (Section~\ref{sec:related}) and conclusions (Section~\ref{sec:conclusions}).
 
@@ -78,7 +78,6 @@ In the rest of this chapter, we first overview the \ncp\ architecture highlighti
 \begin{figure}
 \vspace*{-0.7in}
 \centerline{\includegraphics[height=3.5in]{ncdnpaper/NCDNArch}}
-\vspace*{-1.5in}
 \caption{NCDN Architecture}
 \vspace*{-0.15in}
 \label{fig:NCDNArch}

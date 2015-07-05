@@ -22,7 +22,7 @@ that offer geo-replicated authoritative DNS services widely used by enterprises 
 
 
 
-%Managed DNS providers \cite{ultradns,dyndns,dnsmadeeasy} offer a geo-replicated DNS service, and are commonly purchased by enterprises today. This section compares \auspice\ to managed DNS providers in terms of lookup and update latencies. 
+%Managed DNS providers \cite{ultradns,dyndns,dnsmadeeasy} offer a geo-replicated DNS service, and are commonly purchased by enterprises today. This Section \compares \auspice\ to managed DNS providers in terms of lookup and update latencies. 
 
 \subsubsection{Lookup latency}  
 
@@ -75,7 +75,7 @@ To measure update latencies for \auspice, we replicate 1000 names at a fixed num
 \vspace{-0.1in}
 {\paragraph{Sensitivity analyses and other results}} \label{sec:other} We have conducted a comprehensive evaluation of the sensitivity of \auspice's performance-cost trade-offs to workload and system parameters across scales varying by several orders of magnitude. These include workload parameters such as geo-locality, read-to-write rate ratio, ratio of device-to-service names, etc. and system parameters such as the fault-tolerance threshold, capacity utilization, perturbation knob, the tunable overhead of replica reconfiguration, etc. using a combination of simulation and system experiments. These results do not qualitatively change the findings in this paper, and are deferred to the technical report \cite{techreport}.
 
-%To assess the sensitivity of \auspice's benefits to a broad range of system and workload parameters and scales, we develop a custom simulator that simulates round-trip delays, loss, and server load-vs-response time behavior, and have verified \cite{techreport} that the median latencies for all simulated schemes are within 8\% of those in $\S$\ref{sec:comparison}. We present one such experiment here, deferring others to a technical report \cite{techreport}.
+%To assess the sensitivity of \auspice's benefits to a broad range of system and workload parameters and scales, we develop a custom simulator that simulates round-trip delays, loss, and server load-vs-response time behavior, and have verified \cite{techreport} that the median latencies for all simulated schemes are within 8\% of those in Section \ref{sec:comparison}. We present one such experiment here, deferring others to a technical report \cite{techreport}.
 
 %Figure \ref{fig:varylocality} compares the latency for workloads with varying  geo-locality. Both \staticthree\ and \codons\ are choose replica locations randomly, and therefore their latency remains the same irrespective of the workload's geo-locality. But \auspice\ significantly improves latencies  as the geo-locality increases. Even in a workload with no locality ($g$=0.1),   \auspice\ outperforms \staticthree\ by 2$\times$ because it creates more than three replicas for each name,  and outperforms \codons\ by $4\times$  because it redirects requests to the closest replica of a name without DHT routing.
 
@@ -85,9 +85,9 @@ To measure update latencies for \auspice, we replicate 1000 names at a fixed num
 \subsection{Simulation-based sensitivity analysis}
 \label{sec:sensitivity}
 
-In order to assess the sensitivity of \auspice's performance and cost to a wider range of system parameters, workload parameters in $\S$\ref{sec:comparison}, and scales, we use a custom simulator that simulates round-trip delays, loss, and server load-vs-response time behavior as in the PlanetLab experimental setup. We have verified \cite{techreport} that the median latencies for all simulated schemes are within 8\% of those in the emulation in $\S$\ref{sec:comparison}.   Experiments here use 10K name servers, 2K local name servers, 10K service names, and 100K device names. 
+In order to assess the sensitivity of \auspice's performance and cost to a wider range of system parameters, workload parameters in Section \ref{sec:comparison}, and scales, we use a custom simulator that simulates round-trip delays, loss, and server load-vs-response time behavior as in the PlanetLab experimental setup. We have verified \cite{techreport} that the median latencies for all simulated schemes are within 8\% of those in the emulation in Section \ref{sec:comparison}.   Experiments here use 10K name servers, 2K local name servers, 10K service names, and 100K device names. 
 
-%We analyze the sensitivity of \auspice's benefits to the workload parameters used in $\S$\ref{sec:comparison}. In order to be able to explore a wider range of parameters and scales, we use a custom simulator that simulates round-trip latency, loss, and server load-vs-response time behavior as measured on PlanetLab. We have verified \cite{techreport} that the median latencies for all schemes in the simulator are within 8\% of that on PlanetLab for the experiment in $\S$\ref{sec:comparison}.   Experiments here use 10K nameservers, 2K local nameservers, 10K service names, and 100K device names. 
+%We analyze the sensitivity of \auspice's benefits to the workload parameters used in Section \ref{sec:comparison}. In order to be able to explore a wider range of parameters and scales, we use a custom simulator that simulates round-trip latency, loss, and server load-vs-response time behavior as measured on PlanetLab. We have verified \cite{techreport} that the median latencies for all schemes in the simulator are within 8\% of that on PlanetLab for the experiment in Section \ref{sec:comparison}.   Experiments here use 10K nameservers, 2K local nameservers, 10K service names, and 100K device names. 
 
 \textbf{Geo-locality.}  Figure \ref{fig:varylocality} compares the latency for workloads with varying levels of geo-locality.
 Both \staticthree\ and \codons\ are choose replica locations randomly, and therefore their latency remains the same irrespective of the workload's geo-locality. But \auspice\ significantly improves latencies  as the geo-locality increases. Even in a workload with no locality ($g$=0.1),   \auspice\ outperforms \staticthree\ by 2$\times$ because it creates more than three replicas for each name,  and outperforms \codons\ by $4\times$  because it redirects requests to the closest replica of a name without the overhead of DHT routing.
@@ -102,7 +102,7 @@ For the given capacity, \auspice\  can accommodate a workload with up 1M device 
 \textbf{Lookup-to-update ratio.} We vary the ratio of lookups to updates, termed as \emph{RW-ratio}, by increasing the number of lookups but keeping the number of updates fixed. \auspice\ provides up to 2.95$\times$ lower latencies than \codons\ and \staticthree\ for both write-dominated workload (RW-ratio $<$ 1) as well as read-dominated workloads (RW-ratio  $>$ 1). As RW-ratios increase beyond 1,  \auspice\ handles the increase in number of lookups  by automatically decreasing the replication parameter $\beta$ (refer to Eq. \ref{eq:mu}).
 
 \blue{
-\textbf{System parameters.} We also experiment with the system parameters in $\S$\ref{sec:design}, the fault tolerance threshold $F$, the capacity utilization $\mu$, and the randomness knob $\nu$. As expected, we find that as $F$ increases and approaches the total number of name servers, the cost and performance behavior increasingly mimics \static{F} until it is identical to \replicateall. Decreasing $\mu$ to small values makes \auspice's replication less aggressive hurting performance but reducing cost, while increasing $\mu$ much closer to 1 hurts latencies by overloading the system. The technical report \cite{techreport} describes these results as well as a slightly modified replica placement strategy that makes the random perturbation knob $\nu$ unnecessary (currently manually set to 0.5 in our experiments).
+\textbf{System parameters.} We also experiment with the system parameters in Section \ref{sec:design}, the fault tolerance threshold $F$, the capacity utilization $\mu$, and the randomness knob $\nu$. As expected, we find that as $F$ increases and approaches the total number of name servers, the cost and performance behavior increasingly mimics \static{F} until it is identical to \replicateall. Decreasing $\mu$ to small values makes \auspice's replication less aggressive hurting performance but reducing cost, while increasing $\mu$ much closer to 1 hurts latencies by overloading the system. The technical report \cite{techreport} describes these results as well as a slightly modified replica placement strategy that makes the random perturbation knob $\nu$ unnecessary (currently manually set to 0.5 in our experiments).
 }
 }
 
@@ -232,7 +232,7 @@ First, we used a synthetic workload for mobile names and varied several paramete
 
 %\textbf{Mid-session mobility:} We have shown connection migration across networks using MSocket when a single end-point (client) switches from a Wi-Fi to a 4G connection during an ongoing file transfer over TCP. The migration successfully completes within three round trip times using bilateral client-server negotiation.
 
-%\textbf{Simulator validation:} We compare the results from our simulator to a PlanetLab experiment for  replication schemes in Section \ref{sec:schemes}. The median latencies for all schemes in the simulator are within 8\% of that on PlanetLab. The 95\%-ile latencies are higher on PlanetLab experiments than in the simulator due to unpredictable wide area latencies and server processing delays.
+%\textbf{Simulator validation:} We compare the results from our simulator to a PlanetLab experiment for  replication schemes in Section \\ref{sec:schemes}. The median latencies for all schemes in the simulator are within 8\% of that on PlanetLab. The 95\%-ile latencies are higher on PlanetLab experiments than in the simulator due to unpredictable wide area latencies and server processing delays.
 
 %optimization formulation described in the techreport \cite{techreport}. \optimal\ decides both  replica placement and request redirection to minimize the sum of  network and server latency. The inputs  are  %We evaluate this scheme only in simulation, as it is not implemented in the prototype.
 
@@ -240,7 +240,7 @@ First, we used a synthetic workload for mobile names and varied several paramete
 \textbf{Optimal:} We have compared \auspice\ to \optimal\ based on an optimization formulation of the placement problem \cite{techreport}. 
 \optimal\ takes as input  the set of names, their request geo-distribution, the capacity of name servers, network latency between local name servers and name servers, and a load-vs-response-time curve at each name server, and computes replica placement so as to minimize the sum of  network and server latency.
 %In Figure \ref{fig:optimal}, we present the ratio of latency of \auspice\ to \optimal\  from this experiment. 
-For a similar workload as in Section \ref{sec:lookup},  we find that the latency for \auspice\ is between 1.1$\times$-2.1$\times$ of the \optimal\  across all load levels. \optimal\  performs better as it can globally optimize server resource allocation across all names, but \auspice\ uses a decentralized placement algorithm to independently decide replica placement for each name. 
+For a similar workload as in Section \\ref{sec:lookup},  we find that the latency for \auspice\ is between 1.1$\times$-2.1$\times$ of the \optimal\  across all load levels. \optimal\  performs better as it can globally optimize server resource allocation across all names, but \auspice\ uses a decentralized placement algorithm to independently decide replica placement for each name. 
 In ongoing work, we are evaluating \optimal\  using the testbed; this is nontrivial partly because \optimal\ must know the exact load-vs-response time behavior, which is not always stationary or easy to measure, so we conjecture that the clean simulator environment overestimates the benefits of \optimal.
 }
 
@@ -249,7 +249,7 @@ In ongoing work, we are evaluating \optimal\  using the testbed; this is nontriv
 %(3) Service names to device names ratio: 
 
 % Can be removed
-%\textbf{Analysis of \auspice\ design:} We study variants of \auspice's design and show that locality-awareness in the placement of replicas and redirecting to a replica based on both network and server load-induced latency are two major factors that reduces lookup latency for \auspice\ in the PlanetLab experiments  (Section \ref{sec:lowload}).
+%\textbf{Analysis of \auspice\ design:} We study variants of \auspice's design and show that locality-awareness in the placement of replicas and redirecting to a replica based on both network and server load-induced latency are two major factors that reduces lookup latency for \auspice\ in the PlanetLab experiments  (Section \\ref{sec:lowload}).
 
 %\textbf{Comparison to locality-aware DHT:} We compare \auspice\ to a locality-aware DHT design, SkipNet. SkipNet assumes a hierarchical namespace, but in our workload consisting of flat names, gives  lower latencies than other DNS alternatives. 
 

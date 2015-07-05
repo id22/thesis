@@ -29,29 +29,30 @@
 \contentsline {figure}{\numberline {4.1}{\ignorespaces A tripartite view of content delivery.}}{36}{figure.4.1}
 \contentsline {figure}{\numberline {4.2}{\ignorespaces NCDN Architecture}}{38}{figure.4.2}
 \contentsline {figure}{\numberline {4.3}{\ignorespaces (Top) Traditional formulation with content distribution and traffic engineering optimized separately. (Bottom) Our new formulation of NCDN magamenent as a joint optimization.}}{39}{figure.4.3}
-\contentsline {figure}{\numberline {4.4}{\ignorespaces News and entertainment have a significant fraction of requests for new content on all days. Downloads has a small fraction of requests for new content on all days, except one.}}{45}{figure.4.4}
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Planned\ \textsf {OptRP}\ performs much worse than unplanned\ \textsf {InvCap-LRU}. \textsf {OptRP-Future}\ performs moderately better than \textsf {InvCap-LRU}\ primarily at small storage ratios.}}{49}{figure.4.5}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {News, US-ISP}}}{49}{figure.4.5}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Entertainment, US-ISP}}}{49}{figure.4.5}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Downloads, US-ISP}}}{49}{figure.4.5}
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {News, Abilene}}}{49}{figure.4.5}
-\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {Entertainment, Abilene}}}{49}{figure.4.5}
-\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {Downloads, Abilene}}}{49}{figure.4.5}
-\contentsline {figure}{\numberline {4.6}{\ignorespaces [Videos, Abilene] \textsf {OptRP}\ serves 50\% and 21\% of news and entertainment requests respectively from the origin. \textsf {InvCap-LRU}\ and \textsf {OptRP-Future}\ serve at most 2\% from the origin.}}{50}{figure.4.6}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {News, Abilene}}}{50}{figure.4.6}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Entertainment, Abilene}}}{50}{figure.4.6}
-\contentsline {figure}{\numberline {4.7}{\ignorespaces [Downloads, US-ISP] \textsf {OptRP}\ incurs a very high MLU on one ``peak load'' day.}}{50}{figure.4.7}
-\contentsline {figure}{\numberline {4.8}{\ignorespaces [All traces] Optimizing routing yields little improvement to MLU of either \textsf {InvCap-LRU}\ or \textsf {InvCap-OptP-Future}}}{51}{figure.4.8}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {MLU reduction with \textsf {OptR-LRU}\ compared to \textsf {InvCap-LRU}}}}{51}{figure.4.8}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {MLU reduction with \textsf {OptRP-Future}\ compared to \textsf {InvCap-OptP-Future}}}}{51}{figure.4.8}
-\contentsline {figure}{\numberline {4.9}{\ignorespaces [Entertainment, US-ISP] Content chunking helps bridge the gap between \textsf {InvCap-LRU}\ and \textsf {OptRP-Future}.}}{53}{figure.4.9}
-\contentsline {figure}{\numberline {4.10}{\ignorespaces [Entertainment, Abilene] Hybrid placement schemes perform at best as well as \textsf {InvCap-LRU}.}}{53}{figure.4.10}
-\contentsline {figure}{\numberline {4.11}{\ignorespaces [Entertainment, US-ISP] \textsf {OptRP}\ does not outperform \textsf {InvCap-LRU}\ despite engineering 8 times a day.}}{53}{figure.4.11}
-\contentsline {figure}{\numberline {4.12}{\ignorespaces A realistic planned\ scheme, \textsf {OptRP-L}\ causes excessively high latency costs in some cases. \textsf {InvCap-LRU}\ achieves latency costs close to ideal planned\ scheme, \textsf {OptRP-Future-L}, at higher storage ratios.}}{54}{figure.4.12}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {News, US-ISP}}}{54}{figure.4.12}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Entertainment, US-ISP}}}{54}{figure.4.12}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Downloads, US-ISP}}}{54}{figure.4.12}
-\contentsline {figure}{\numberline {4.13}{\ignorespaces [News, US-ISP]Network costs at varying fractions of NCDN traffic in an ISP network.}}{56}{figure.4.13}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces List of input and decision variables for the NCDN\ problem formulation.}}{41}{figure.4.4}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces News and entertainment have a significant fraction of requests for new content on all days. Downloads has a small fraction of requests for new content on all days, except one.}}{45}{figure.4.5}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Planned\ \textsf {OptRP}\ performs much worse than unplanned\ \textsf {InvCap-LRU}. \textsf {OptRP-Future}\ performs moderately better than \textsf {InvCap-LRU}\ primarily at small storage ratios.}}{50}{figure.4.6}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {News, US-ISP}}}{50}{figure.4.6}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Entertainment, US-ISP}}}{50}{figure.4.6}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Downloads, US-ISP}}}{50}{figure.4.6}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {News, Abilene}}}{50}{figure.4.6}
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {Entertainment, Abilene}}}{50}{figure.4.6}
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {Downloads, Abilene}}}{50}{figure.4.6}
+\contentsline {figure}{\numberline {4.7}{\ignorespaces [Videos, Abilene] \textsf {OptRP}\ serves 50\% and 21\% of news and entertainment requests respectively from the origin. \textsf {InvCap-LRU}\ and \textsf {OptRP-Future}\ serve at most 2\% from the origin.}}{51}{figure.4.7}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {News, Abilene}}}{51}{figure.4.7}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Entertainment, Abilene}}}{51}{figure.4.7}
+\contentsline {figure}{\numberline {4.8}{\ignorespaces [Downloads, US-ISP] \textsf {OptRP}\ incurs a very high MLU on one ``peak load'' day.}}{51}{figure.4.8}
+\contentsline {figure}{\numberline {4.9}{\ignorespaces [All traces] Optimizing routing yields little improvement to MLU of either \textsf {InvCap-LRU}\ or \textsf {InvCap-OptP-Future}}}{52}{figure.4.9}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {MLU reduction with \textsf {OptR-LRU}\ compared to \textsf {InvCap-LRU}}}}{52}{figure.4.9}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {MLU reduction with \textsf {OptRP-Future}\ compared to \textsf {InvCap-OptP-Future}}}}{52}{figure.4.9}
+\contentsline {figure}{\numberline {4.10}{\ignorespaces [Entertainment, US-ISP] Content chunking helps bridge the gap between \textsf {InvCap-LRU}\ and \textsf {OptRP-Future}.}}{53}{figure.4.10}
+\contentsline {figure}{\numberline {4.11}{\ignorespaces [Entertainment, Abilene] Hybrid placement schemes perform at best as well as \textsf {InvCap-LRU}.}}{53}{figure.4.11}
+\contentsline {figure}{\numberline {4.12}{\ignorespaces [Entertainment, US-ISP] \textsf {OptRP}\ does not outperform \textsf {InvCap-LRU}\ despite engineering 8 times a day.}}{53}{figure.4.12}
+\contentsline {figure}{\numberline {4.13}{\ignorespaces A realistic planned\ scheme, \textsf {OptRP-L}\ causes excessively high latency costs in some cases. \textsf {InvCap-LRU}\ achieves latency costs close to ideal planned\ scheme, \textsf {OptRP-Future-L}, at higher storage ratios.}}{55}{figure.4.13}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {News, US-ISP}}}{55}{figure.4.13}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Entertainment, US-ISP}}}{55}{figure.4.13}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Downloads, US-ISP}}}{55}{figure.4.13}
+\contentsline {figure}{\numberline {4.14}{\ignorespaces [News, US-ISP]Network costs at varying fractions of NCDN traffic in an ISP network.}}{56}{figure.4.14}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces Four kinds of mobility---(1) {\em pre-lookup}, (2) {\em connect-time}, (3) {\em individual}, (4) {\em simultaneous}---three of which require a global name service.}}{64}{figure.5.1}
 \contentsline {figure}{\numberline {5.2}{\ignorespaces \relax \fontsize {10.95}{13.6}\selectfont \abovedisplayskip 11\p@ plus3\p@ minus6\p@ \abovedisplayshortskip \z@ plus3\p@ \belowdisplayshortskip 6.5\p@ plus3.5\p@ minus3\p@ \def \leftmargin \leftmargini \parsep 5\p@ plus2.5\p@ minus\p@ \topsep 10\p@ plus4\p@ minus6\p@ \itemsep 5\p@ plus2.5\p@ minus\p@ {\leftmargin \leftmargini \topsep 9\p@ plus3\p@ minus5\p@ \parsep 4.5\p@ plus2\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip {DNS vs. GNS: Auspice can be deployed as a managed DNS provider today (left) or as a GNS provider that provides resolution service for its customer GUIDs (right). Name certification services bind a human-readable name to a GUID and its GNS provider, and certificate search services can help index and distribute certificates from all certification services. Solid (dotted) lines represent frequent (infrequent) query paths for a given mobile destination. Except for the tightly controlled DNS root service, all services above are designed to be purveyed competitively.} }}{65}{figure.5.2}
@@ -64,19 +65,21 @@
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {E2E time-to-connect}}}{76}{figure.5.5}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Simultaneous mobility}}}{76}{figure.5.5}
 \contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Context-aware delivery}}}{76}{figure.5.5}
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Lookup latency: Auspice\ with 5 replicas is comparable to UltraDNS (16 replicas); Auspice\ with 15 replicas has 60\% lower latency than UltraDNS.}}{76}{figure.5.6}
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Update propagation delay: Auspice\ with 5 replicas is 1.0 to 24.7 secs lower than three top-tier managed DNS service providers. }}{76}{figure.5.7}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Lookup latency: Auspice\ with 5 replicas is comparable to UltraDNS (16 replicas); Auspice\ with 15 replicas has 60\% lower latency than UltraDNS.}}{77}{figure.5.6}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Update propagation delay: Auspice\ with 5 replicas is 1.0 to 24.7 secs lower than three top-tier managed DNS service providers. }}{77}{figure.5.7}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {6.1}{\ignorespaces Ratio of network to server energy use at typical operating conditions. Switch power use data from Cisco \cite {cisco-dc-switches}. Server power use of Acer Altos T350 F2 at a load of 30\% is 98.5 W \cite {spec}.}}{85}{figure.6.1}
 \contentsline {figure}{\numberline {6.2}{\ignorespaces [Left] An illustrative server utilization vs. response time curve. [Right] Corresponding energy-response time curve.}}{86}{figure.6.2}
 \contentsline {figure}{\numberline {6.3}{\ignorespaces Energy-response time tradeoff for workloads with varying Zipf exponents.}}{88}{figure.6.3}
 \contentsline {figure}{\numberline {6.4}{\ignorespaces Black (grey) components are turned on (off). Each rack has 20 servers. (Right) Randomly choosing the set of active servers results in all ToR switches being turned on. (Left) Choosing the same number of active servers in a ``network-aware" manner enables more ToR switches to be turned off.}}{91}{figure.6.4}
 \contentsline {figure}{\numberline {6.5}{\ignorespaces [Numerical computation] Shrink's network energy use is lower than a network-unaware server consolidation scheme Rand-SN\ by 38\% on FatTree and 42\% on VL2 when one-fourth of the servers are active in each topology.}}{94}{figure.6.5}
-\contentsline {figure}{\numberline {6.6}{\ignorespaces Server consolidation (Section \ref {sec:ec2}): Shrink's reduces energy over Peak-S\ with a small response time inflation. In Figure \ref {fig:pe-mean}, Shrink's energy use is 0.65$\times $ of Peak-S\ and its mean response time is 1.08$\times $ of Peak-S; Single-server-ideal's energy use is 0.62$\times $ of Peak-S\ and its mean response time is 0.95$\times $ of Peak-S.}}{96}{figure.6.6}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Mean}}}{96}{figure.6.6}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {95-th percentile}}}{96}{figure.6.6}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {99-th percentile}}}{96}{figure.6.6}
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Server consolidation (Section \ref {sec:ec2}): Shrink's reduces energy over Peak-S\ with a small response time inflation. In Figure \ref {fig:pe-mean}, Shrink's energy use is 0.65$\times $ of Peak-S\ and its mean response time is 1.08$\times $ of Peak-S; Single-server-ideal's energy use is 0.62$\times $ of Peak-S\ and its mean response time is 0.95$\times $ of Peak-S.}}{95}{figure.6.6}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Mean}}}{95}{figure.6.6}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {95-th percentile}}}{95}{figure.6.6}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {99-th percentile}}}{95}{figure.6.6}
 \contentsline {figure}{\numberline {6.7}{\ignorespaces Server consolidation (Section \ref {sec:ec2}): [Left] Shrink\ adapts the number of active servers based on CDC\ load to reduce energy over Peak-S. [Right] Cache hit rates and mean response time for Shrink\ and Peak-S.}}{98}{figure.6.7}
 \contentsline {figure}{\numberline {6.8}{\ignorespaces Network and server consolidation (Section \ref {sec:emulab}): [Left] Emulab topology for the experiment. [Right] Compared to Peak-S, Shrink\ has a 15\% higher response time but a 57\% lower energy use.}}{99}{figure.6.8}
 \contentsline {figure}{\numberline {6.9}{\ignorespaces [Simulator] [Left] Pre-shutdown wait interval between 30 min \& 1 hour keeps on-off transition rate close to 1/server/day. [Right] Comparison of miss rates for varying amounts of storage.}}{100}{figure.6.9}
-\contentsline {figure}{\numberline {10}{\ignorespaces Reduction from {{SetCover}}\ to {{Opt-NCDN}}}}{104}{figure.Alph0.10}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Reduction from {{SetCover}}\ to {{Opt-NCDN}}}}{105}{figure.A.1}
+\addvspace {10\p@ }

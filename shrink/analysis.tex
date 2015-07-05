@@ -60,13 +60,13 @@ We make two observations based on the expression for the response time inflation
 
 \textbf{Numerical example:} We evaluate the evaluate the energy-response time tradeoff for Zipfian content popularity distributions. We assume that the server's utilization vs. delay profile is given by $f(u) = Cu^K$, $K>=1$ is a model parameter and $C$ is a constant delay. Other model parameters are as follows: each server has a capacity = 1 request/sec, total load $L$ = 15 requests/sec, latency from clients to servers $A$ = 10 ms, latency from servers to origin servers $B$ = 100 ms, server delay coefficient $C$ = 400 ms, idle power fraction $I$ = 0.5, total number of unit-sized content $M$ = 100 million, storage per server $S$ = 1 million, number of servers $N$ = 100. 
 
-\begin{wrapfigure}[13]{r}{0.21\textwidth}
-  \begin{center}
+\begin{figure}[t]
+\centering
     \includegraphics[scale=0.4]{graphs/vary-z.pdf}
-  \end{center}
+
   \caption{Energy-response time tradeoff for workloads with varying Zipf exponents.}
     \label{fig:vary-z}
-\end{wrapfigure}
+\end{figure}
 
 %\begin{figure}[t]
 %\centering

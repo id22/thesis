@@ -116,7 +116,7 @@ What specific design traits of DNS make it poorly suited for mobile applications
 }
 
 %\blue{
-(3) {\em Hierarchical names:} The hierarchical structure of DNS names is key to leveraging {\em federation} to scale to an arbitrary {number of names} by delegating different portions of the name space (or {zones}) to different organizations. For example, root name servers today only have to maintain state for a small number of top-level domain names.  In contrast, arbitrary or flat names, e.g., ``\verb+JohnSmith3142's watch+'' can not be supported in DNS while retaining the scaling benefits of federation as the root name servers would have to maintain nonzero state, e.g., at least the authoritative name server(s) and the DNSSEC key of a name, for essentially all names. Our position is that the design of a general-purpose global name service must not restrict the structure of names as names carry application-specific semantics; in $\S$\ref{sec:context}, we show examples of novel context-aware communication primitives that are feasible with unrestricted names.
+(3) {\em Hierarchical names:} The hierarchical structure of DNS names is key to leveraging {\em federation} to scale to an arbitrary {number of names} by delegating different portions of the name space (or {zones}) to different organizations. For example, root name servers today only have to maintain state for a small number of top-level domain names.  In contrast, arbitrary or flat names, e.g., ``\verb+JohnSmith3142's watch+'' can not be supported in DNS while retaining the scaling benefits of federation as the root name servers would have to maintain nonzero state, e.g., at least the authoritative name server(s) and the DNSSEC key of a name, for essentially all names. Our position is that the design of a general-purpose global name service must not restrict the structure of names as names carry application-specific semantics; in Section \ref{sec:context}, we show examples of novel context-aware communication primitives that are feasible with unrestricted names.
 %}
 
 \blue{
@@ -475,7 +475,7 @@ If SuperDNS were to replicate each name at all 200 locations, its update costs w
 %\end{figure}
 
 
-% from 100 PlanetLab locations to authoritative name servers  for 318 domain names that are serviced by a leading managed DNS provider (refer to Section \ref{sec:managed}). 
+% from 100 PlanetLab locations to authoritative name servers  for 318 domain names that are serviced by a leading managed DNS provider (refer to Section \\ref{sec:managed}). 
 %This finding suggests that managed DNS providers have considerable room for reducing lookup latencies with a more geo-distributed deployment of servers.
 
 %In summary, the current DNS design could be used to provide name resolution for mobile hosts but would continue to face the problem of high lookup latency to the authoritative name servers. Having a massively geo-distributed deployment of authoritative name servers could provide low lookup latencies across the globe, but prohibitively high update costs associated with mobility makes it infeasible for managed DNS providers to support such a deployment in a cost-effective manner.

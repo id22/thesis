@@ -1,6 +1,6 @@
 %!TEX root = shrink.tex
 \section{Experimental Evaluation}
-\label{sec:eval}
+\label{sec:shrink-eval}
 \newcommand{\peakS}{Peak-S}
 \newcommand{\peakSN}{Peak-SN}
 \newcommand{\randSN}{Rand-SN}
@@ -136,7 +136,7 @@ For Single-server-ideal, we compute the set of servers and switches in each time
 
 
 
-\subsubsection{Prototype-based experiments: server\\ consolidation}
+\subsubsection{Prototype-based experiments: server consolidation}
 \label{sec:ec2}
 \vspace{-0.1in}
 This experiment quantifies the energy-response time tradeoff due to server consolidation on EC2. Our EC2 testbed consists of 15 servers, 15 clients and 4 origin servers running on independent m3.xlarge instances (4 core, 15 GB RAM, 40 GB$\times$2 SSD), all in the same datacenter. Our origin server is a trivial Apache Tomcat application that dynamically generates the requested content. We emulate a 60 ms RTT between origin servers and \cdc's servers, and a 10 ms RTT between client and server machines. We configured each server to use an 8 GB memory cache and a 30 GB cache on each SSD. 
@@ -186,6 +186,7 @@ There are two reasons that explain the gap between \shrink\ and Single-server-id
 \label{sec:emulab}
 
 \begin{figure}
+	\centering
 \includegraphics[scale=0.35]{figures/emulab-topo.pdf}
 \includegraphics[scale=0.5]{graphs/final/emulab-mean.pdf}
 \caption{Network and server consolidation (Section \ref{sec:emulab}): [Left] Emulab topology for the experiment. [Right] Compared to \peakS, \shrink\ has a 15\% higher response time but a 57\% lower energy use.}

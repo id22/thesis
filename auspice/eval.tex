@@ -4,7 +4,7 @@
 
 Our evaluation seeks to answer the following questions: (1) How well does \auspice's design meet its performance, cost, and availability goals compared to state-of-the-art alternatives under high mobility? (2) Can \auspice\ serve as a complete, end-to-end solution for mobility and enable novel communication abstractions? (3) How does \auspice's cost-performance tradeoff compare to best-of-breed managed DNS services for today's (hardly mobile) domain name workloads?
 
-%Our main goal is to quantify the benefits and costs of the choices in \auspice's distributed design---our main contribution---with respect to the subset of design goals  ($\S$\ref{sec:design_goals}) that are quantifiable, namely client-perceived latency benefit and provider-perceived update cost under high mobility. We use the implemented prototype to evaluate (1) \auspice's replication strategies against simple ones used by DNS providers today as well as DHT-based alternatives proposed in research, and (2) a deployment of \auspice\ against several commercial managed DNS providers in live operation. We use simulations to evaluate (3) the sensitivity of \auspice's benefits with respect to mobile workload parameters, and (4) the scalability of \auspice\ to regimes beyond those permitted by our testbeds. We do not attempt to evaluate \auspice's functional design goals---resilience to failures, consistency, extensibility, security---except to the extent that all experiments subsume the overhead of these features.
+%Our main goal is to quantify the benefits and costs of the choices in \auspice's distributed design---our main contribution---with respect to the subset of design goals  (Section \ref{sec:design_goals}) that are quantifiable, namely client-perceived latency benefit and provider-perceived update cost under high mobility. We use the implemented prototype to evaluate (1) \auspice's replication strategies against simple ones used by DNS providers today as well as DHT-based alternatives proposed in research, and (2) a deployment of \auspice\ against several commercial managed DNS providers in live operation. We use simulations to evaluate (3) the sensitivity of \auspice's benefits with respect to mobile workload parameters, and (4) the scalability of \auspice\ to regimes beyond those permitted by our testbeds. We do not attempt to evaluate \auspice's functional design goals---resilience to failures, consistency, extensibility, security---except to the extent that all experiments subsume the overhead of these features.
 
 \eat{Our main results are:
 
@@ -30,11 +30,11 @@ Our evaluation seeks to answer the following questions: (1) How well does \auspi
 \textbf{Testbeds:} We use geo-distributed testbeds (Amazon EC2 or Planetlab) or local emulation clusters (EC2 or a departmental cluster) depending upon the experiment's goals. %The departmental cluster consists of 16 machines  (Xeon 5140, 4-core, 8 GB RAM)  and the EC2 instances are ``m3.xlarge" with 15GB RAM. %\tbd{Emulab.}
 
 
-\textbf{Workload:} There is no real workload today of clients querying a name service in order to communicate with mobile devices frequently moving across different network addresses, both because such a name service does not exist and mobile devices do not have publicly visible IP addresses. So we conduct an evaluation using synthetic workloads for device names ($\S$\ref{sec:comparison}), but to avoid second-guessing future workload patterns, we conduct a comprehensive sensitivity analysis against all of the relevant parameters such as the read rate, write rate, popularity, and geo-locality of demand \cite{techreport}.
+\textbf{Workload:} There is no real workload today of clients querying a name service in order to communicate with mobile devices frequently moving across different network addresses, both because such a name service does not exist and mobile devices do not have publicly visible IP addresses. So we conduct an evaluation using synthetic workloads for device names (Section \ref{sec:comparison}), but to avoid second-guessing future workload patterns, we conduct a comprehensive sensitivity analysis against all of the relevant parameters such as the read rate, write rate, popularity, and geo-locality of demand \cite{techreport}.
 
 %A vexing evaluation  challenge is that we do not have a workload of clients querying a name service in order to communicate with mobile devices moving across different network addresses. There is no global name resolution infrastructure for mobile device names today and most mobile devices do not have publicly visible addresses, so no one queries for them.
 
-The following are default experimental parameters %(except for $\S$\ref{sec:sensitivity} on sensitivity analysis) 
+The following are default experimental parameters %(except for Section \ref{sec:sensitivity} on sensitivity analysis) 
 for {\em device names}. The ratio of the total number of lookups across all devices to the total number of updates is 1:1, i.e., devices are queried for on average as often as they change addresses. The lookup rate of any single device name is uniformly distributed between 0.5--1.5$\times$ the average lookup rate; the update rate is similarly distributed and drawn independently.%, so there is no correlation between the lookup and update rate of a name.
 
 \rmCR{
@@ -52,7 +52,7 @@ Fraction of (mostly static) service names & 10\%   \\ \hline
 Geo-locality: [devices, services] & [0.75, 0.8]  \\ \hline
 \end{tabular}
 }
-\caption{Default workload parameters. %(except $\S$\ref{sec:sensitivity}).
+\caption{Default workload parameters. %(except Section \ref{sec:sensitivity}).
 }
 \vspace{-0.15in}
 \label{tab:setup}
@@ -60,11 +60,10 @@ Geo-locality: [devices, services] & [0.75, 0.8]  \\ \hline
 }
 
 \begin{figure*}[t]
-\subfigure[Lookup latencies (load = 0.3)]{\label{fig:namesquerymediancdf}\includegraphics[scale=0.55]{graph/newgraphs/lookup-latency-cdf.pdf}}
-\subfigure[Lookup latency vs. load]{\label{fig:load}\includegraphics[scale=0.55]{graph/newgraphs/load-latency.pdf}}
-\subfigure[Update cost vs. load]{\label{fig:loadupdatecost}\includegraphics[scale=0.55]{graph/newgraphs/load-updatecost.pdf}}
+\subfigure[Lookup latencies (load = 0.3)]{\label{fig:namesquerymediancdf}\includegraphics[scale=0.5]{graph/newgraphs/lookup-latency-cdf.pdf}}
+\subfigure[Lookup latency vs. load]{\label{fig:load}\includegraphics[scale=0.5]{graph/newgraphs/load-latency.pdf}}
+\subfigure[Update cost vs. load]{\label{fig:loadupdatecost}\includegraphics[scale=0.5]{graph/newgraphs/load-updatecost.pdf}}
 %\subfigure[Update cost]{\label{fig:updatebw}\includegraphics[scale=0.55]{graph/newgraphs/cdf-update-cost.pdf}}
-\vspace{-0.15in}
 \caption{\small{\auspice\ has up to 5.7$\times$ to 9$\times$ lower latencies than \staticthree\ and \codons\ reps. (\ref{fig:load}). A load of 1 means 200 lookups/sec and 100 updates/sec per name server. \replicateall\ peaks out at a load of 0.3 while \auspice\ can sustain a request load of up to 8 as it carefully chooses between 3 and 80 replicas per name.}}
 \vspace{-0.15in}
 \label{fig:lookupupdate}
@@ -80,7 +79,7 @@ In addition to device names, {\em service names} constitute a small fraction (10
 
 {\textbf{Replication schemes compared:}}
 %\label{sec:schemes}
-\textbf{\auspice} uses the replica placement strategy as described in $\S$\ref{sec:design} with the default parameter values $F=3, \mu = 0.7, \nu = 0.5$. %We set the replication control parameter ($\beta$)  to ensure that the utilization of the servers remains below  70\% (refer to Equation \ref{eq:mu}). 
+\textbf{\auspice} uses the replica placement strategy as described in Section \ref{sec:design} with the default parameter values $F=3, \mu = 0.7, \nu = 0.5$. %We set the replication control parameter ($\beta$)  to ensure that the utilization of the servers remains below  70\% (refer to Equation \ref{eq:mu}). 
 We compare \auspice\ against the following: (1) \textbf{\staticthree} replicates each name at three random locations; (2) \textbf{\replicateall} replicates all names at all locations; (3) \textbf{\codons} replicates names using consistent hashing with replication similar to Codons\cite{codons-paper}. The number of replicas is chosen based on the popularity ranking of a name and  the location of replicas is decided by consistent hashing. The average hop count in Codons's underlying Beehive algorithm  is set so that it creates the same average number of replicas as \auspice\ for a fair comparison. All schemes direct a lookup to the closest available replica after the first request.
 
 %In our implementation, each request is directly sent to the replica  that would have received this request if Pastry  routing were followed, i.e., the latency we report would be smaller than the actual latency in \codons.   We set the Zipf exponent to be $0.63$ calculated based on our workload. The average hop count is set so that \codons\ creates the same number of replicas as  \auspice\ for a fair comparison.
@@ -145,9 +144,7 @@ At loads $\geq$ 4, servers exceed the threshold utilization level even if \auspi
 \subfigure[E2E time-to-connect]{\label{fig:ttc_msocket}\includegraphics[width=2.4in,height=1.8in]{graph/camera-ready/connect-time-msocket.pdf}}
 \subfigure[Simultaneous mobility]{\label{fig:SimulMig}\includegraphics[width=2.5in, height=1.8in]{figure/SimulMig.pdf}}
 \subfigure[Context-aware delivery]{\label{fig:5MemberTimeline}\includegraphics[width=2in, height=1.8in]{figure/5MemTimeLineUsed.pdf}}
-\vspace{-0.2in}
 \caption{(a) Time-to-connect$\approx$lookup latency for moderate mobility rates ($<\frac{1}{10s}$)  as \auspice\ returns up-to-date responses w.h.p., but sharply rises thereafter (Eq. \ref{eq:ttc}); (b) Simultaneous mobility recovery in $\approx$2 RTTs after both endpoints resurface; (c) Context-aware delivery showing 3 messages  geo-cast to 5 members.}
-\vspace{-0.1in}
 \label{fig:end2end}
 \end{figure*}
 
@@ -196,9 +193,9 @@ At loads $\geq$ 4, servers exceed the threshold utilization level even if \auspi
 
 
 The {\em client-perceived update latency}, i.e., the time from when when a client sends an update to when it receives a confirmation. %with total write ordering is shown in Figure \ref{fig:updates}.  
-These numbers are measured from the experiment in $\S$\ref{sec:lookup} for load=0.3. The median and 90th percentile update latency for \auspice\ with total write ordering is 284ms and is comparable to other schemes. A request, after arriving an active replica, takes four one-way network delays (two rounds) to be committed by Paxos. The median update latency is a few hundred milliseconds for all schemes as it is dominated by update propagation delays.
+These numbers are measured from the experiment in Section \ref{sec:lookup} for load=0.3. The median and 90th percentile update latency for \auspice\ with total write ordering is 284ms and is comparable to other schemes. A request, after arriving an active replica, takes four one-way network delays (two rounds) to be committed by Paxos. The median update latency is a few hundred milliseconds for all schemes as it is dominated by update propagation delays.
 
-The {\em update propagation delay}, i.e., the time from when a client issued a write till the last replica executes the write, is a key determiner of the time-to-connect. As shown in $\S$\ref{sec:scalability}, with eventual consistency, update propagation takes one round, while with total write ordering, update propagation takes two rounds and 50\% more messages.
+The {\em update propagation delay}, i.e., the time from when a client issued a write till the last replica executes the write, is a key determiner of the time-to-connect. As shown in Section \ref{sec:scalability}, with eventual consistency, update propagation takes one round, while with total write ordering, update propagation takes two rounds and 50\% more messages.
 
 The measured update propagation delay is consistent with expectations. With eventual consistency, this delay is 154 ms, while with total write ordering, it is 292ms. Thus. the cost of the stronger consistency provided by total write ordering compared to eventual is that it can increase the time-to-connect latency by up to 2$\times$. Note that the 2$\times$ inflation is a worst-case estimate, i.e., it will impact the time-to-connect latency only if a read request arrives at a replica while a write is under propagation to that replica, as we show below.
 
@@ -238,15 +235,15 @@ The measured update propagation delay is consistent with expectations. With even
 \subsubsection{Reconfiguration overhead vs. responsiveness}
 
 \blue{
-In the next experiment, we show how \auspice\ can choose the epoch length and reconfiguration trigger so as to limit the overhead of reconfiguration (as in $\S$\ref{sec:reconf_policy}) while being responsive to changes in demand geo-locality. The workload changes the geo-distribution of demand for each name every 300 sec. 
+In the next experiment, we show how \auspice\ can choose the epoch length and reconfiguration trigger so as to limit the overhead of reconfiguration (as in Section \ref{sec:reconf_policy}) while being responsive to changes in demand geo-locality. The workload changes the geo-distribution of demand for each name every 300 sec. 
 For each name, we change the regions from which most requests arise so that changing the placement of replicas becomes necessary to minimize lookup latencies. The experiment is performed on a local cluster with a workload of 1000 names with characteristics as described in Table \ref{tab:setup}. 
-The epoch length of group changes is chosen to be 75 sec, which ensures that group changes result in less than 10\% overhead to the system ($\S$\ref{sec:reconf_policy}). 
+The epoch length of group changes is chosen to be 75 sec, which ensures that group changes result in less than 10\% overhead to the system (Section \ref{sec:reconf_policy}). 
 }
 
 \blue{
 We show the lookup latencies of \auspice\ and the message overhead of reconfiguration in the experiment in Figue \ref{fig:latency-time}.   We find that \auspice\ takes two epochs to infer a change in the geo-distribution of demand and to adapt to it.  This result suggests that \auspice\ can optimize lookup latencies provided the geo-distribution of demand for a name remains stable for a few epochs.
 Further, we measured the overhead of reconfiguration messages in this experiment to be 3.6\%. The overhead is less than the expected overhead of 10\% because not all names are reconfigured in every epoch. 
-%This finding shows that choosing epoch lengths as per the analysis in  Section \ref{sec:gc-analysis} keeps the overhead of group changes to a small fraction of the overall system load.
+%This finding shows that choosing epoch lengths as per the analysis in  Section \\ref{sec:gc-analysis} keeps the overhead of group changes to a small fraction of the overall system load.
 }
 }
 

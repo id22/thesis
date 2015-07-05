@@ -30,7 +30,6 @@
 	\vsp
 	\begin{center}
 		\includegraphics[width=3in,height=2in]{figure/DNS-GNS.pdf}
-		\figvsp
 		\caption{\small{DNS vs. GNS: Auspice can be deployed as a managed DNS provider today (left) or as a GNS provider that provides resolution service for its customer GUIDs (right). Name certification services bind a human-readable name to a GUID and its GNS provider, and certificate search services can help index and distribute certificates from all certification services. Solid (dotted) lines represent frequent (infrequent) query paths for a given mobile destination. Except for the tightly controlled DNS root  service, all services above are designed to be purveyed competitively.} 
 		}\label{fig:DNS_GNS}
 	\end{center}
@@ -54,7 +53,7 @@ Much of the envisioned functionality of a GNS as above boils down to one over-ar
 
 {\bf (6) Extensibility}: The design must be agnostic to how names, addresses, and resolution policies are represented by a future Internetwork. In particular, it should support flat names and a rich set of attributes and resolution policies for multi-homed mobility (e.g.,``prefer WiFi to cellular''), etc. 
 
-%Note that ``scalability'' is not an explicitly defined goal above because it is subsumed by the first three goals, i.e., a design maximizing performance and availability for any given resource cost is implicitly designed to improve the former with commensurately more resource expenditure. We explicitly quantify this tradeoff in $\S$\ref{sec:scalability}.
+%Note that ``scalability'' is not an explicitly defined goal above because it is subsumed by the first three goals, i.e., a design maximizing performance and availability for any given resource cost is implicitly designed to improve the former with commensurately more resource expenditure. We explicitly quantify this tradeoff in Section \ref{sec:scalability}.
 
 
 %Figure \ref{fig:4mobility} illustrates the four kinds of mobility and shows how the GNS helps handle three of these---pre-lookup, connect-time, and simultaneous mobility. Only individual connection mobility can be handled bilaterally without the GNS (although router-level late-binding proposals relying on a GNS-like infrastructure have also been proposed \cite{serval,MobilityFirst-UMASS}). In addition to emphasizing the importance of the GNS for handling mobility, the figure also reinforces the first four of the six design goals laid out above. 
@@ -77,7 +76,7 @@ The GUID is a self-certifying identifier computed as a compact one-way hash of a
 
 %Decentralizing trust implies is that two endpoints can communicate securely only if they share a trusted NCS provider; they can always fall back to 
 
-{\bf{Extensibility.}} Our design cleanly separates the GNS provider's resource-intensive responsibility of name resolution under high mobility from the slow-changing certification process. It also allows for the GNS provider to be deployed today as a managed authoritative DNS provider (Fig. \ref{fig:DNS_GNS}) with the DNSSEC key deriving the GUID. Finally, the key-value store API enables an extensible name record representation. By default, each top-level key has associated read and write ACLs that could either be a blacklist or whitelist of GUIDs that respectively have read or write access. For example, a name record for GUID \verb+X+ that helps context-aware delivery or multihoming policies (detailed in $\S$\ref{sec:context}) is below.
+{\bf{Extensibility.}} Our design cleanly separates the GNS provider's resource-intensive responsibility of name resolution under high mobility from the slow-changing certification process. It also allows for the GNS provider to be deployed today as a managed authoritative DNS provider (Fig. \ref{fig:DNS_GNS}) with the DNSSEC key deriving the GUID. Finally, the key-value store API enables an extensible name record representation. By default, each top-level key has associated read and write ACLs that could either be a blacklist or whitelist of GUIDs that respectively have read or write access. For example, a name record for GUID \verb+X+ that helps context-aware delivery or multihoming policies (detailed in Section \ref{sec:context}) is below.
 \verb+{X:+
 \verb+{IPs:[{IP: 23.55.66.43, plan: Unlimited}, {IP:+\\
 \verb+62.44.65.75, plan: Limited}], geoloc: {[lat,long],+\\
@@ -94,7 +93,7 @@ The GUID is a self-certifying identifier computed as a compact one-way hash of a
 	\centering
 	\vspace{-0.3in}
 	\includegraphics[scale=0.33]{gns-dns/gnrs.pdf}
-	\vspace{-0.35in}
+	\vspace{-0.15in}
 	\caption{Geo-distributed name servers in \auspice.  Replica-controllers  (logically separate from active replicas) decide placement of active replicas and active replicas handle requests from end-users. N1 is a globally popular name and is replicated globally; name N2 is  popular in select regions and is replicated in those regions.}
 	\vspace{-0.2in}
 	\label{fig:auspice}
@@ -254,7 +253,7 @@ With a static set of replicas, it is straightforward to support this property. A
 
 %It would appear that this weak eventual consistency property can be easily satisfied if the client associates a sequence number with each update; an active replica can simply locally record the write, return to the client, and lazily propagate the update to other active replicas.
 
-%Unfortunately, the simplistic approach above has some problems. As the set of active replicas for a name can change over time, a write-to-one approach can lose the most recent write if the active replica that received the write crashes and before it recovers, the replica controllers change the set of active replicas. Even if the set of active replicas remains unchanged, the window of inconsistency (or unreachability) is higher with a write-to-one approach if the active replica that received the write fails. Most importantly, we anticipate that expressive name records (see $\S$\ref{sec:extsec}) may be updated by multiple authorized clients via different active replicas, and it is important to ensure that update operations (like appending to or deleting from a list) to a name are applied in the same order by all active replicas. These requirements motivate a state-machine approach to handle updates. 
+%Unfortunately, the simplistic approach above has some problems. As the set of active replicas for a name can change over time, a write-to-one approach can lose the most recent write if the active replica that received the write crashes and before it recovers, the replica controllers change the set of active replicas. Even if the set of active replicas remains unchanged, the window of inconsistency (or unreachability) is higher with a write-to-one approach if the active replica that received the write fails. Most importantly, we anticipate that expressive name records (see Section \ref{sec:extsec}) may be updated by multiple authorized clients via different active replicas, and it is important to ensure that update operations (like appending to or deleting from a list) to a name are applied in the same order by all active replicas. These requirements motivate a state-machine approach to handle updates. 
 
 \textbf{Total write ordering.} As \auspice\ is designed to be an expressive name service with sophisticated attributes, it may be useful in some scenarios to ensure that update operations (like appending to or deleting from a list) to a name are applied in the same order by all active replicas. Ensuring a total ordering of all updates to a name is a stronger property than eventual consistency, calling for a state-machine approach, which \auspice\ supports as an option.
 
@@ -334,7 +333,7 @@ that gets committed as the last update of the current active replica group. The 
 
 
 \blue{
-	{\bf{Comparison to DNS}.} All of the above analyses are applicable also to geo-replicated managed DNS providers were they to employ \auspice's demand-aware replication approach. The main difference between \auspice\ and today's managed DNS providers that rely on simplistic static replica placement schemes is in the lookup latency $l_i$ achieved for any given resource cost; we evaluate this performance-cost tradeoff extensively in our experiments ($\S$\ref{sec:comparison} and $\S$\ref{sec:managed}). 
+	{\bf{Comparison to DNS}.} All of the above analyses are applicable also to geo-replicated managed DNS providers were they to employ \auspice's demand-aware replication approach. The main difference between \auspice\ and today's managed DNS providers that rely on simplistic static replica placement schemes is in the lookup latency $l_i$ achieved for any given resource cost; we evaluate this performance-cost tradeoff extensively in our experiments (Section \ref{sec:comparison} and Section \ref{sec:managed}). 
 }
 \eat {
 	As the group of active replicas can change over time, consistency guarantees depend on safely handling a change in the group of active replicas. The safety property can be stated as follows: {\em the group of active replicas in epoch $i+1$, before executing any requests, must obtain identical copies of the name record and that copy must include all committed updates to the name record made by the group of active replicas in epoch $i$}.
@@ -433,7 +432,7 @@ that gets committed as the last update of the current active replica group. The 
 %In case the membership change of active replicas is in progress, replica-controllers do commit a request 
 % After this step, all replica-controllers ignore any requests to change the set of active replicas. 
 
-%\textbf{Address lookups and updates:} Address update requests received by a replica are proposed to the Paxos instance between active replicas. When the update request is committed, a response is sent to the client. Lookup requests are processed locally at the replica. Sequential consistency for addresses lookups and updates is provided by sending the view along with responses to lookups/updates to the client as described in Section \ref{sec:consistency}.
+%\textbf{Address lookups and updates:} Address update requests received by a replica are proposed to the Paxos instance between active replicas. When the update request is committed, a response is sent to the client. Lookup requests are processed locally at the replica. Sequential consistency for addresses lookups and updates is provided by sending the view along with responses to lookups/updates to the client as described in Section \\ref{sec:consistency}.
 
 %Deleting records happens as follows: (1) mark record for removal at primaries (2) change membership set from current to NULL. (If membership change is in progress, wait until it completes.) (3) Mark record as deleted at primaries. If set of actives is in transition, let the new set of actives be running, before stopping them. Client is sent a response when current set of actives is stopped.
 
@@ -501,7 +500,7 @@ that gets committed as the last update of the current active replica group. The 
 
 
 
-%The main justification for the above design is that it can achieve low enough connection outage times comparable to a home agent approach when nodes suddenly move mid-session, but without incurring the overhead of triangle routing or tunneling data traffic. We also note that the network-layer support for ``refresh resource record'' in $\S$\ref{sec:routing_client_requests} may also suffice as a notification to the sender, but the above proactive ``in-band'' scheme above is likely to be more responsive and can also be used when an endpoint wishes to migrate a connection for reasons other than mobility, e.g., from the cellular to WiFi interface. These arguments for using in-band communication for non-simultaneous mobility of endpoints are similar in spirit to several past proposals for session-level \cite{HIP,MPTCP} or connection-level \cite{ECCP,Serval,TCP-MIgrate,TCP-R} migration.
+%The main justification for the above design is that it can achieve low enough connection outage times comparable to a home agent approach when nodes suddenly move mid-session, but without incurring the overhead of triangle routing or tunneling data traffic. We also note that the network-layer support for ``refresh resource record'' in Section \ref{sec:routing_client_requests} may also suffice as a notification to the sender, but the above proactive ``in-band'' scheme above is likely to be more responsive and can also be used when an endpoint wishes to migrate a connection for reasons other than mobility, e.g., from the cellular to WiFi interface. These arguments for using in-band communication for non-simultaneous mobility of endpoints are similar in spirit to several past proposals for session-level \cite{HIP,MPTCP} or connection-level \cite{ECCP,Serval,TCP-MIgrate,TCP-R} migration.
 
 \eat{
 	\subsection{Architectural overview}
@@ -630,7 +629,7 @@ that gets committed as the last update of the current active replica group. The 
 % as \auspice\ does not provide consistency guarantees for an operation spanning multiple names.
 
 \eat {
-	\emph{(1) Eventual:} Paxos guarantees that all  replicas will eventually store identical copies of the name record. A lookup request can be simply processed locally at a replica as in $\S$\ref{sec:routing_client_requests}. %, which results in a lookup latency equal to the latency to the nearest replica and is sufficient to satisfy the eventual consistency requirement.
+	\emph{(1) Eventual:} Paxos guarantees that all  replicas will eventually store identical copies of the name record. A lookup request can be simply processed locally at a replica as in Section \ref{sec:routing_client_requests}. %, which results in a lookup latency equal to the latency to the nearest replica and is sufficient to satisfy the eventual consistency requirement.
 	
 	% can return the locally stored name record to support the eventual consistency requirement. Processing lookups locally ensures low lookup latency 
 	%eventual consistency is satisfied by 

@@ -1,7 +1,7 @@
 %!TEX root = shrink.tex
 
 \section{Content datacenter background}
-\label{sec:background}
+\label{sec:shrink-background}
 
 %\textbf{How does a \cdc\ handle end users' requests for content?}
 
@@ -17,10 +17,10 @@ A  \cdc\ reduces end-user response time by avoiding load hotspots on servers and
 
 \begin{figure}[t]
 \centering
-\begin{small}
-\begin{tabular}{| m{0.9cm} | m{0.7cm} | m{3cm} | m{1.8cm} |}
+\small
+\begin{tabular}{| m{1.5cm} | m{1.5cm} | m{7cm} | m{3cm} |}
 \hline
-Topo-logy & Server count & Switches & Switch pow. / Server pow. \\ \hline
+Topology & Server count & Switches & Switch pow. / Server pow. \\ \hline
 \multicolumn{4}{|c|}{1 Gbps server link}                                                  \\\hline
 FatTree  & 3456        & Cisco 2224TP (80W, 720 count) & 0.17                                      \\\hline
 VL2        & 2880        & Cisco  2224TP (80W, 144 count), Cisco Nexus 5548P (390 W, 24 count)                               & 0.08                                      \\ \hline
@@ -28,7 +28,7 @@ VL2        & 2880        & Cisco  2224TP (80W, 144 count), Cisco Nexus 5548P (39
 FatTree  & 3456        & Cisco Nexus 5548P (390 W, 360 count) & 0.40                                      \\\hline
 VL2        & 2304        & Cisco 6001 (750W, 48 count), Cisco 6004 (2900W, 6 count) & 0.23                                      \\ \hline
 \end{tabular}
-\end{small}
+
 \caption{Ratio of network to server energy use at typical operating conditions. Switch power use data from Cisco \cite{cisco-dc-switches}. Server power use  of Acer Altos T350 F2 at a load of 30\% is 98.5 W \cite{spec}.}
 \label{fig:network-power-use}
 \end{figure}
