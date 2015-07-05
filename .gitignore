@@ -15,6 +15,10 @@ New.synctex.gz
 
 *.toc
 
+*.lof
+
 New.pdf
 
 New.pdf
+
+*~

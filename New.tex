@@ -370,7 +370,8 @@
 %% Table of contents is mandatory, lists of tables and figures are 
 %% mandatory if you have any tables or figures; must be in this order.
 \tableofcontents                % Table of contents
-\listoftables                   % List of Tables
+% Abhigyan: we do not need tables, only figures.
+%\listoftables                   % List of Tables
 \listoffigures                  % List of Figures
 
 
@@ -483,7 +484,8 @@
 %%
 %% A bibliography is required.
 \bibliographystyle{umthesis}
+% Abhigyan: splitting bib into multiple files caused bibliography to be printed multiple times
 \bibliography{New}
-%\bibliography{shrink/shrink} 
+
 \end{document}
 

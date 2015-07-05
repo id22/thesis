@@ -1,50 +1,36 @@
 \chapter{Introduction}
 
-This thesis is motivated by two prominent trends in the context of the Internet. First, users are accessing increasing amounts of digital content over the Internet. It is estimated that a vast majority of network traffic on the Internet is content, with videos alone expected to account for 80\% of all traffic by 2018 \cite{cisco-videogrowth}. Second, Internet-connected hosts that show a high network mobility, or frequent changing of network addresses, are increasingly common. By 2020, the number of Internet connected mobile end hosts is expected to grow to nearly 10 billion \cite{cisco}.
+Most of Internet traffic is content, and most of Internet connected hosts are mobile. It is estimated that a vast majority of network traffic on the Internet is content, with videos alone expected to account for 80\% of all traffic by 2018 \cite{cisco-videogrowth}. By 2020, the number of Internet connected mobile end hosts is expected to grow to nearly 10 billion and the total traffic originated by mobiles is poised to approach that by wired devices \cite{cisco-vni}.
 
 
-A content-dominated, highly mobile Internet needs several forms of infrastructure support. It needs network infrastructure with sufficient capacity to carry traffic to end users. It needs server infrastructure to sustain and accelerate delivery of content. Network mobility presents a challenge to establishing end-to-end communication because it changes the network location of connection end-points. As such, infrastructure support becomes necessary for establishing and maintaining connections. 
+A content-dominated, highly mobile Internet needs several forms of infrastructure support. It needs network infrastructure with sufficient capacity to carry traffic to end users. It needs server infrastructure to sustain and accelerate delivery of content. In the presence of frequent network mobility or changing addresses, infrastructure support becomes necessary for establishing and maintaining connections. This thesis focuses on the design of services that manage the infrastructure resources achieve the desired goals.
 
-%Such an infrastructure is currently poorly developed in the Internet as discussed later. 
+\section{Characteristics of infrastructure}
 
-Integral to any infrastructure are the \emph{infrastructure services} that manage the resources available in the infrastructure to achieve the desired goals. It is these infrastructure services that form the topic of study of this thesis.
+Our service designs are strongly influenced by the following characteristices of the infrastructures.
 
-
-
-\section{Infrastructure characteristics}
-
-The following characteristics of infrastructures play a key role in designing the services we consider in this thesis.
-
-\textbf{Cost-intensive:} There is a subtantial captial and operational cost in running the infrastructure\cite{greenberg2008cost}, and which cause a sigificant reduction in the profit margins of the infrastructure owner\cite{isp-low-profit}. As a result, there is a relentless push for making infrastructure cost-effective to maximize profits. 
+\textbf{Cost-intensive:} There is a substantial captial and operational cost in running a large-scale infrastructure\cite{greenberg2008cost}, and which cause a sigificant reduction in the profit margins of the infrastructure owner\cite{isp-low-profit}. As a result, there is a relentless push for making infrastructure cost-effective to maximize profits. 
 % might be better to just cite works on reducing cost in cloud computing.
-A push towards building huge datacenters with 100Ks of servers to leverage economies of scale is a case in point \cite{armbrust2010view}. Thus, cost reduction while meeting performance and other constraints is a central design problem that we address in this thesis. 
+Thus, cost reduction while meeting performance and other constraints is a central design problem that we address in this thesis. 
 
+\textbf{Geo-distribued:} Such an infrastructure is often highly geo-distribtued, e.g., a large internet service provider (ISP) or a content delivery network (CDN) has Points-of-Presence (POP) at hundreds of locations \cite{dilley2002globally}. A key purpose of geo-distribution in infrastructure services is to maintain service deployment locations close to end-users. Thus, services must be designed to leverage geo-distributed resources for reducing user-perceived latencies.
 
-\textbf{Geo-distribued:} Such infrastructure is commonly geo-distribtued at 10s or even 100s of locations, e.g., a large internet service provider (ISP) or a content delivery network (CDN) has Points-of-Presence (POP) at hundreds of locations. A key purpose of geo-distribution in infrastructure services is to maintain service deployment locations close to end-users. Thus, another key objective of infrastructure service design is to leverage geo-distribued resources to minimize user-perceived latencies.
+\textbf{Locality-exhibiting workload:} Real-worlds workloads served by these infrastructures tend to exhibit significant geographic and temporal localities \cite{NCDN, youtubeUGC, vodP2Pbenefit, cellularvideotraffic}. Exploiting locality of demand to reduce infrastructure cost as well as user-perceived latencies is a key focus in our service designs.
 
-\textbf{Locality-exhibiting workload:} Real-worlds workloads served by these infrastructures tend to exhibit significant geographic and temporal localities \cite{NCDN, youtubeUGC, vodP2Pbenefit, cellularvideotraffic}. Exploiting locality of demand to reduce infrastructure cost as well as user-perceived latencies is a key focus in the design of infrastructure services.
-
-
-\section{Degrees of freedom in infrastructure service design} Due to their geo-distributed deployment \cite{dilley2002globally}, these infrastructure services commonly make three sets of decisions: \emph{content placement}, \emph{request redirection}, and \emph{network routing}. As each of these decisions can be made relatively independently of others, we call them ``degrees of freedom'' available to a service. 
+\section{Degrees of freedom in infrastructure service design} Due to their geo-distributed deployment, these infrastructure services commonly make three sets of decisions: \emph{content placement}, \emph{request redirection}, and \emph{network routing}. As each of these decisions can be made relatively independently of others, we call them ``degrees of freedom'' available to a service. 
 \begin{itemize}
 	\item
-	\textbf{Content placement} refers to selecting the locations at which a content is placed. Placement schemes seek to balance resource cost of keeping multiple replicas with the benefits, namely, improved availability and reduced user-perceived latency.
+	\textbf{Content placement} selects the locations at which a content is placed. Placement schemes seek to balance resource cost of keeping multiple content replicas with the benefits of improved availability and reduced user-perceived latency.
 	\item
-	 \textbf{Request redirection} refers to selecting a location to send a content request to, with a preference for selecting a location that is nearby and has sufficient resources to service the request.
+	 \textbf{Request redirection} selecs a location to send a content request to, with a preference for selecting a location that is nearby and has sufficient resources to service the request.
 	\item
-	 \textbf{Network routing} (or \textbf{traffic engineering}) is the process of selecting the physical paths between nodes in the network based on topoology and traffic demand patterns for avoiding congestion hotspots in the network.
+	 \textbf{Network routing} (or \textbf{traffic engineering}) selects the physical paths between nodes in the network for avoiding congestion hotspots in the network based on topoology and traffic demand patterns.
 \end{itemize}
 
-%Figure 1 illustrates these degrees of freedom.  Network routing refers to selecting the physical path between pairs of nodes in the network.
-
-%USE IMAGE:
-
-%Each of these decisions contributes towards improving user-perceived performance in an infrastructure service. Content placement reduces the latency between an end-user and the nearest copy of the content that it is requesting. Request redirection complements content placement by sending a request to a nearby location with the requested content. Network routing selects paths with low congestion and delay.
 
 \section{Thesis statement}
 
-We state the thesis statement as follows: \emph{Placement is a more powerful degree of freedom than redirection and routing in shaping traffic for geo-distributed infrastructure services in a content-dominated, highly mobile Internet, and simple placement schemes are effective in improving cost-, performance- and energy-related metrics for these services.}
-
+\emph{Content placement is a more powerful factor that request redirection and network routing in determining the cost, performance and energy-related metrics for these services.}
 
 \section{Why placement is more powerful than redirection, routing}
 
