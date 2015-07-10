@@ -1,5 +1,18 @@
 \chapter{Traffic Engineering: An Application-Centric Comparison}
 \label{ch:beyondmlu}
+
+\section{Introduction}
+
+\subsection{Shortcomings of link utilization metrics}
+
+\subsection{Challenges in evaluating TE schemes}
+
+\subsection{Results from an application-centric evaluation}
+
+\subsection{Chapter organization}
+
+
+
 Traditionally, traffic engineering (TE) has been studied as an optimization problem that takes as input a traffic matrix (TM) and seeks to compute routes so as to minimize a network cost function. The cost function is intended to capture the severity of congestion hotpsots based on link utilization levels. For example, the most widely used cost function, MLU, is simply the utilization of the most utilized link in the network \cite{COPE,TEXCP,MultiTM,Cohen}; others  sum over all links a convex function of their utilization  (so as to penalize highly utilized links more)  \cite{fortz2000internet,fortz2002traffic}. There are two implicit assumptions underlying this line of work. First, maintaining low link utilization improves user-perceived application performance under typical load conditions. Second, maintaining low link utilization increases the effective capacity of the network by enabling it to accommodate unexpected surges in the traffic demand.
 
 
