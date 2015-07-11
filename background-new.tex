@@ -6,16 +6,16 @@ This chapter serves two main purposes. First is to provide the reader with neces
 
 
 
-In comparison, following are the main new research directions that we pursue in this thesis. We explain each of them further in the chapter.
-
-\begin{itemize}
-	\item
-	How do ISP traffic engineering schemes compare in terms of application-performance metrics such as TCP download time? Further, how do they compare while accounting fo r the effect of  application adaptation? 
-	\item
-	How should network CDNs--an ISP that operates a CDN on its infrastructure to deliver content to users on its network--perform content delivery given that they control both the content delivery and the underlying network routing?
-	\item
-	What role does content placement influence the interaction between network and content delivery, and what its its effect on user-perceived performance and netowrk cost?
-\end{itemize}
+%In comparison, following are the main new research directions that we pursue in this thesis. We explain each of them further in the chapter.
+%
+%\begin{itemize}
+%	\item
+%	How do ISP traffic engineering schemes compare in terms of application-performance metrics such as TCP download time? Further, how do they compare while accounting fo r the effect of  application adaptation? 
+%	\item
+%	How should network CDNs--an ISP that operates a CDN on its infrastructure to deliver content to users on its network--perform content delivery given that they control both the content delivery and the underlying network routing?
+%	\item
+%	What role does content placement influence the interaction between network and content delivery, and what its its effect on user-perceived performance and netowrk cost?
+%\end{itemize}
 
 
 %Traffic engineering done by Internet service providers focuses on  computing the routing in the network for optimizing cost and other objectives. But, traffic engineering techniques are not isolated from mechanisms that alter the flow of traffic from the application. In particular, decisions at the application-layer ``overlay networks'' such as content placement and redirection also seek to alter how traffic flows in the network. Motivated by this observation, a question of long standing interest has been the following: 
@@ -32,29 +32,23 @@ In comparison, following are the main new research directions that we pursue in 
 \label{sec:bg-bg}
 Our review of prior work provides following main findings:
 
-
-
 \begin{itemize}
-	\item
-	ISP traffic engineering is studied mostly as an optimization problem for minimizing link-utilization based cost functions (Section \ref{sec:ch2-te}).
-	\item
-	Content delivery networks (CDNs) commonly use \emph{demand-oblivious} techniques for content placement and request redirection towards improving user-perceived performance across the Internet (Section \ref{sec:ch2-cdn}).
-	\item
-	Interaction between traffic engineering and content delivery has been shown to affects user-perceived performance as well as network cost. But, prior work has focused mostly on the interaction of traffic engineering with either overlay routing or with request redirection (Section \ref{sec:ch2-te-cdn}).
+	\item ISP traffic engineering schemes commonly use a demand-aware approach, i.e., they compute routes using previously measured traffic matrics, for optimizing  link-utilization based cost functions (Section \ref{sec:ch2-te}).	\item CDNs commonly use \emph{demand-oblivious} techniques, i.e., techniques that require no system-wide measurement of content demand, for content placement and request redirection towards improving user-perceived performance across the Internet (Section \ref{sec:ch2-cdn}).
+	\item Interaction between traffic engineering and content delivery affects user-perceived performance as well as network cost. But, prior work has focused mostly on the interaction of traffic engineering with two aspects of content delivery --  overlay routing and request redirection (Section \ref{sec:ch2-te-cdn}).
 \end{itemize}
 
 
 \subsection{Traffic engineering}
 \label{sec:ch2-te}
 
-The goal of traffic engineering (TE)  is to avoid congestion hotspots in the network by optimizing routes based on network topology and expected traffic demand. In the context of large Internet service provider (ISP) networks, traffic engineering decides both intra-domain (within the ISP) and inter-domain routing (across ISPs). We focus here on intra-domain routing and refer the reader to  \cite{Feamster2003,rexford} for a survey of inter-domain traffic engineering. 
+The goal of traffic engineering is to avoid congestion hotspots in the network by optimizing routes based on network topology and expected traffic demand. In ISP networks, traffic engineering decides both intra-domain (within the ISP) and inter-domain routing (across ISPs). We focus here on intra-domain routing and refer the reader to  \cite{Feamster2003,rexford} for a survey of inter-domain traffic engineering. 
 
 The evaluation metric for traffic engineering is a cost function that is dependent on the utilization of network links. Link utilization is a relevant metric because a low utilization of all links implies that the network is free from congestion hotspots and has spare capacity to tolerate an increase in demand. A well-known cost function is maximum link utilization or MLU. We give a simple example to show how traffic engineering can reduce link utilization.
 
 
 We classify traffic engineering approaches into three groups:
 \begin{description}
-	\item[Optimal] If the traffic matrix is known accurately, the optimal solution to the traffic engineering problem can formulated as a multi-commodity flow optimization problem. The routing thus computed is reffered to as \textbf{Optimal} traffic engineering in literature.
+	\item[Optimal] If the traffic matrix is known accurately, the optimal solution to the traffic engineering problem can formulated as a multi-commodity flow optimization problem. The routing thus computed is reffered to as Optimal traffic engineering in literature.
 	\item[Demand-aware] As it is impossible to have accurate knowledge of future traffic matrices, a demand-aware  traffic engineering  periodically updates routing using historically observed traffic matrices.
 	\item[Demand-oblivious] A demand-oblivious  traffic engineering  requires no explicit measurement of traffic matices, but instead configures routing statically. A demand-oblivious  traffic engineering  is simpler to implement because it requires neither measuremnt nor periodic updating of network routing. 
 	
@@ -80,32 +74,39 @@ In practice, demand-aware traffic engineering based on Open Shortest Path First 
 \subsection{Content delivery}
 \label{sec:ch2-cdn}
 
-Content delivery systems seek to provide a high-quality experience to users accessing content in all regions  at all times. A canonical example of a content delivery system is a content delivery network (CDN). State-of-the-art CDNs operate geo-distributed datacenters, and use a combination of edge caching, intelligent server selection, and path and protocol optimizations for delivery of several types of content, e.g., video, bulk downloads, and interactive websites \cite{DilleyMPPSW02,akamai-overview}. Given their geo-distributed deployment, the decisions of content placement, i.e., locations at which a content is placed, and request redirection, i.e., which location is best positioned to serve a user's request, are central to the functioning of a CDN.
+Content delivery systems seek to provide a high-quality experience to users accessing content in all regions  at all times. A canonical example of a content delivery system is a content delivery network (CDN). State-of-the-art CDNs operate geo-distributed datacenters, and use a combination of edge caching, intelligent request redirection, and path and protocol optimizations for delivery of several types of content, e.g., video, bulk downloads, and interactive websites \cite{DilleyMPPSW02,akamai-overview}. Given their geo-distributed deployment, the decisions of content placement, i.e., locations at which a content is placed, and request redirection, i.e., which location is best positioned to serve a user's request, are central to the functioning of a CDN.
 
 \textbf{Content placement:} Content placement in CDNs is commonly done using caching schemes. For example a commonly used caching strategy is least recently used (LRU) cache replacement. There are two reason why content cahing is widely used. First, caching naturally captures geographic and temporal locality in content requests to populate caches with content likely to be reused. Second, a vast majority of network traffic is generated by content that gets updated infrequently, e.g., a video, audio, images. As a result, cached copies of content remain reusable for long duration. 
 
 %Strong consistency is a separate topic and is studied in the content of design of geo-distrbuted kv store in auspice.\tbd{fix this}
 
-\textbf{Request redirection:} Request redirection strategies complement placement strategies by selecting the server location that is best suited to process a user's request. These strategies have been extensively studied and form the heart of CDN technology today. To quote from a report by Akamai,  \emph{``the system directs client requests to the nearest available server likely to have the requested content."} where the ``nearest" server is one whose round trip latency as well as packet losses are small, and  an ``available" server is one that is lightly loaded considering all resources, i.e., network, CPU and disk  \cite{DilleyMPPSW02}. 
+\textbf{Request redirection:} In a CDN, request rediection occurs at two tiers - inter-datacenter and intra-datacenter. Our focus in this part of the thesis is on inter-datacenter request redirection because it influences wide-area traffic patterns that affect traffic engineering. We discuss intra datacenter redirection in the context of a Content Datcenter (Chapter \ref{ch:shrink}).
+
+Request redirection strategies complement placement strategies by selecting the server location that is best suited to process a user's request. These strategies have been extensively studied and form the heart of CDN technology today. To quote from a report by Akamai,  \emph{``the system directs client requests to the nearest available server likely to have the requested content."} where the ``nearest" server is one whose round trip latency as well as packet losses are small, and  an ``available" server is one that has sufficient resources to serve a request \cite{DilleyMPPSW02}. 
 
 Request redirection is implemented using three processes: (1) \emph{Monitoring:} Probe messages sent intermittently help monitor network characteristics and server load and identify congested regions of network and overloaded server locations \cite{oasis,donar}. (2) \emph{Estimating distances:} The measured statistics are combined to compute a distance function that reflects the proximity of a server location to users in a geographic region \cite{donar}. (3) \emph{Informing the user:} The user is informed of selected server/s either via DNS resolution or via HTTP redirection as described in  \cite{DilleyMPPSW02} and  \cite{barbir2003known}.
 
-
-Similar to our classification of traffic engineering schemes, we consider common content delivery techniques discussed above to be demand-oblivious since they do not require explicit measurement of content demand. In contrast, a demand-aware approach to content placement and redirection has also been studied, e.g., Applegate \emph{et al.} use a demand-aware approach to determine placement and redirection for Video-on-Demand content in the network. 
+Content delivery techniques can be classified into demand-aware and demand-oblivious similar to our classfication of traffic engineering schemes. We consider common content delivery techniques discussed above to be demand-oblivious since they do not require system-wide measurement of content demand. In contrast, a demand-aware approach to content placement and redirection has also been studied, e.g., Applegate \emph{et al.} use a demand-aware approach to determine placement and redirection for Video-on-Demand content in the network. 
 
 \subsection{Interaction between traffic engineering and content delivery}
 \label{sec:ch2-te-cdn}
 
-Content delivery routes traffic at the application layer using an overlay network of servers, and traffic enginering configures network routing of the underlying physical paths. Studying this interaction between decisions at the overlay and the underlying network has been a topic of long standing interest in computer science. Several related questions have been put forth. Does the interaction between network routing and content delivery yield sub-optimal results? How can we design cooperative mechanisms to leverage these interactions? Do cooperative mechanisms yield benefit in an Internet-like environment? We find that nearly all previous research on this topic has focused either on the interaction of overlay routing with the network routing \cite{Roughgarden,selfishQiu}, or that of server selection strategies with the underlying routing  \cite{Jiang2009,JohariGameTheory, CATE, P4P} as discussed below. 
+Content delivery routes traffic at the application layer using an overlay network of servers, and traffic enginering configures network routing of the underlying physical paths. Studying this interaction between decisions at the overlay and the underlying network has been a topic of long standing interest in computer science. Several related questions have been put forth. Does the interaction between network routing and content delivery yield sub-optimal results? How can we design cooperative mechanisms to leverage these interactions and do cooperative yield benefit in an Internet-like environment? We find that nearly all previous research on this topic has focused on the interaction of traffic engineering with either overlay routing \cite{Roughgarden,selfishQiu} with request redirection \cite{Jiang2009,JohariGameTheory, CATE, P4P} as discussed below. 
 
 %Studying the interaction between network and content delivery has been a topic of much interest in both systems and theory communities. Several related questions have been put forth. Do these interactions negatively affect objectives of networks and content delivery systems? What is the sub-optimality caused due to these interactions in the worst case, and for typical topologies and traffic demands? How to leverage these interactions to improve traffic engineering and content delivery objectives? 
 
 %Yet, we don't fully understand these interactions because prior research has studied the interaction of network routing with only a subset of content delivery decisions. Much prior research has focused on two aspects: the interaction of overlay routing and network routing  \cite{Roughgarden,selfishQiu}, and the interaction of request redirection and network routing  \cite{Jiang2009,JohariGameTheory, CATE, P4P}. While placement decisions are critical to user-perceived performance, there has been little research on how content placement interacts with network routing.
 
-\textbf{Interaction between traffic engineering and overlay routing:} Several results show the negative interaction between selfish overlay routing and network routing \cite{Roughgarden,selfishQiu}. Theoretical results indicate that the negative interaction could cause an arbitrary degradation in user perceived delay. Further studies using synthetic traffic demands and topologies indicate that this interaction hurt traffic engineering metrics. However, it appears that a small fraction of Internet traffic uses overlay routing.  For example, traffic from CDN edge server to the client always follows network routing. Further, overlay routing yields ``marginal" benefits ($<$ 30\%) over network routing for 79\%-96\% of paths depending on which geographic region is being considered  \cite{rahul2006overlays}, which suggests that traffic between CDN servers forming an overlay network follows network routing in most cases. For this reason, this thesis does not model the interaction between overlay and network routing.
+\textbf{Interaction between traffic engineering and overlay routing:} Several results show the negative interaction between selfish overlay routing and network routing \cite{Roughgarden,selfishQiu}. Theoretical results indicate that the negative interaction could cause an arbitrary degradation in user perceived delay. Further studies using ``Internet-like'' traffic demands and topologies indicate that this interaction hurts traffic engineering metrics. In this thesis, we do not consider overlay routing since our focus is primarily on intra-domain routing while overlay routing is most commonly used to mask inter-domain routing inefficiencies.
 
-\textbf{Interaction between traffic engineering and request redirection:} Recent research has investigated the interaction between request redirection and traffic engineering, without considering the role of placement strategies. This interaction is commonly studied in the context of Internet service providers (ISPs) and content providers (CPs) with geo-distributed datacenters. 
-Both analytical results \cite{Jiang2009,JohariGameTheory} and system implementations \cite{CATE,P4P} have shown that there is value for joint optimization of request redirection and traffic engineering, and cooperative strategies can help traffic engineering metrics and also reduce user-perceived latencies. Commonly, these efforts assume that all content is available at all locations, ignoring the fact that content availability at a location depend on placement strategies. Therefore, in this thesis, we account for the effect of content placement along with request redirection, in studying the interaction between network and content delivery.
+%However, it appears that a small fraction of CDN traffic uses overlay routing.  For example, traffic from CDN edge server to the client always follows network routing. Further, overlay routing yields ``marginal" benefits ($<$ 20\%) over network routing for 79\%-96\% of paths depending on which geographic region is being considered  \cite{rahul2006overlays}, which suggests that traffic between CDN servers forming an overlay network follows network routing in most cases. For this reason, this thesis does not model the interaction between overlay and network routing \tbd{is this the best reason?}.
+
+\textbf{Interaction between traffic engineering and request redirection:} Recent research has investigated the interaction between request redirection and traffic engineering, without considering the role of placement strategies. This interaction is commonly studied in the context of Internet service providers (ISPs) and content providers (CPs) with geo-distributed datacenters. Both analytical results \cite{Jiang2009,JohariGameTheory} and system implementations \cite{CATE,P4P} have shown that there is value for joint optimization of request redirection and traffic engineering, and cooperative strategies can help traffic engineering metrics and either maintain or improve user-perceived latencies.
+
+%Compared to these efforts, our work additionally considers content placement as a degree of freedom in a Network CDN.
+%
+%However, as these efforts do not model content placement as a part of the formulation it is 
+%Commonly, these efforts assume that all content is available at all locations, ignoring the fact that content availability at a location depend on placement strategies. Therefore, in this thesis, we account for the effect of content placement along with request redirection, in studying the interaction between network and content delivery.
 
 
 \section{Motivation}
