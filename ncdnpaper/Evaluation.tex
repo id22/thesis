@@ -124,12 +124,12 @@ Each evaluated scheme has a content placement component and a routing component.
 
 %We schematically label each evaluated scheme using the notation {RoutingScheme-PlacementScheme} as follows.
 
-\textbf{\invlru} uses LRU as the cache replacement strategy and InverseCap  (with ECMP) as the routing strategy. InverseCap is a static, shortest-path routing scheme where link weights are set to the inverse of the link capacity.  This scheme requires no information of either the content demand or the traffic matrix. If content is available at multiple PoPs, we choose the closest PoP based on hop count distance. We break  ties randomly among PoPs with equal hop count distance.
+\textbf{\invlru} uses LRU as the cache replacement strategy and InvCap  (with ECMP) as the routing strategy. InvCap is a static, shortest-path routing scheme where link weights are set to the inverse of the link capacity.  This scheme requires no information of either the content demand or the traffic matrix. If content is available at multiple PoPs, we choose the closest PoP based on hop count distance. We break  ties randomly among PoPs with equal hop count distance.
  
 We added  a straightforward optimization to LRU where if a user terminates the request before 10\% of the video (file) is viewed (downloaded), the content is not cached (and the rest of the file is not fetched); otherwise the entire file is downloaded and cached. This optimization is used since we observe in our traces that a user watching a video very often stops watching it after watching the initial period. A similar phenomenon is observed for large file downloads, but less frequently than video.
 
 
- \textbf{\optlru} uses an \unplanned\  placement, LRU, but it uses an \planned, optimized routing that is updated  every three hours. The routing is computed by solving a multi-commodity flow problem 
+ \textbf{\optlru} uses a \unplanned\  placement, LRU, but it uses an \planned, optimized routing that is updated  every three hours. The routing is computed by solving a multi-commodity flow problem 
  identical to  the traditional traffic engineering problem \cite{fortz2000internet}. We assume that the \ncp\ measures the traffic matrix over the preceding  three hours and computes routes that optimize the MLU for that matrix. The matrix incorporates the effect of the \unplanned\  placement and the implicit assumption is that the content demand and \unplanned\  placement result in a traffic matrix that does not change dramatically from one monitoring interval to the next---an assumption that also underlies traffic engineering as practiced by ISPs today. 
  
 %  using the multi-commodity flow optimization discussed in  Section \ref{sec:optrouting}; 
@@ -139,7 +139,7 @@ We added  a straightforward optimization to LRU where if a user terminates the r
 
 
 
-To determine the value of optimizing routing alone, we study the \textbf{\invoptpfuture} scheme. This is a variant of \optrpfuture\ where InverseCap routing is used and content placement is optimized, rather than jointly optimizing both. This scheme is computed  using the MIP formulation in Section \ref{sec:linearprograms} but with an additional constraint modification that ensures that InvCap routing is implemented.
+To determine the value of optimizing routing alone, we study the \textbf{\invoptpfuture} scheme. This is a variant of \optrpfuture\ where InvCap routing is used and content placement is optimized, rather than jointly optimizing both. This scheme is computed  using the MIP formulation in Section \ref{sec:linearprograms} but with an additional constraint modification that ensures that InvCap routing is implemented.
 %(refer to \cite{techreport} for the modified MIP formulation). 
 
 
@@ -153,7 +153,7 @@ We add a suffix  \textbf{-L} to the names of a scheme if it is optimizing for la
 
 \eat
 {
-To determine the value of optimizing routing alone, we study two more schemes: \textbf{\invoptp}  and \textbf{\invoptpfuture}. One can view these as variants of \optrp\  and \optrpfuture\ respectively where InverseCap routing is used and content placement is optimized, rather than performing a joint optimization of both. These schemes use a simple variant  from the MIP described in Section \ref{sec:linearprograms}, which restricts the MIP to follow InverseCap routing. A complete description is presented in  \cite{techreport}.
+To determine the value of optimizing routing alone, we study two more schemes: \textbf{\invoptp}  and \textbf{\invoptpfuture}. One can view these as variants of \optrp\  and \optrpfuture\ respectively where InvCap routing is used and content placement is optimized, rather than performing a joint optimization of both. These schemes use a simple variant  from the MIP described in Section \ref{sec:linearprograms}, which restricts the MIP to follow InvCap routing. A complete description is presented in  \cite{techreport}.
 }
 %define the values of the decision variable $f_{ije}$ that determines the routing  as per InvCap, and solve the MIP for other decision variables. 
 
@@ -406,7 +406,7 @@ Next, we observe that \invlru\ does underperform compared to \optrpfuture\ that 
 
 
 %To answer this question, we compared \invlru\ with  \optlru\ and \optrpfuture\ with \invoptpfuture. 
-How are the above conclusions impacted if  \invlru\  were to optimize routing or   \optrpfuture\  were to use InverseCap routing? To answer this question, we analyze the maximum reduction in MLU by using \optlru\ over \invlru\ across all storage ratios in Figure  \ref{fig:mlureduction}. We similarly compare \optrpfuture\ and \invoptpfuture.   We find that \optlru\ improves the MLU over  \invlru\ by at most 10\% across all traces suggesting that optimizing routing is of little value for an \unplanned\  placement scheme.   \optrpfuture\  reduces the network cost by at most 13\% compared to \invoptpfuture. As we consider \optrpfuture\ to be the ``ideal'' scheme with full future knowledge, these results show that the best MLU can be achieved by optimizing content placement alone; optimizing routing adds little additional value.
+How are the above conclusions impacted if  \invlru\  were to optimize routing or   \optrpfuture\  were to use InvCap routing? To answer this question, we analyze the maximum reduction in MLU by using \optlru\ over \invlru\ across all storage ratios in Figure  \ref{fig:mlureduction}. We similarly compare \optrpfuture\ and \invoptpfuture.   We find that \optlru\ improves the MLU over  \invlru\ by at most 10\% across all traces suggesting that optimizing routing is of little value for an \unplanned\  placement scheme.   \optrpfuture\  reduces the network cost by at most 13\% compared to \invoptpfuture. As we consider \optrpfuture\ to be the ``ideal'' scheme with full future knowledge, these results show that the best MLU can be achieved by optimizing content placement alone; optimizing routing adds little additional value.
 
 %We present the results for this experiment for both traces in Figures \ref{fig:newsMLU} and \ref{fig:entertainmentMLU}.
 

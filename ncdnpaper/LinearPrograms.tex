@@ -1,7 +1,7 @@
 
 
 
-\section{NCDN management strategies}
+\section{NCDN joint optimization}
 \label{sec:optimize}
 
 
@@ -9,7 +9,7 @@
 %Content-aware traffic engineering for an NCDN refers to the combined task of content distribution and traffic engineering. There are several content-aware traffic engineering strategies that an NCDN can deploy. An NCDN can use any combination of demand-aware or demand-oblivious content distribution and routing strategies (Section \ref{sec:background})  as its content-aware traffic engineering strategy. An NCDN can also jointly optimize both content distribution and traffic engineering in a demand-aware manner.
 %}
 
-To answer the above questions, we develop an optimization model for NCDNs to jointly optimize placement, routing, and redirection so as to optimize network cost or user-perceived latency. We formulate the optimization problem as a mixed-integer program (MIP), present hardness and inapproximability results, and discuss approximation heuristics to solve MIPs for realistic problem sizes.
+We develop an optimization model for NCDNs to jointly optimize placement, routing, and redirection so as to optimize network cost or user-perceived latency. We formulate the optimization problem as a mixed-integer program (MIP), present hardness and inapproximability results, and discuss approximation heuristics to solve MIPs for realistic problem sizes.
 
 %\textcolor{blue}{
 %This section presents a optimization strategy for NCDNs to jointly optimize content placement, routing, and redirection. First we describe our NCDN model and cost functions followed by a description of the optimization formulation as a mixed-integer program (MIP). Next, we present hardness and inapproximability results for this problem. Finally, we discuss approximation techniques that we use to solve our MIP formulation. 
@@ -329,7 +329,8 @@ Updating the content placement itself generates traffic and impacts the link uti
 %\subsubsection{ISP Transit Traffic Optimization}
 
 \subsection{Computational hardness}
-\optloc\ is the decision version of the NCDN problem. The proofs for these theorems are presented in a techreport  \cite{techreportNCDN}.
+\optloc\ is the decision version of the NCDN problem. The proofs for these theorems are presented in Appendix \ref{sec:npcreduction}.
+
 %We show that the NCDN-problem is NP-Complete and is inapproximable to within an exponential factor.  
 
 {{\sc Theorem 1.}} {\em \optloc\ is NP-Complete even in the special case where all objects have unit size, and all demands, link capacities, and storage capacities have binary values.}

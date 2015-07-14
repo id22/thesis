@@ -260,8 +260,8 @@ We use a shared cluster of 60 machines. Each machine has a 8-Core Intel Xeon pro
 
 {\bf{\mindelay}} scheme minimizes average latency for all traffic, unlike the schemes above which optimize link utilization based metrics.
 Specifically, the objective function \mindelay\ optimizes is $\sum_{e \in E} d_e T_e$, where $E$  is the set of all links, $d_e$ is the propagation delay of link $e \in E$, and $T_e$ is the total traffic (in bits/sec) for $e\in E$. 
-We evaluate \mindelay\ to answer whether end-to-end application performance improves if we optimize latency instead of MLU.
-We constrain the linear program so that MLU does not exceed 0.6, thereby ensuring that high link utilization does not hurt application performance.
+We evaluate \mindelay\ to answer whether user-perceived performance improves if we optimize latency instead of MLU.
+We constrain the linear program so that MLU does not exceed 0.6, thereby ensuring that high link utilization does not hurt user-perceived  performance.
 Like \opt, \mindelay\ has perfect knowledge of traffic matrix.
 
 

@@ -11,9 +11,9 @@
   \label{fig:throughputs_CDF}
 \end{figure*}
 
-\section{Application performance}
+\section{User-perceived performance}
 \label{sec:app_performance}
-In this section, we present a comparative analysis of the impact of different TE schemes on end-to-end application performance. A summary of our findings is as follows. First, all TE schemes  including \invcap\ show nearly identical application performance for TCP and UDP traffic. Second, different TE schemes do achieve different MLUs as expected, suggesting that MLU is a poor predictor of application performance. Third, COPE consistently performs slightly worse than all other schemes in TCP throughput, suggesting that accounting for unpredictable variations in traffic hurts the common case application performance.
+In this section, we present a comparative analysis of the impact of different TE schemes on user-perceived performance. A summary of our findings is as follows. First, all TE schemes  including \invcap\ show nearly identical user-perceived performance for TCP and UDP traffic. Second, different TE schemes do achieve different MLUs as expected, suggesting that MLU is a poor predictor of user-perceived performance. Third, COPE consistently performs slightly worse than all other schemes in TCP throughput, suggesting that accounting for unpredictable variations in traffic hurts the common case user-perceived performance.
 
 %we present our comparison of traffic engineering schemes based on simulation of traffic matrices at Internet loads for 3 ISPs. Our simulation shows that unexpectedly that all traffic engineering schemes (even \invcap) perform near identical in terms of download rates using TCP for all ISPs. We also show that MLU a metric commonly used metric for traffic engineering does not predict TCP throughput well and traffic engineering which optimizes for unexpected traffic variations increases delay and hurts TCP throughput.
 
@@ -24,7 +24,7 @@ In this section, we present a comparative analysis of the impact of different TE
 
 \subsection{TCP performance}
 
-We simulate TMs from 2 days of data for each ISP. For each day, we simulated 50 matrices measured at 5-minute intervals for Abilene, 25 matrices measured at 15-minute intervals for Geant, and 24 matrices measured hourly for US-ISP. We present results for the second day. The metric of application performance is the \emph{download rate} of files using TCP, where the file arrival workload is generated using the traffic matrices as described in Section \ref{sec:sim_TM}.
+We simulate TMs from 2 days of data for each ISP. For each day, we simulated 50 matrices measured at 5-minute intervals for Abilene, 25 matrices measured at 15-minute intervals for Geant, and 24 matrices measured hourly for US-ISP. We present results for the second day. The metric of user-perceived performance is the \emph{download rate} of files using TCP, where the file arrival workload is generated using the traffic matrices as described in Section \ref{sec:sim_TM}.
 
 %\begin{figure}
 %\begin{center}
@@ -157,7 +157,7 @@ The second reason why MLU hardly impacts the average download rate as well as th
 \subsubsection{The price of predictability}
 Why is \cope's performance consistently worse than the other schemes? To investigate this, we analyzed the propagation delays of routes computed by COPE. Given uniformly low loss rates and queueing delays, propagation delays primarily determine TCP performance.
 
-Figure \ref{fig:prop_delay_all} shows the path delay averaged across all files and across all matrices for the different TE schemes. \cope{} has a significantly higher delay compared to all other schemes. We attribute this phenomenon to \cope{}'s optimization approach, which engineers for unpredictable spikes in traffic demands. Specifically, \cope\ attempts to bound the worst-case MLU for any traffic matrix similar to oblivious routing like schemes \cite{Cohen}. \cope\ intentionally routes some traffic along longer paths so as to leave room for occasional traffic spikes along shorter paths. While this approach makes \cope\ robust with respect to MLU under rare spikes in traffic, it comes at the cost of hurting common-case application performance.  Although we have not experimented with other oblivious routing schemes, these results suggest that any oblivious routing scheme that attempts to optimize MLU, e.g., \cite{Cohen}, is likely to incur a similar penalty in  application performance in the common case. 
+Figure \ref{fig:prop_delay_all} shows the path delay averaged across all files and across all matrices for the different TE schemes. \cope{} has a significantly higher delay compared to all other schemes. We attribute this phenomenon to \cope{}'s optimization approach, which engineers for unpredictable spikes in traffic demands. Specifically, \cope\ attempts to bound the worst-case MLU for any traffic matrix similar to oblivious routing like schemes \cite{Cohen}. \cope\ intentionally routes some traffic along longer paths so as to leave room for occasional traffic spikes along shorter paths. While this approach makes \cope\ robust with respect to MLU under rare spikes in traffic, it comes at the cost of hurting common-case user-perceived performance.  Although we have not experimented with other oblivious routing schemes, these results suggest that any oblivious routing scheme that attempts to optimize MLU, e.g., \cite{Cohen}, is likely to incur a similar penalty in  user-perceived performance in the common case. 
 
 %Although prior work has recognized that TE schemes can increase path delay, e.g.. \cite{TeXCP06}, to the best of our knowledge, our work is the first to empirically quantify the impact on TCP throughput and to show that engineering for rare traffic spikes comes at the cost of hurting common-case TCP throughput.
 

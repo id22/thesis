@@ -1,7 +1,7 @@
 \chapter{Traffic engineering in content-dominated networks: background and motivation}
 \label{ch:te-background}
 
-This chapter serves two main purposes. First is to provide the reader with necessary background on ISP traffic engineering, content delivery and the interaction between them (Section \ref{sec:bg-bg}). Second is to explain the motivation for our work on traffic engineering in content-dominated networks in light of the existing work in this area (Section \ref{sec:bg-motivation}).
+This chapter serves two main purposes. First is to provide the reader with necessary background on ISP traffic engineering, content delivery and the interaction between traffic engineering and application-layer traffic adaptation (Section \ref{sec:bg-bg}). Second is to explain the motivation for our work on traffic engineering in content-dominated networks in light of the existing work in this area (Section \ref{sec:bg-motivation}).
 
 
 
@@ -33,31 +33,33 @@ This chapter serves two main purposes. First is to provide the reader with neces
 Our review of prior work provides following main findings:
 
 \begin{itemize}
-	\item ISP traffic engineering schemes commonly use a demand-aware approach, i.e., they compute routes using previously measured traffic matrics, for optimizing  link-utilization based cost functions (Section \ref{sec:ch2-te}).	\item CDNs commonly use \emph{demand-oblivious} techniques, i.e., techniques that require no system-wide measurement of content demand, for content placement and request redirection towards improving user-perceived performance across the Internet (Section \ref{sec:ch2-cdn}).
-	\item Interaction between traffic engineering and content delivery affects user-perceived performance as well as network cost. But, prior work has focused mostly on the interaction of traffic engineering with two aspects of content delivery --  overlay routing and request redirection (Section \ref{sec:ch2-te-cdn}).
+	\item ISP traffic engineering schemes compute routing for optimizing link-utilization based cost functions. These schemes commonly take a demand-aware approach that uses previously measured traffic matrics for computing future network routes (Section \ref{sec:ch2-te}).	
+	\item CDNs commonly use \emph{demand-oblivious} techniques, i.e., techniques that require no system-wide measurement of content demand, for content placement and request redirection towards improving user-perceived performance across the Internet (Section \ref{sec:ch2-cdn}).
+	\item Interaction between traffic engineering and application-layer adaptation affects user-perceived performance as well as network cost. But, prior work has focused mostly on the interaction of traffic engineering with two aspects of application-layer adaptation --  overlay routing and request redirection (Section \ref{sec:ch2-te-cdn}).
 \end{itemize}
 
 
 \subsection{Traffic engineering}
 \label{sec:ch2-te}
 
-The goal of traffic engineering is to avoid congestion hotspots in the network by optimizing routes based on network topology and expected traffic demand. In ISP networks, traffic engineering decides both intra-domain (within the ISP) and inter-domain routing (across ISPs). We focus here on intra-domain routing and refer the reader to  \cite{Feamster2003,rexford} for a survey of inter-domain traffic engineering. 
+A key goal of traffic engineering is to avoid congestion hotspots in the network by optimizing routes based on network topology and expected traffic demand that is represented in the form of traffic matrix. In ISP networks, traffic engineering decides both intra-domain routing (within the ISP) and inter-domain routing (across ISPs). We focus here on intra-domain routing and refer the reader to  \cite{Feamster2003,rexford} for a survey of inter-domain traffic engineering. 
 
-The evaluation metric for traffic engineering is a cost function that is dependent on the utilization of network links. Link utilization is a relevant metric because a low utilization of all links implies that the network is free from congestion hotspots and has spare capacity to tolerate an increase in demand. A well-known cost function is maximum link utilization or MLU. We give a simple example to show how traffic engineering can reduce link utilization.
+The evaluation metric for traffic engineering is a cost function that is dependent on the utilization of network links. Link utilization is a relevant metric because a low utilization of all links implies that the network is free from congestion hotspots and has spare capacity to tolerate an increase in demand. A well-known cost function is maximum link utilization or MLU. 
 
+We give a simple example to show how traffic engineering can reduce link utilization. In Figure \ref{fig:te-example}, there are two links of capacity 1 Mbps and 3 Mbps between nodes A and B. The traffic from A to B is 2 Mbps. If a shortest path routing is followed, all traffic must be sent through either of the two links. The least MLU = 0.67 is achieved by using the large capacity link. A more flexible routing approach is to split traffic among the two links. Such a flow-split routing achieves MLU = 0.5 by sending 0.5 Mbps and 1.5 Mbps via the two links respectively. Thus, a better engineered routing resulted in a lower MLU in this example.
 
-We classify traffic engineering approaches into three groups:
-\begin{description}
-	\item[Optimal] If the traffic matrix is known accurately, the optimal solution to the traffic engineering problem can formulated as a multi-commodity flow optimization problem. The routing thus computed is reffered to as Optimal traffic engineering in literature.
-	\item[Demand-aware] As it is impossible to have accurate knowledge of future traffic matrices, a demand-aware  traffic engineering  periodically updates routing using historically observed traffic matrices.
-	\item[Demand-oblivious] A demand-oblivious  traffic engineering  requires no explicit measurement of traffic matices, but instead configures routing statically. A demand-oblivious  traffic engineering  is simpler to implement because it requires neither measuremnt nor periodic updating of network routing. 
-	
-\end{description}
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.6]{fig/te-example.png}
+	\caption{A flow-split routing reduces the maximum link utilization (MLU) over shortest-path routing.}
+	\label{fig:te-example}
+\end{figure}
 
+If the traffic matrix is known accurately, the optimal solution to the traffic engineering problem can formulated as a multi-commodity flow optimization. The routing thus computed is refered to as optimal traffic engineering in literature. As it is impossible to have accurate knowledge of future traffic matrices, traffic engineering schemes either take a \emph{demand-aware} or a \emph{demand-oblivious} approach. A demand-aware  traffic engineering  periodically updates routing using historically observed traffic matrices. A demand-oblivious  traffic engineering  requires no explicit measurement of traffic matices, but instead configures routing statically. A demand-oblivious  traffic engineering  is simpler to implement because it requires neither measuremnt nor periodic updating of network routing. 
 
 %As it is impossible to have accurately knowledge of future traffic matrices. Therefore, practical traffic engineering schemes either take a demand-aware or a demand-oblivious approach.  A demand-aware  traffic engineering  periodically updates routing using historically observed traffic matrices. A demand-oblivious  traffic engineering  requires no explicit measurement of traffic matices, but instead configures routing statically. A demand-oblivious  traffic engineering  is simpler to implement because it requires neither measuremnt nor periodic updating of network routing. But, demand-aware schemes have been shown to outperform demand-oblivious  traffic engineering.
 
-In practice, demand-aware traffic engineering based on Open Shortest Path First (OSPF) and Multiprotocol Label Switching (MPLS) are commonly used  \cite{COPE,MultiTM,fortz2000internet,MPLS2}. Routes computed by OSPF traffic engineering must follow shortest-weight paths, therefore OSPF TE provides limited functionality to split traffic among multiple paths. MPLS TE overcomes this limitation by enabling traffic between two nodes to be split  in arbitrary ratios among multiple paths. Therefore, MPLS TE gives better results than OSPF TE as exemplified by the above example \cite{COPE,MultiTM}.
+In practice, demand-aware traffic engineering based on Open Shortest Path First (OSPF) and Multiprotocol Label Switching (MPLS) are commonly used  \cite{COPE,MultiTM,fortz2000internet,MPLS2}. Routes computed by OSPF traffic engineering must follow shortest-weight paths, therefore OSPF TE provides limited functionality to split traffic among multiple paths. MPLS TE overcomes this limitation by enabling traffic between two nodes to be split  in arbitrary ratios among multiple paths. Therefore, MPLS TE gives better results than OSPF TE as exemplified above \cite{COPE,MultiTM}.
 
 %Therefore, TE schemes commonly take a demand-aware approach, i.e., they compute routing using historically observed traffic matrices. In contrast, demand-oblivious simpler schemes also exist, no measurement of traffic matrix or continual updating of configuration. 
 
@@ -84,56 +86,35 @@ Content delivery systems seek to provide a high-quality experience to users acce
 
 Request redirection strategies complement placement strategies by selecting the server location that is best suited to process a user's request. These strategies have been extensively studied and form the heart of CDN technology today. To quote from a report by Akamai,  \emph{``the system directs client requests to the nearest available server likely to have the requested content."} where the ``nearest" server is one whose round trip latency as well as packet losses are small, and  an ``available" server is one that has sufficient resources to serve a request \cite{DilleyMPPSW02}. 
 
-Request redirection is implemented using three processes: (1) \emph{Monitoring:} Probe messages sent intermittently help monitor network characteristics and server load and identify congested regions of network and overloaded server locations \cite{oasis,donar}. (2) \emph{Estimating distances:} The measured statistics are combined to compute a distance function that reflects the proximity of a server location to users in a geographic region \cite{donar}. (3) \emph{Informing the user:} The user is informed of selected server/s either via DNS resolution or via HTTP redirection as described in  \cite{DilleyMPPSW02} and  \cite{barbir2003known}.
+Request redirection is implemented using three processes: (1) \emph{Monitoring:} Probe messages sent intermittently help monitor network characteristics and server load and identify congested regions of network and overloaded server locations \cite{oasis,donar}. (2) \emph{Estimating distances:} The measured statistics are combined to compute a distance function that reflects the proximity of a server location to users in a geographic region \cite{donar}. (3) \emph{Informing the user:} The user is informed of selected server/s either via DNS resolution \cite{DilleyMPPSW02} or via HTTP redirection \cite{barbir2003known}.
 
-Content delivery techniques can be classified into demand-aware and demand-oblivious similar to our classfication of traffic engineering schemes. We consider common content delivery techniques discussed above to be demand-oblivious since they do not require system-wide measurement of content demand. In contrast, a demand-aware approach to content placement and redirection has also been studied, e.g., Applegate \emph{et al.} use a demand-aware approach to determine placement and redirection for Video-on-Demand content in the network. 
+Content delivery techniques can be classified into demand-aware and demand-oblivious similar to our classfication of traffic engineering schemes. We consider common content delivery techniques discussed above to be demand-oblivious since they do not require system-wide measurement of content demand. In contrast, a demand-aware approach to  placement and redirection has also been studied, e.g., Applegate \emph{et al.} use a demand-aware approach to determine placement and redirection for Video-on-Demand content in the network. 
 
-\subsection{Interaction between traffic engineering and content delivery}
+\subsection{Interaction between traffic engineering and application-layer adaptation}
 \label{sec:ch2-te-cdn}
 
-Content delivery routes traffic at the application layer using an overlay network of servers, and traffic enginering configures network routing of the underlying physical paths. Studying this interaction between decisions at the overlay and the underlying network has been a topic of long standing interest in computer science. Several related questions have been put forth. Does the interaction between network routing and content delivery yield sub-optimal results? How can we design cooperative mechanisms to leverage these interactions and do cooperative yield benefit in an Internet-like environment? We find that nearly all previous research on this topic has focused on the interaction of traffic engineering with either overlay routing \cite{Roughgarden,selfishQiu} with request redirection \cite{Jiang2009,JohariGameTheory, CATE, P4P} as discussed below. 
-
-%Studying the interaction between network and content delivery has been a topic of much interest in both systems and theory communities. Several related questions have been put forth. Do these interactions negatively affect objectives of networks and content delivery systems? What is the sub-optimality caused due to these interactions in the worst case, and for typical topologies and traffic demands? How to leverage these interactions to improve traffic engineering and content delivery objectives? 
-
-%Yet, we don't fully understand these interactions because prior research has studied the interaction of network routing with only a subset of content delivery decisions. Much prior research has focused on two aspects: the interaction of overlay routing and network routing  \cite{Roughgarden,selfishQiu}, and the interaction of request redirection and network routing  \cite{Jiang2009,JohariGameTheory, CATE, P4P}. While placement decisions are critical to user-perceived performance, there has been little research on how content placement interacts with network routing.
+Studying the interaction between network-layer routing computed by traffic engineering and application-layer adaptation has been a topic of long standing interest in computer science. Several related questions have been put forth. Does this interaction yield globally sub-optimal results? How can we design cooperative mechanisms to leverage these interactions? Do cooperative mechanisms yield benefit in an Internet-like environment? Most previous research on this topic has focused on the interaction of traffic engineering with either overlay routing \cite{Roughgarden,selfishQiu} or with request redirection \cite{Jiang2009,JohariGameTheory, CATE, P4P} as discussed below. 
 
 \textbf{Interaction between traffic engineering and overlay routing:} Several results show the negative interaction between selfish overlay routing and network routing \cite{Roughgarden,selfishQiu}. Theoretical results indicate that the negative interaction could cause an arbitrary degradation in user perceived delay. Further studies using ``Internet-like'' traffic demands and topologies indicate that this interaction hurts traffic engineering metrics. In this thesis, we do not consider overlay routing since our focus is primarily on intra-domain routing while overlay routing is most commonly used to mask inter-domain routing inefficiencies.
 
 %However, it appears that a small fraction of CDN traffic uses overlay routing.  For example, traffic from CDN edge server to the client always follows network routing. Further, overlay routing yields ``marginal" benefits ($<$ 20\%) over network routing for 79\%-96\% of paths depending on which geographic region is being considered  \cite{rahul2006overlays}, which suggests that traffic between CDN servers forming an overlay network follows network routing in most cases. For this reason, this thesis does not model the interaction between overlay and network routing \tbd{is this the best reason?}.
 
-\textbf{Interaction between traffic engineering and request redirection:} Recent research has investigated the interaction between request redirection and traffic engineering, without considering the role of placement strategies. This interaction is commonly studied in the context of Internet service providers (ISPs) and content providers (CPs) with geo-distributed datacenters. Both analytical results \cite{Jiang2009,JohariGameTheory} and system implementations \cite{CATE,P4P} have shown that there is value for joint optimization of request redirection and traffic engineering, and cooperative strategies can help traffic engineering metrics and either maintain or improve user-perceived latencies.
-
-%Compared to these efforts, our work additionally considers content placement as a degree of freedom in a Network CDN.
-%
-%However, as these efforts do not model content placement as a part of the formulation it is 
-%Commonly, these efforts assume that all content is available at all locations, ignoring the fact that content availability at a location depend on placement strategies. Therefore, in this thesis, we account for the effect of content placement along with request redirection, in studying the interaction between network and content delivery.
+\textbf{Interaction between traffic engineering and request redirection:} Recent research has investigated the interaction between request redirection and traffic engineering, without considering the role of content placement. This interaction is commonly studied in the context of Internet service providers (ISPs) and content providers (CPs) with geo-distributed datacenters. Both analytical results \cite{Jiang2009,JohariGameTheory} and system implementations \cite{CATE,P4P} have shown that there is value for joint optimization of request redirection and traffic engineering, and cooperative strategies can help traffic engineering metrics while maintaining or improving user-perceived performance. Our work distinguishes in that  we model the three-way interaction between placement, redirection and routing and show that placement flexibility is more powerful degree of freedom than redirection or routing to improve traffic engineering metrics as well as to reduce user-perceived latency.
 
 
 \section{Motivation}
 \label{sec:bg-motivation}
 
-The following key points summarize our motivation for studying traffic engineering in content-dominated netowrks.
-\begin{itemize}
-	\item
-	Are link-utilization based metrics may good predictors of application performance that depends on other factors such as propagation delay, access and backbone link capacity, etc? Further, are these metrics are also poor predictors of capacity in scenarios when applications can download content from multiple locations?
-	\item
-	Since content placement can be a more powerful factor in reducing network cost, can content placement flexibility obviate the need for sophisticated traffic engineering?
-	\item
-	Network CDNs can control placement, redirection and routing on their network. Should they make these decisions independently or jointly? Further, should they use a demand-aware or a demand-oblivious approach to make these decisions?
-\end{itemize}
-%First, link-utilization based metrics may not be good predictors of application performance that depends on other factors such as queuing delay, access and backbone link capacity, etc. 
-%Second, most work considers traffic engineering in isolation ignoring its interaction with content delivery, and even work 
-%that accounts for this interaction has not focused on the role of placement strategies.
-%Third, the problem of managing a network CDN in which a single entity handles both content delivery and traffic engineering has not been considered before.
+A content-dominated traffic and the presence of content at multiple network locations changes the traditional ISP traffic enginering problem. In such a network, a traffic matrix is no longer an effective representation of demand. It can be changed via application-layer adaptation without any underlying change in demand (Section \ref{sec:bg-3node}). Demand is better expressed as a \emph{content matrix} in which each entry represents the demand for a content at a particular network location. A traffic matrix implicitly assumes a fixed source and a fixed destination for each traffic flow. But, a content matrix expresses the fact that the demand for a content at a particular destination can be served from any set of source locations. As we explain using examples below, the flexibility of serving the demand from any location raises questions on the usefulness of link-utilization based metrics that are commonly used in traffic engineering (Section \ref{sec:bg-poormlu}) as well on the importance of traffic engineering itself (Example \ref{sec:bg-ncdn-interaction}). These and other related questions motivate our work on traffic-engineering in content dominated networks.
 
+Our work presents research on two network scenarios that vary in terms of application adaptation mechanism and the content placement flexibility in the network. We explain the two scenarios and motivate the research questions we address in each case using examples.
 
-\subsection{Do link-utilization based metrics reflect application performance and network capacity?}
+\subsection{ISP network with content location diversity}
+\label{sec:bg-locdiv}
+We consider an ISP network that has little control over placement and redirection, but applications can leverage \emph{location diversity}, or  the ability to download content from multiple locatioons. We motivate why traffic engineering schemes must be evaluated while accounting for the effect of location diversity in the network, and why we need to look beyond link-utilization based metrics in evaluating traffic engineering schemes. These questions are addressed in Chapter \ref{ch:beyondmlu}.
 
-
-Link-utilization based metrics may not be a good predictor of application performance.
-Link-utilization primarily affects network quueing delay and loss. 
-Application performance depends on other factors such as propagtion delay, access and backbone link capacity as well.
-Queuing-theoretic models show that a high link utilization adversely affect queuing delay only at high utilization levels. For low to moderate utilization levels that are common in today's network, a reduction in link utilization may not yield a commensurate benefit in application peformance. 
+\subsubsection{Interaction between traffic engineering and location diversity}
+\label{sec:bg-3node}
 
 \begin{figure}[tbh]
 	\centering
@@ -141,30 +122,35 @@ Queuing-theoretic models show that a high link utilization adversely affect queu
 	\caption{Lasso network}
 \end{figure}
 
-Link-utilization based metrics may not be a good predictor of network capacity in scenarios where applications have the ability to download content from mulitple locations. In Figure~\ref{fig:3node-bg}, all links are assumed to have a capacity of 100 units and a constant delay. The top link A has a very small delay compared to the other two links that both have equal delay. Node 1 has 100 Mbps of demand that it can obtain from 2 as well as 3. In addition, there is 20 Mbps of demand at node 1 which it can obtain only from 2.  We assume that the aggregate demand at a node consists of a large number of user-initiated connections. When content can be downloaded from multiple locations, users initiate parallel TCP connections and the throughputs along paths in a parallel TCP connection are inversely proportional to the path delays. The TE scheme is assumed to be OSPF-based, i.e., shortest-path routing using configured link weights and traffic split equally among multiple paths with equal weights.
+This example illustrates how location diversity can change the traffic matrix without any underlying change in demand. In Figure~\ref{fig:3node-bg}, all links are assumed to have a capacity of 100 units and a constant delay. The top link A has a very small delay compared to the other two links that both have equal delay. Node 1 has 100 Mbps of demand that it can obtain from 2 as well as 3. In addition, there is 20 Mbps of demand at node 1 which it can obtain only from 2.  We assume that the aggregate demand at a node consists of a large number of user-initiated connections. When content can be downloaded from multiple locations, users initiate parallel TCP connections and the throughputs along paths in a parallel TCP connection are inversely proportional to the path delays. The TE scheme is assumed to be OSPF-based, i.e., shortest-path routing using configured link weights and traffic split equally among multiple paths with equal weights.
 
-%\textbf{point: TE cannot be achieved since adaptation changes TM.}
+Suppose the weights of the links A and B are unequal and the link A has more weight. As a result, all of the traffic between 1 and 2 is routed using only link B. 1 splits its demand of 100 Mbps using parallel TCP equally between links B and C. Thus, the traffic on links A, B, and C is  0, 70, and 50 respectively. In the next step, seeking to balance load better for this resultant matrix, the TE scheme sets both the links A and B to the same weight (hoping to achieve link utilizations of 35, 35, and 50 respectively).  Consider how parallel TCP connections respond to this change. Assuming each TCP connection between 1--2 is pinned to only one of the two paths---as is commonly done in practice to achieve equal-cost multi-path (ECMP) splitting---50 Mbps of demand at 1 gets routed using parallel TCP connections over the link A and link C, and an equal amount using parallel TCP connections along the link B and link C. In addition, the 20 Mbps of background traffic is split equally among link A and link B as per ECMP.  Since link A has a much smaller delay than link C, the 50 Mbps of demand at 1 using parallel TCP along those two paths will flow entirely through link A. The remaining 50 Mbps using B and link C will get split equally across the two paths by parallel TCP. Thus, the traffic on the links A, B and C is 60, 35, and 25 respectively, which is different from what the TE scheme engineered for (namely, 35, 35, and 50). The resulting MLU of 0.6 is different compared to 0.5, the value that the TE scheme expected. This example illustrates that the outcome of traffic engineering depends on the application adaptation to location diversity, thereby motivating us to study the following question.
 
-Suppose the weights of the links A and B are unequal and the link A has more weight. As a result, all of the traffic between 1 and 2 is routed using only link B. 1 splits its demand of 100 Mbps using parallel TCP equally between links B and C. Thus, the traffic on links A, B, and C is  0, 70, and 50 respectively. In the next step, seeking to balance load better for this resultant matrix, the TE scheme sets both the links A and B to the same weight (hoping to achieve link utilizations of 35, 35, and 50 respectively).  Consider how parallel TCP connections respond to this change.
-Assuming each TCP connection between 1--2 is pinned to only one of the two paths---as is commonly done in practice to achieve equal-cost multi-path (ECMP) splitting---50 Mbps of demand at 1 gets routed using parallel TCP connections over the link A and link C, and an equal amount using parallel TCP connections along the link B and link C. In addition, the 20 Mbps of background traffic is split equally among link A and link B as per ECMP.  Since link A has a much smaller delay than link C, the 50 Mbps of demand at 1 using parallel TCP along those two paths will flow entirely through link A. The remaining 50 Mbps using B and link C will get split equally across the two paths by parallel TCP. Thus, the traffic on the links A, B and C is 60, 35, and 25 respectively, which is different from what the TE scheme engineered for (namely, 35, 35, and 50). The resulting MLU of 0.6 is different compared to 0.5, the value that the TE scheme expected. 
+\emph{Research question: How do traffic engineering schemes compare while accounting for the effect of location diversity in the network?}
 
+\subsubsection{Shortcomings of link-utilization metrics}
+\label{sec:bg-poormlu}
 
+We explain why link-utilization based metrics may not reflect user-perceived performance. Further, they are a poor metric to measure network capacity, i.e., the factor of surges in traffic demand that a network can tolerate, in a network with location diversity.
 
-%The following two observations motivate us to revisit ISP traffic engineering:
-%\begin{itemize}
-%	\item
-%	The use of link-utilization based metrics may not be a good predictor of application performance that depends on other factors such as queuing delay, access and backbone link capacity, etc. 
-%	\item
-%	Traffic matrices form the basis of evaluating traffic engineering schemes, but application-level adaptation can change these traffic matrices itself in response to an updated routing.
-%\end{itemize}
+Link-utilization based metrics may not be a good predictor of user-perceived performance that depends on other factors such as propagtion delay, access link capacity and backbone link capacity also. Moreover, queuing-theoretic models show that only a high link utilization severely affects performance-critical metrics such as queuing delay and packet loss. For low to moderate link utilization that is common in today's ISPs, a reduction in link utilization may not yield a commensurate benefit in application peformance. This observation has also been confirmed by explicit measurements on Internet backbones \cite{ExpRouterBuffer}, and is consistent with studies on ISP backbones showing that over 90\% of all packet loss is caused by interdomain routing fluctuations as opposed to high utilization \cite{SprintStudy} and 90\% of TCP flows experience no packet loss \cite{SprintBackbone}. Furthermore, end-to-end Internet path delays are known to be largely determined by propagation delays as opposed to queueing delays \cite{SprintBackbone,SingleHopDelay}.
 
-%The new direction we pursue is to shift focus from link-utxilzation based metrics to application-level metrics such as TCP file download times, and to account for the effect of application-level adaptation in evaluating traffic engineering schemes. In Chapter \ref{ch:beyondmlu}, we provide a comparison of traffic engineering schemes focusing on user-perceived metrics such as file download times, and VoIP call quality. In Chapter \ref{ch:beyondmlu} and Chapter \ref{ch:ncdn}, we evaluate TE schemes while accounting for the effect of application-level adaptation and show that this interaction helps simpler TE schemes, such as oblivious TE or OSPF TE, perform closer to the optimal TE strategy in terms of user-perceived metrics as well as TE metrics.
+\emph{Research question: Are link-utilization based metrics good predictors of user-perceived performance for real network topologies and traffic matrices?}
 
-\subsection{Does content placement flexibility obviate sophisticated traffic engineering?}
+Link-utilization based metrics such as MLU are poor metric for network capacity, i.e., the factor of surges in traffic demand that a network can tolerate, in a network with location diversity. MLU provides a simple intuitive capacity metric, the inverse of the MLU serves as a metric of capacity, e.g., if a traffic engineering scheme achieves an MLU of 0.25 for a given matrix, then it can tolerate up to a 4$\times$ surge in the load represented by the matrix. Unfortunately, as the example in Figure \ref{fig:3node-bg} shows, MLU is not a meaningful metric of capacity when application adaptation to location diversity determines the traffic matrix. Thus, location diversity necessitates a new capacity metric.
 
+%Link-utilization based metrics may not be a good predictor of network capacity in scenarios where applications have the ability to download content from mulitple locations. We illustrate this point using an example. \tbd{complete the example, add figure}
 
-\textbf{Example 2: Demand-aware content placement} To appreciate how placement can shape traffic, consider the simple example in Figure~\ref{fig:NetworkExample}. Node $C$ has an object in its cache that is requested by end-users at nodes $A$ and $D$. Suppose that one unit of traffic needs to be routed from $C$ to $A$ and $0.5$ units  from $C$ to $D$ to satisfy the demand for that object. The routing that achieves the minimum MLU of $0.5$ to serve the demanded object is shown in the figure. Note that the routing that achieves the MLU of 0.5 is not possible with a simple, \unplanned\ protocol like InverseCap as that would route all the traffic demand from $C$ to $A$ via $B$, resulting in an MLU of 1. Thus, a (\planned) traffic engineering scheme is necessary to achieve an MLU of 0.5.
+\emph{Research question: How do we quantify network capacity under location diversity?}
 
+\subsection{Network CDN}
+\label{sec:bg-ncdn}
+Network CDNs are a recent, potentialy transformative trend, in which ISPs deploy CDNs on their infrastructures.  Unlike traditional ISPs and traditional CDNs, NCDNs enjoy full control over placement, redirection and routing on their networks. The interaction between placement and routing in an NCDN illustrated below motivates us to explore the benefit of joint optimization of placement, redirection and routing as well as to evaluate the relative importance of placement and routing in an NCDN. These questions are addressed in Chapter \ref{ch:ncdn}.
+
+\subsubsection{Interaction between placement and routing in an NCDN}
+\label{sec:bg-ncdn-interaction}
+
+To appreciate how placement can shape traffic in an NCDN, consider the simple example in Figure~\ref{fig:NetworkExample}. Node $C$ has an object in its cache that is requested by end-users at nodes $A$ and $D$. Suppose that one unit of traffic needs to be routed from $C$ to $A$ and $0.5$ units  from $C$ to $D$ to satisfy the demand for that object. The routing that achieves the minimum MLU of $0.5$ to serve the demanded object is shown in the figure. Note that the routing that achieves the MLU of 0.5 is not possible with a simple, \unplanned\ protocol like InverseCap as that would route all the traffic demand from $C$ to $A$ via $B$, resulting in an MLU of 1. Thus, a (\planned) traffic engineering scheme is necessary to achieve an MLU of 0.5.
 
 \begin{figure}[h]
 	\centering
@@ -174,60 +160,26 @@ Assuming each TCP connection between 1--2 is pinned to only one of the two paths
 	\label{fig:NetworkExample}
 \end{figure}
 
+On the other hand, NCDNs can shape the traffic demand matrix by using a judicious placement and redirection strategy. Suppose that there is some space left in the content server's cache at node $B$ to accommodate an additional copy of the demanded object. By creating an additional copy of the object at $B$, the traffic demand of $A$ can be satisfied from $B$ and the demand of $D$ from $C$ achieving an MLU of $0.125$. In this case, judicious content placement decreased the MLU by a factor of $4$. Even more interestingly, this best MLU can be achieved using a simple routing scheme like hop-count routing while also improving user-perceived latency (assuming that the latency of link $BA$ is lower than that of the two-hop paths from $C$ to $A$). While this is a toy example, it shows that content placement flexibility reduces network cost and enables simpler routing. This interaction between placement and routing motivates us address the following questions for real content workloads and network topologies. 
 
-On the other hand, NCDNs can shape the traffic demand matrix by using a judicious placement and redirection strategy. Suppose that there is some space left in the content server's cache at node $B$ to accommodate an additional copy of the demanded object. By creating an additional copy of the object at $B$, the traffic demand of $A$ can be satisfied from $B$ and the demand of $D$ from $C$ achieving an MLU of $0.125$. In this case, judicious content placement decreased the MLU by a factor of $4$. Even more interestingly, this best MLU can be achieved using a simple routing scheme like InverseCap while also improving user-perceived latency (assuming that the latency of link $BA$ is lower than that of the two-hop paths from $C$ to $A$).
+\emph{Research question: Does content placement flexibility obviate sophisticated traffic engineering in an NCDN?}
 
-In this example, content placement flexibility reduces network cost and enables simpler routing. But, what happens for real content and traffic traces? How effective are simple placement schemes towards optimizing user-perceived performance and network cost?
-
-% As earlier examples show, content placement can be a more powerful degree of freedom than request redirection and network routing. 
-
-% What is the relative importance of placement vs routing? Can content placement obviate the need for sophisticated traffic engineering schemes?
+\emph{Research question: Does a joint optimization of placement, redirection and routing yield benefits over independently making these decisions using simple demand-oblivious schemes?}
 
 
 
-
-\subsection{Do Network CDNs need joint optimization of content delivery and traffic engineering?}
-
-
-
-\textbf{How well do simple demand oblivous compare against demand-aware?}
-
-\textbf{An NCDN can potentially jointly optimize content delivery and traffic engineeing, but do such sophisticated schemes yield benefits from a CDN?}
-
-
-
-A Network CDN (NCDN) is an ISP than owns and operates a CDN over its infrastructures to deliver content to its end users. As NCDNs manage both the underlying network and content delivey, the objectives and the techniques available to a network CDNs are not the same from a traditional ISP or a tradidional CDN. Our work is motivated by the following questions:
-
-\begin{itemize}
-	\item 
-	Is a demand-aware or a demand-oblivious content delivery and traffic engineering scheme more effective for a network CDN?
-	\item
-	An NCDN can potentially jointly optimize content delivery and traffic engineeing, but do such sophisticated schemes yield benefits from a CDN?
-\end{itemize}
-
-To our knowledge, this thesis presents the first study of techniques for a managing a NCDN based on real network topology and content access traces. Our result show the effectiveness of simple demand-oblivious schemes for content delivery and traffic engineering in achieving performance close to an ideal scheme. Further, they show that a demand-aware joint optimization performs poorly due to frequnt churn in content workloads and change in access patterns. 
+%A Network CDN (NCDN) is an ISP than owns and operates a CDN over its infrastructures to deliver content to its end users. As NCDNs manage both the underlying network and content delivey, the objectives and the techniques available to a network CDNs are not the same from a traditional ISP or a tradidional CDN. Our work is motivated by the following questions:
+%
+%\begin{itemize}
+%	\item 
+%	Is a demand-aware or a demand-oblivious content delivery and traffic engineering scheme more effective for a network CDN?
+%	\item
+%	An NCDN can potentially jointly optimize content delivery and traffic engineeing, but do such sophisticated schemes yield benefits from a CDN?
+%\end{itemize}
+%
+%To our knowledge, this thesis presents the first study of techniques for a managing a NCDN based on real network topology and content access traces. Our result show the effectiveness of simple demand-oblivious schemes for content delivery and traffic engineering in achieving performance close to an ideal scheme. Further, they show that a demand-aware joint optimization performs poorly due to frequnt churn in content workloads and change in access patterns. 
 
 
 
-
-
-\eat{
-\section{Illustrating the interaction between content placement and traffic engineering}
-
-We make a case for studying the interaction between content placement and traffic engineering by illustrating that content placement can change the traffic matrix. The first example shows that if content is placed at multiple fixed locations in the network, then merely updating network routes can change the traffic matrix. The second example shows that if content placement can be changed, it can change the traffic matrix in way that reduces network cost and enables simpler routing in the network.
-
-
-
-\section{Research questions}
-
-The above examples make a case for modeling the effect of content placement while studying the interaction between traffic engineeering and content delivery. Consequently, our work accounts for the interaction between placement, redirection and routing while addressing the following key questions: 
-
-(1) How do well-known classes of traffic engineering schemes compare in terms of available capacity and end-user performance metrics?
-
-(2) What is the relative importance of placement and routing for optimizng performance and cost objectives?
-
-(3) If a network can control content delivery as well underlying routing, should that network follow simple demand-oblivious schemes for content placement and routing, or a more sophisticated scheme that jointly optimize these two decisions?
-
-}
 
 

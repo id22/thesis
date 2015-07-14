@@ -84,7 +84,7 @@ Our results show that  although chunking improves performance of both \invlru\ a
 \label{sec:hybrid}
 %The experiments so far  suggest that a \planned\ scheme that engineers placement and routing once a day based on the previous day's demand performs poorly compared to a \unplanned\ scheme, \invlru. 
 
-The experiments so far  suggest that a \planned\ scheme that engineers placement and routing once a day based on the previous day's demand performs poorly compared to an \unplanned\ scheme, \invlru. Therefore, in this section, we evaluate the performance of two alternative \planned\ schemes. 
+The experiments so far  suggest that a \planned\ scheme that engineers placement and routing once a day based on the previous day's demand performs poorly compared to a \unplanned\ scheme, \invlru. Therefore, in this section, we evaluate the performance of two alternative \planned\ schemes. 
 
 
 
@@ -99,7 +99,7 @@ In other cases, \invlru\ performs better. Considering the effort of executing a 
 Next, we analyze the performance of \planned\ schemes that engineer placement and routing multiple times each day at equal intervals - twice/day, 4 times/day, and 8 times/day. In all cases, we engineer using the content demand in the past 24 hours. As Figure \ref{fig:optrpfrequency} shows, \optrp\ needs to engineer 8 times/day to match the performance of the \invlru\ scheme. In all other cases, \invlru\ performs better.  In fact, the experiment shown here represents the best case for \optrp. Typically, \optrp\ performs worse even when engineering is done 8 times/day, e.g., on the news trace, we find \optrp\ incurs up to 4.5$\times$ higher MLU compared to \invlru\ even on engineering 8 times/day.
 
 
-Executing a \planned\ placement requires considerable effort---measuring content matrix, solving a computationally intensive optimization, and moving content to new locations. Further, a \planned\ placement needs to be executed  8 times a day (or possibly more) even to match the cost achieved by an \unplanned\ strategy. Our position is that NCDNs are better served by opting for a much simpler \unplanned\ strategy and provisioning more storage, in which case, an \unplanned\ strategy  already obtains  a network cost close to the best a \planned\ strategy can possibly achieve.
+Executing a \planned\ placement requires considerable effort---measuring content matrix, solving a computationally intensive optimization, and moving content to new locations. Further, a \planned\ placement needs to be executed  8 times a day (or possibly more) even to match the cost achieved by a \unplanned\ strategy. Our position is that NCDNs are better served by opting for a much simpler \unplanned\ strategy and provisioning more storage, in which case, a \unplanned\ strategy  already obtains a network cost close to the best a \planned\ strategy can possibly achieve.
 
 % if optimizing the cost further is deemed necessary.
 
@@ -217,7 +217,7 @@ Like the \optrp\ scheme, \optrpl\ is unable to predict the popularity of new con
 
 
 The latency cost of \invlru\ relative to \optrpfuturel\ improves with an increase in storage ratio. At the smallest storage ratio, \invlru\  has 70-110\% higher latency cost than \optrpfuturel. The difference reduces to  14-34\% at the maximum storage ratio. Higher storage ratio translate to higher cache hit rates, which reduces propagation delay of transfers and lowers link utilizations. Both these factors contribute to  a smaller latency cost for \invlru. 
-This finding shows that NCDNs can achieve close to best latency costs with an \unplanned\ scheme \invlru\ and provisioning moderate amounts of storage.
+This finding shows that NCDNs can achieve close to best latency costs with a \unplanned\ scheme \invlru\ and provisioning moderate amounts of storage.
 
 The performance of \optrpl\ on the downloads trace is much closer to \optrpfuturel\ than on the other two traces. 
 Unlike other traces, content popularity is highly predictable on the downloads trace based on yesterday's demand, except for a day on which multiple new software releases were done.  On all days except one,  \optrpl\ has nearly optimal latency cost and it incurs a higher latency cost on one day of the trace. As a result, \optrpl's aggregate latency cost summed over all days is only moderately higher than that of \optrpfuturel. 
@@ -225,7 +225,7 @@ Unlike other traces, content popularity is highly predictable on the downloads t
 
 
 \subsection{Effect of NCDN traffic on network cost}
-This experiment, unlike previous experiments, considers a network consisting of both ISP and NCDN traffic. Our goal is to evaluate how network costs change as the fraction of NCDN traffic increases in the network. Second, we seek to examine the benefit of optimizing routing over an unplanned routing scheme, InverseCap. To this end, we compare the performance of \invlru\ and \optlru\ schemes. The latter scheme optimizes routing for the combined traffic matrix due to NCDN traffic and ISP transit traffic. 
+This experiment, unlike previous experiments, considers a network consisting of both ISP and NCDN traffic. Our goal is to evaluate how network costs change as the fraction of NCDN traffic increases in the network. Second, we seek to examine the benefit of optimizing routing over an unplanned routing scheme, InvCap. To this end, we compare the performance of \invlru\ and \optlru\ schemes. The latter scheme optimizes routing for the combined traffic matrix due to NCDN traffic and ISP transit traffic. 
 In order to estimate the best gains achievable with an optimized routing, we provide to the \optlru\ scheme knowledge of future ISP traffic matrices. \optlru\ cannot be provided the knowledge of future NCDN traffic matrices because NCDN traffic matrices can only be measured from experiment itself and we do not know them beforehand. We optimize routing once a day in this experiment. Varying the frequency of routing update did not improve \optlru's performance.
 
 
@@ -253,7 +253,7 @@ Each new content is of the same size, and same video bit rate  as the original c
 \end{figure}
 
 We present the results of our experiments on the news trace in Figure \ref{fig:ispncdn}. We vary the fraction of NCDN to ISP traffic, and report MLUs normalized by the total volume of ISP and NCDN traffic.
-Our results are not independent of the scale of simulations: a larger or a smaller scaling of CDN trace may give quantitatively different conclusions. Hence, we only make qualitative conclusions from this experiment. First, we find that as the fraction of NCDN traffic increases, MLU decreases for both schemes. This is intuitive since a large fraction of NCDN traffic is served from caches located at PoPs. Second, as NCDN traffic increases optimizing routing (\optlru) gives lesser benefits compared to InverseCap routing.  In a network dominated by NCDN traffic, optimizing routing gives almost no benefits over \invlru. We find these results to be consistent with our earlier experiments with NCDN traffic only.
+Our results are not independent of the scale of simulations: a larger or a smaller scaling of CDN trace may give quantitatively different conclusions. Hence, we only make qualitative conclusions from this experiment. First, we find that as the fraction of NCDN traffic increases, MLU decreases for both schemes. This is intuitive since a large fraction of NCDN traffic is served from caches located at PoPs. Second, as NCDN traffic increases optimizing routing (\optlru) gives lesser benefits compared to InvCap routing.  In a network dominated by NCDN traffic, optimizing routing gives almost no benefits over \invlru. We find these results to be consistent with our earlier experiments with NCDN traffic only.
 
 %Our results depend on the scale at which we do our experiments. Therefore, we can only qualitative conclusions from this experiments. 
 %We find that as the fraction of NCDN traffic increases MLU decreases for both schemes. This is intuitive as more and more NCDN traffic is cached inside the network which reduces MLU for both schemes.
