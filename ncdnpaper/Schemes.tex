@@ -1,16 +1,12 @@
 
-
 \section{Background}
 \label{sec:ncdn-background}
-
 
 \subsection{NCDN architecture} 
 
 A typical \ncp\ architecture, as shown in Figure \ref{fig:NCDNArch}, resembles the architecture of a global CDN but with some important differences. First,  the content servers are deployed at points-of-presence (PoPs) within the network rather than globally across the Internet as the \ncp\ is primarily interested in optimizing content delivery for its own customers and end-users. Second, and more importantly, the NCDN owns and manages the content servers as well as the underlying network. Content providers that purchase content delivery service from the \ncp\ publish their content to origin servers that they maintain external to the \ncp\ itself. 
 
-
 Each PoP is associated with a distinct set of end-users who request content such as web, video, downloads etc.  An end-user's request is first routed to the content servers at the PoP to which the end-user is connected.  If a content server at that PoP has the requested content in their cache, it serves that to the end-user. Otherwise, if the requested content is cached at other PoPs, the content is downloaded from a nearby PoP and served to the end-user. If the content is not cached in any PoP, it is downloaded directly from  the content provider's origin servers.
-
 
 \begin{figure}[t]
 \centerline{\includegraphics[scale=0.31]{ncdnpaper/NCDN}}
@@ -18,8 +14,6 @@ Each PoP is associated with a distinct set of end-users who request content such
 \vspace{-0.2in}
 \label{fig:ncdntraditional}
 \end{figure}
-
-
 
 \subsection{NCDN management objectives and schemes}
 
@@ -32,11 +26,6 @@ NCDN management refers to the combined task content delivery and traffic enginee
 \textbf{Independent vs. joint optimization:} Unlike a traditional ISP or a traditional NCDN, an NCDN controls placement, redirection and routing on its network. An NCDN may simply treat placement, redirection and routing independently, or it may seek to jointly optimize these decisions to leverage the interaction between them. 
 The example in Chapter \ref{ch:te-background}, Section \ref{sec:bg-ncdn} illustrates the interaction between placement and routing in an NCDN. A joint-optimization approach may potentially yield benefits, as has been demonstrated in a different scenario where two distint entities ISPs and content providers jointly optimize their network routing and request redirection. Developing a joint optimization for NCDN and evaluating its benefits over independent optimization of placement, redirection and routing are among the key goals of our work.
 
-
 % As \ncp s own and manage the infrastructure for content delivery as well as the underlying network, they are in a powerful position to control all three of placement, routing, and redirection.
 
-
-
-
 %As \ncp s own and manage the infrastructure for content delivery as well as the underlying network, they are in a powerful position to control all three of placement, routing, and redirection (Figure \ref{fig:ncdntraditional}). In particular, \ancp\ can place content in a manner that ``shapes'' the traffic demands so as to jointly optimize both user-perceived latency as well as network cost.
-

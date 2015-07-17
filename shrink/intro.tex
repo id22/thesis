@@ -2,42 +2,27 @@
 \chapter{\shrink: Quantifying and Leveraging Energy-Performance Tradeoff in Content Datacenters}
 \label{ch:shrink}
 
-Our consumption of digital content is increasing rapidly. The majority of the traffic on the Internet today is content, with video content by itself accounting for more than half the total traffic \cite{cisco-videogrowth, nielsen-video-growth}.  Not surprisingly, many datacenters  and  Points-of-Presence (PoPs) are dedicated to storing and serving content to end users. We call these datacenters and PoPs  {\em content datacenters} (or, \cdc s).
+In today's content-dominated Internet \cite{cisco-videogrowth, nielsen-video-growth}, it is not surprising that many datacenters and Points-of-Presence (PoPs) are dedicated to storing and serving content to end users. We call these datacenters and PoPs {\em content datacenters} (or, \cdc s).
 
-The increasing energy use of datacenters \cite{GreenbergCost, rasmussen2011determining, power-cost} has motivated a long line of research in \emph{consolidation} schemes that aggregate a datacenter's load on a fraction of components and save energy by turning off unused components \cite{chase2001managing, mathew12, rajamani2003evaluating, lin12}. 
+%Our consumption of digital content is increasing rapidly. The majority of the traffic on the Internet today is content, with video content by itself accounting for more than half the total traffic \cite{cisco-videogrowth, nielsen-video-growth}.  Not surprisingly, many datacenters  and  Points-of-Presence (PoPs) are dedicated to storing and serving content to end users. We call these datacenters and PoPs  {\em content datacenters} (or, \cdc s).
+
+The increasing energy use of datacenters \cite{GreenbergCost, rasmussen2011determining, power-cost} has motivated a long line of research in \emph{consolidation} schemes that aggregate a datacenter's load on a fraction of components and save energy by turning off unused components \cite{chase2001managing, mathew12, rajamani2003evaluating, lin12}.
 Consolidation exploits the over-provisioning of resources in a datacenter and the diurnal variations in load to potentially reduce datacenter energy use by up to 50\% \cite{mathew12}.
 
-%Energy use contributes to 15-20\% of total cost of ownership of a datacenter \cite{GreenbergCost, rasmussen2011determining, power-cost}. 
-
-
-%Yet, prior work on consolidation has given little attention to quantifying its impact on the end-user response time in a \cdc.  Work on server consolidation is either theoretical in nature with less emphasis on  empirical validation. Analytical work on server consolidation has measured the impact on response time based on theoretical utilization-vs.-response time models of servers with little empirical validation. Implementation-based work on server consolidation has focused largely on stateless servers whereas \cdc s maintain a large amount of state in the form of stored content;  the effect of consolidation on response time in \cdc s  cannot be evaluated accurately without accounting for the effect of consolidation on the availability of stored content. Work on network consolidation has focused mostly on evaluating traffic engineering metrics such as link utilization with little effort on evaluating response times for real applications. 
-
-
-%A key question for \cdc\ operators is the impact of consolidation on end-user response times.  
-%
-%An inflation in response times can cause SLA violations leading to revenue loss for operators. 
-
-%But, the end-user performance impact of consolidation for \cdc s has received little attention in prior work.  Analytical work on server consolidation, although based on theoretically sound principles, provides little empirical data on end-user response times. Implementation-based work on server consolidation has focused largely on stateless servers whereas \cdc s maintain a large amount of stored content as state;  the impact on response time in \cdc s  cannot be evaluated accurately without accounting for the impact on the availability of stored content. Work on network consolidation has focused mostly on measuring traffic engineering metrics such as link utilization with little effort on measuring response times for real applications.
 
 The practicality of consolidation as an energy-saving tool for a \cdc\ operator depends on its impact on end-user response time. End-user response time is a key metric on which  operators are evaluated \cite{comparingCDN}. Further, a sharp response time inflation may be perceived as service unavailability, thereby causing a service-level agreement (SLA) violation and revenue loss for an operator \cite{amazonSLA, microsoftSLA, hpSLA}. Despite a large body of literature on consolidation schemes, quantifying the precise impact on user-perceived response times is not well understood today.
-%To our knowledge, evaluating the impact of consolidation on the end-user response in a \cdc\ is still an open question.
 
 Our position is that a lack of quantitative understanding of energy vs. response time tradeoff is potentially a major roadblock to widespread deployment of consolidation to reduce \cdc\ energy use. To provide the insights needed for an operator to reduce its energy use, we address these key questions: (1) What is the energy-response time tradeoff achieved by simple schemes for server and network consolidation in a \cdc\ that uses well-known schemes for load balancing and network routing? (2) What is the additional energy savings achieved by network-aware server consolidation over network-unaware server consolidation considered previously?
 
+Our primary contribution is to quantify the tradeoff between energy savings via consolidation and response times for a real \cdc's workload, and the design and implementation of a system, \shrink, to leverage this tradeoff. \shrink\ reduces the energy use of servers and switches via consolidation, while enabling operators to achieve the desired response time and hardware reliability. A novel aspect of \shrink\ is a network-aware server consolidation scheme that selects the active servers in a left-to-right order in a topology and achieves greater network energy savings over network-unaware server consolidation schemes. Further, our server and network consolidation schemes require only ECMP (equal-cost multipath) support for routing, and hence, are deployable with existing datacenter network fabrics.
 
-%Several factors can inflate response times
-%
-%Most prior on stateless servers, and a prior work on stateful datacenters storing content has considered very specific workload with small key-value items.
+Our work is grounded in implementation, due to which it accounts for several factors affecting response time - increased load on servers and network links, reduced storage and its impact on cache hit rates, non-steady state cache behavior due to on-off transitions, imperfect load balancing among servers - and hence, accurately quantifies the impact of consolidation on end-user response time. A key insight, supported via experiments, is that cache hit rates, despite server consolidation, remain close to an unconsolidated datacenter. A small reduction in hit rates helps mitigate the impact of consolidation on response times. This finding is explained by the skewed content popularity obseved in real workloads, due to which working set size of content remains small compared to the storage available in a CDC.
 
-%As our work is grounded in implementation, it  accounts for several factors affecting response time - increased load on servers and network links, reduced storage and its impact on cache hit rates, non-steady state cache behavior due to on-off transitions, imperfect load balancing among servers - and hence, accurately quantifies the impact of consolidation on end-user response time.
-%To provide the insights needed for an operator to reduce energy use via consolidation, we address these key questions:
+%a simple placement strategy LRU caching achieves a cache hit rate near to an unconsolidated datacenter. 
 
 
-%Our primary contribution in this paper is a model to relate the benefit of energy savings to the cost of response-time inflation for CDCs, and the design and implementation of Shrink, a system that aggressively leverages this relationship in order to yield significant savings in energy use in CDCs while affecting user-perceived response times in a controlled manner. 
-Our primary contribution is to quantify the tradeoff between energy savings via consolidation and response times for a real \cdc's workload, and the design and implementation of a system, \shrink, to leverage this tradeoff.
-\shrink\ reduces the energy use of servers and switches via consolidation, while enabling operators to achieve the desired response time and hardware reliability. \shrink\ uses a novel network-aware server consolidation scheme that selects the active servers in a left-to-right order in a topology and increases the potential network energy savings. 
-\shrink\ does not require changes to datacenter network fabric, depending only on ECMP (equal-cost multipath) for routing, support for which is widely available today.  As our work is grounded in implementation, it  accounts for several factors affecting response time - increased load on servers and network links, reduced storage and its impact on cache hit rates, non-steady state cache behavior due to on-off transitions, imperfect load balancing among servers - and hence, accurately quantifies the impact of consolidation on end-user response time.
-
+%A key insight we leverage is that due to skew in the content popularity  commonly observed is real content workloads cache hit rates are minimally affected despite consolidation. A simple LRU caching scheme achieves a cache hit rate near to an unconsolidated datacenter.
+%, and substantiate via experiments, 
 
 
 %\shrink\ uses some well-known ideas, namely, randomization for load balancing and ECMP (equal-cost multipath) for routing; their use is in line with our goal of quantifying the energy-response time tradeoff for load balancing and routing schemes that we expect to be widely used in \cdc s. 
@@ -56,7 +41,7 @@ Our primary contribution is to quantify the tradeoff between energy savings via 
 
 %Second, we present a simple model of energy use and response time in \cdc s, which shows that energy savings can be achieved with a small response time inflation for Zipf content workloads, provided server queuing delay remains a small fraction of the response time even at a high server utilization. Our analysis also shows that the energy-response time tradeoff improves as the skew in the content popularity increases.
 
-We have built a prototype of \shrink\ using Squid  \cite{squid}, a caching proxy, and have deployed it on Amazon EC2 \cite{ec2} and Emulab \cite{emulab}. To conduct a realistic evaluation, we have collected and used traces containing more than 2 billion requests generating nearly 200 TB of traffic from a datacenter of the world's largest CDN, Akamai. Our key empirical results are the following. 
+We have built a prototype of \shrink\ using Squid \cite{squid}, a caching proxy, and have deployed it on Amazon EC2 \cite{ec2} and Emulab \cite{emulab}. To conduct a realistic evaluation, we have collected and used traces containing more than 2 billion requests generating nearly 200 TB of traffic from a datacenter of the world's largest CDN, Akamai. Our key empirical results are the following. 
 
 (1) \emph{Comparison to baseline:}  \shrink\ reduces energy use by 35\% over a baseline scheme that provisions resources according to the peak demand while increasing mean, 95-th \%-ile and 99-th \%-ile latency by 8\%, 3\% and 15\% respectively. 
 
