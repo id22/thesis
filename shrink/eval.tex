@@ -1,11 +1,11 @@
 %!TEX root = shrink.tex
-\section{Experimental Evaluation}
+\section{Experimental evaluation}
 \label{sec:shrink-eval}
 \newcommand{\peakS}{Peak-S}
 \newcommand{\peakSN}{Peak-SN}
 \newcommand{\randSN}{Rand-SN}
 
-Our evaluation has two main goals: (1) Comparing the network energy use of \shrink\ against a network-unaware server consolidation scheme (Section \ref{sec:net-compare}). (2) Quantifying the energy-response time tradeoff achieved by \shrink\ and compare it to the ideal energy response time tradeoff achievable (Section \ref{sec:quantify}).
+Our evaluation has two main goals: (1) Comparing the network energy use of \shrink\ against a network-unaware server consolidation scheme (Section \ref{sec:net-compare}). (2) Quantifying the energy-latency tradeoff achieved by \shrink\ and compare it to the ideal energy latency tradeoff achievable (Section \ref{sec:quantify}).
 
 \begin{figure}[t]
         \includegraphics[scale=0.4]{graphs/final/fattree-24.pdf}
@@ -39,18 +39,18 @@ Thus, \shrink's network-aware server consolidation is effective in reducing aggr
         \centering
         \subfigure[Mean]{\label{fig:pe-mean}\includegraphics[scale=0.47]{graphs/final/mean.pdf}}
          \subfigure[95-th percentile]{\label{fig:pe-95}\includegraphics[scale=0.47]{graphs/final/perc95.pdf}}	       \subfigure[99-th percentile]{\label{fig:pe-99}\includegraphics[scale=0.47]{graphs/final/perc99.pdf}}	
-        \caption{Server consolidation (Section \ref{sec:ec2}):  \shrink's reduces energy over \peakS\ with a small response time inflation. In Figure \ref{fig:pe-mean}, \shrink's energy use is 0.65$\times$ of \peakS\ and its mean response time is 1.08$\times$ of \peakS; Single-server-ideal's energy use is 0.62$\times$  of \peakS\ and its mean response time is 0.95$\times$ of \peakS.}
+        \caption{Server consolidation (Section \ref{sec:ec2}):  \shrink's reduces energy over \peakS\ with a small latency inflation. In Figure \ref{fig:pe-mean}, \shrink's energy use is 0.65$\times$ of \peakS\ and its mean latency is 1.08$\times$ of \peakS; Single-server-ideal's energy use is 0.62$\times$  of \peakS\ and its mean latency is 0.95$\times$ of \peakS.}
         \label{fig:pe}
 \end{figure*}
 
-\subsection{Quantifying energy-response time tradeoff}
+\subsection{Quantifying energy-latency tradeoff}
 \label{sec:quantify}
 \vspace{-0.1in}
 \subsubsection{Experiment setup}
 \label{sec:setup}
 \textbf{Akamai dataset:} Our evaluation uses content access traces from an Akamai datacenter. The traces include all requests received at a datacenter with 24 servers for a week in December 2013. We restricted our data collection to a small datacenter as we did not have the resources to experiment with traces from a significantly larger datacenter. Our anonymized traces include several major types of traffic observed in a CDN such as video, social media and other web traffic. Each anonymized log entry includes among other fields, the request timestamp, content URL, size of requested content, actual number of bytes sent and IP address of the user. Overall, the traces contain more than 2 billion requests generating nearly 200 TB of network traffic.
 
-\textbf{Testbeds:} We use prototype-based experiments (on EC2 and Emulab) and trace-based experiments. Our experiment on EC2 evaluates the energy-response time tradeoff due to server-only consolidation. As we do not have control over network topology on EC2, we use Emulab to evaluate the response time inflation due to both server and network consolidation. Finally, we conduct larger-scale trace-based experiments on a simulator.
+\textbf{Testbeds:} We use prototype-based experiments (on EC2 and Emulab) and trace-based experiments. Our experiment on EC2 evaluates the energy-latency tradeoff due to server-only consolidation. As we do not have control over network topology on EC2, we use Emulab to evaluate the latency inflation due to both server and network consolidation. Finally, we conduct larger-scale trace-based experiments on a simulator.
 
 
 
@@ -69,7 +69,7 @@ Thus, \shrink's network-aware server consolidation is effective in reducing aggr
 %\caption{}
 %\label{fig:hitrate}
 %        \end{subfigure}
-%        \caption{[EC2] \shrink\ adapts the number of active servers based on \cdc\  load to reduce energy over \peakS. Cache hit rates and mean response time for \shrink\ and \peakS.}
+%        \caption{[EC2] \shrink\ adapts the number of active servers based on \cdc\  load to reduce energy over \peakS. Cache hit rates and mean latency for \shrink\ and \peakS.}
 %\end{figure}
 
 
@@ -82,14 +82,14 @@ Thus, \shrink's network-aware server consolidation is effective in reducing aggr
 %\begin{minipage}{0.3\textwidth}
 %\centering
 %\includegraphics[scale=0.6]{graphs/final/hit-rate.pdf}
-%\caption{[EC2] Cache hit rates and mean response time for \shrink\ and \peakS.}
+%\caption{[EC2] Cache hit rates and mean latency for \shrink\ and \peakS.}
 %\label{fig:hitrate}
 %\end{minipage}
 %\hspace{0.5cm}
 %\begin{minipage}{0.3\textwidth}
 %\centering
 %	\includegraphics[scale=0.55]{graphs/final/emulab-mean.pdf}
-%	\caption{[Emulab] Network and server consolidation: For an 15\% increase in mean response time, \shrink\ reduces energy use by 57\% over \peakS.}
+%	\caption{[Emulab] Network and server consolidation: For an 15\% increase in mean latency, \shrink\ reduces energy use by 57\% over \peakS.}
 %	\label{fig:pe-mean-2}
 %
 %\end{minipage}
@@ -107,14 +107,14 @@ Thus, \shrink's network-aware server consolidation is effective in reducing aggr
 %\begin{minipage}{0.3\textwidth}
 %\centering
 %\includegraphics[scale=0.6]{graphs/final/hit-rate.pdf}
-%\caption{[EC2] Cache hit rates and mean response time for \shrink\ and \peakS.}
+%\caption{[EC2] Cache hit rates and mean latency for \shrink\ and \peakS.}
 %\label{fig:hitrate}
 %\end{minipage}
 %\hspace{0.5cm}
 %\begin{minipage}{0.3\textwidth}
 %\centering
 %	\includegraphics[scale=0.55]{graphs/final/emulab-mean.pdf}
-%	\caption{[Emulab] Network and server consolidation: For an 15\% increase in mean response time, \shrink\ reduces energy use by 57\% over \peakS.}
+%	\caption{[Emulab] Network and server consolidation: For an 15\% increase in mean latency, \shrink\ reduces energy use by 57\% over \peakS.}
 %	\label{fig:pe-mean-2}
 %
 %\end{minipage}
@@ -123,14 +123,14 @@ Thus, \shrink's network-aware server consolidation is effective in reducing aggr
 
 \textbf{Schemes compared:} We compare \shrink\ against \emph{\peakS} and \emph{Single-server-ideal}. \peakS\ represents a baseline in which a \cdc\ operator does not use consolidation to reduce energy use, i.e., it keeps all servers and switches active.
 
-Single-server-ideal is a computation of the ideal energy-response time curve, unachievable by any real system. The points on this curve are obtained by varying the utilization $u$ up to which any server can be loaded. For a given $u$, the response time of Single-server-ideal for a given metric is equal to the measured load-vs.-response time curve of a single server for the same metric at the same utilization. For the same utilization $u$, any distributed system will have a higher response time because workload dynamics, load imbalance and non-steady state cache behavior; these factors are ignored by Single-server-ideal. Our single server measurements are done with a representative workload in the respective experimental environment, EC2 or Emulab, with emulated client-to-server delay and server-to-origin delay. 
+Single-server-ideal is a computation of the ideal energy-latency curve, unachievable by any real system. The points on this curve are obtained by varying the utilization $u$ up to which any server can be loaded. For a given $u$, the latency of Single-server-ideal for a given metric is equal to the measured load-vs.-latency curve of a single server for the same metric at the same utilization. For the same utilization $u$, any distributed system will have a higher latency because workload dynamics, load imbalance and non-steady state cache behavior; these factors are ignored by Single-server-ideal. Our single server measurements are done with a representative workload in the respective experimental environment, EC2 or Emulab, with emulated client-to-server delay and server-to-origin delay. 
 
-%taken to be response of a single server in steady-state at the same utilization. In doing so, we assume that the response time of the entire \cdc\ at a given average utilization is the same as that of a single server  at the same utilization. 
+%taken to be response of a single server in steady-state at the same utilization. In doing so, we assume that the latency of the entire \cdc\ at a given average utilization is the same as that of a single server  at the same utilization. 
 
 For Single-server-ideal, we compute the set of servers and switches in each time interval that minimizes the total energy use as follows. Based on four inputs -- $u$, the total load in each time interval, the number of server transitions allowed, and the power model of each server --, we use a dynamic programming algorithm to compute the total energy use of servers and the number of active servers in each time interval. The number of transitions is equal to one on-off server transition/server/day or the same number of transitions as \shrink\ in that experiment, whichever is higher. The ideal network energy use for the tree topology we experiment with (Section \ref{sec:emulab}) is computed based on the number of active servers in each time interval. The set of active servers are selected in a left-to-right order; for each active server, we select the switches on the path to the root. The set of switches selected across all active servers is the set that optimizes network energy use.
 
-%Single-server-ideal is a computation of the ideal energy-response time curve. In our computation, we assume that the utilization-vs.-response time curve for the entire \cdc\  is the same as that of a single server system at the same utilization, which is in steady state and has an infinite cache. 
-%The response time of Single-server-ideal is \emph{ideal}, as discussed in Section \ref{sec:analysis}. For our computation, we obtained the utilization-vs.-response time curve for a single server by measuring response time metrics at varying request rates and using a cache size large enough so that steady state response times can be measured without exhausting the cache.
+%Single-server-ideal is a computation of the ideal energy-latency curve. In our computation, we assume that the utilization-vs.-latency curve for the entire \cdc\  is the same as that of a single server system at the same utilization, which is in steady state and has an infinite cache. 
+%The latency of Single-server-ideal is \emph{ideal}, as discussed in Section \ref{sec:analysis}. For our computation, we obtained the utilization-vs.-latency curve for a single server by measuring latency metrics at varying request rates and using a cache size large enough so that steady state latencies can be measured without exhausting the cache.
 %
 %The energy calculation for Single-server-ideal assumes prior knowledge of the total load in each time interval and the number of server transitions allowed. We allow Single-server-ideal to make one on-off server transition/server/day or the same number of transitions as \shrink\ in that experiment, whichever is higher. Based on these inputs, we use a dynamic programming algorithm \cite{mathew12} to compute the total energy use of servers and the number of active servers in each time interval.  The network energy use for the tree topology we experiment with (Section \ref{sec:emulab}) is computed as follows: For each active server, we select the switches on the path to the root. The set of switches selected across all active servers is the set that optimizes network energy use.
 
@@ -139,7 +139,7 @@ For Single-server-ideal, we compute the set of servers and switches in each time
 \subsubsection{Prototype-based experiments: server consolidation}
 \label{sec:ec2}
 \vspace{-0.1in}
-This experiment quantifies the energy-response time tradeoff due to server consolidation on EC2. Our EC2 testbed consists of 15 servers, 15 clients and 4 origin servers running on independent m3.xlarge instances (4 core, 15 GB RAM, 40 GB$\times$2 SSD), all in the same datacenter. Our origin server is a trivial Apache Tomcat application that dynamically generates the requested content. We emulate a 60 ms RTT between origin servers and \cdc's servers, and a 10 ms RTT between client and server machines. We configured each server to use an 8 GB memory cache and a 30 GB cache on each SSD. 
+This experiment quantifies the energy-latency tradeoff due to server consolidation on EC2. Our EC2 testbed consists of 15 servers, 15 clients and 4 origin servers running on independent m3.xlarge instances (4 core, 15 GB RAM, 40 GB$\times$2 SSD), all in the same datacenter. Our origin server is a trivial Apache Tomcat application that dynamically generates the requested content. We emulate a 60 ms RTT between origin servers and \cdc's servers, and a 10 ms RTT between client and server machines. We configured each server to use an 8 GB memory cache and a 30 GB cache on each SSD. 
 
 Our workload consists of a 24-hour duration of the trace.  We selected one-eighth of the content randomly from the trace but sped up the trace by 8$\times$ to send those requests over a 3-hour duration. Thus, we  maintain approximately the same load on the servers. We use a short pre-shutdown wait interval $W =$ 10 min for \shrink\ because our workload is a sped up by $8\times$.
 
@@ -148,37 +148,37 @@ We calculate the energy savings relative to \peakS\ as per Equation \ref{eq:bene
 
 
 
-We evaluate \shrink\ in terms of three response time metrics --  mean, 95-percentile, 99-percentile. 
-To provide a utilization-vs.-response time curve $F(.)$ to \shrink\ for each metric, we take the first approach discussed in Section \ref{sec:utilization-vs-responsetime}. The function $F(.)$ for each metric is equal to the measured utilization vs. response time curve of a single server with an inefficiency factor $\rho = 0.2$.  Based on $F(.)$ for each metric, we specify response times $F(u)$ to \shrink\ for values of $u$ from 0.375 to 0.875 at intervals of 0.125 across different runs. 
+We evaluate \shrink\ in terms of three latency metrics --  mean, 95-percentile, 99-percentile. 
+To provide a utilization-vs.-latency curve $F(.)$ to \shrink\ for each metric, we take the first approach discussed in Section \ref{sec:utilization-vs-responsetime}. The function $F(.)$ for each metric is equal to the measured utilization vs. latency curve of a single server with an inefficiency factor $\rho = 0.2$.  Based on $F(.)$ for each metric, we specify latencies $F(u)$ to \shrink\ for values of $u$ from 0.375 to 0.875 at intervals of 0.125 across different runs. 
 
 %, which is much less than the number of servers in the Akamai datacenter itself. we have made this choice not to overstate the energy savings.
 
 
-Figure \ref{fig:pe} compares the response time and the energy use of \shrink\ relative to \peakS\ for the mean, the 95-th percentile and the 99-th percentile of response times. \shrink\ reduces energy use by 35\% over \peakS\ while inflating the mean, the 95-th percentile and the 99-th percentile by 8\%, 3\% and 15\% respectively. 
+Figure \ref{fig:pe} compares the latency and the energy use of \shrink\ relative to \peakS\ for the mean, the 95-th percentile and the 99-th percentile of latencies. \shrink\ reduces energy use by 35\% over \peakS\ while inflating the mean, the 95-th percentile and the 99-th percentile by 8\%, 3\% and 15\% respectively. 
 To explain the difference between \peakS\ and \shrink, consider Figure \ref{fig:ec2-other} (left)  which shows the aggregate load and the number of servers from one of the runs of the system. \shrink\  adapts the number of active servers based on load in the system keeping only 3 servers active when the load is the lowest, but \peakS\ always keeps 15 servers active and hence has a higher energy use. This result implies that an operator for which these inflations are tolerable, e.g., they do not cause an SLA violation, can achieve the corresponding energy savings as well. 
 
 
 
 
-%Single-server-ideal does achieve a better energy-response time tradeoff than \shrink.  First, the energy-response time curve for Single-server-ideal is computed assuming that the response time for a given server utilization limit is equal to the response time of a single server in steady state at the same utilization. The response time for any real system, including \shrink, will be higher due to several reasons such as imperfect load balancing and non-steady state cache behavior. 
+%Single-server-ideal does achieve a better energy-latency tradeoff than \shrink.  First, the energy-latency curve for Single-server-ideal is computed assuming that the latency for a given server utilization limit is equal to the latency of a single server in steady state at the same utilization. The latency for any real system, including \shrink, will be higher due to several reasons such as imperfect load balancing and non-steady state cache behavior. 
 
 
 
 
-Does  an increase server load or a decrease in cache hit rates cause a greater impact on \shrink's response time over \peakS? 
-In Figure \ref{fig:ec2-other} (right) the x-axis shows the server utilization limit $U$ computed by \shrink's consolidation algorithm (Section \ref{sec:serverconsolidation}) and y-axes show corresponding the  hit rates and the mean response time of \shrink. \shrink's  hit rates are lower than \peakS\ but the decrease is less than 7\% across all utilizations. 
-Thus, the response time inflation due to a decrease in hit rates is likely to be small. A small reduction in hit rates is not surprising given that the Zipf exponent for the Akamai trace is 0.8 as per our calculations, and our model in Section \ref{sec:analysis} has suggested that  consolidation reduces hit rates by a small fraction for for real workloads with a high skew in content popularity.  We find that mean response times increase sharply at  a high server utilization limit, e.g. $U=0.875$, which is likely due to an increase in server load. To summarize, there is a small response time inflation due to a decrease in hit rates but severe inflation occurs at high server utilization limits, and is likely due to an increase in server  load.
+Does  an increase server load or a decrease in cache hit rates cause a greater impact on \shrink's latency over \peakS? 
+In Figure \ref{fig:ec2-other} (right) the x-axis shows the server utilization limit $U$ computed by \shrink's consolidation algorithm (Section \ref{sec:serverconsolidation}) and y-axes show corresponding the  hit rates and the mean latency of \shrink. \shrink's  hit rates are lower than \peakS\ but the decrease is less than 7\% across all utilizations. 
+Thus, the latency inflation due to a decrease in hit rates is likely to be small. A small reduction in hit rates is not surprising given that the Zipf exponent for the Akamai trace is 0.8 as per our calculations, and our model in Section \ref{sec:analysis} has suggested that  consolidation reduces hit rates by a small fraction for for real workloads with a high skew in content popularity.  We find that mean latencies increase sharply at  a high server utilization limit, e.g. $U=0.875$, which is likely due to an increase in server load. To summarize, there is a small latency inflation due to a decrease in hit rates but severe inflation occurs at high server utilization limits, and is likely due to an increase in server  load.
 
 
-Comparing \shrink\ with Single-server-ideal, in Figure \ref{fig:pe-mean}, \shrink's energy use is 0.65$\times$ of \peakS\ and its mean response time is 1.08$\times$ of \peakS; Single-server-ideal's energy use is 0.62$\times$  of \peakS\ and its mean response time is 0.95$\times$ of \peakS.  
-There are two reasons that explain the gap between \shrink\ and Single-server-ideal. First, Single-server-ideal ignores several factors that increase response time of any distributed system such as workload dynamics, load imbalance and non-steady state cache behavior. Second, \shrink\ waits for the pre-shutdown wait interval to see if a decrease in load persists before turning servers off. But, in our calculation, Single-server-ideal knows the load for the entire experiment beforehand and hence it can shutdown servers sooner than \shrink\ and save more energy.
+Comparing \shrink\ with Single-server-ideal, in Figure \ref{fig:pe-mean}, \shrink's energy use is 0.65$\times$ of \peakS\ and its mean latency is 1.08$\times$ of \peakS; Single-server-ideal's energy use is 0.62$\times$  of \peakS\ and its mean latency is 0.95$\times$ of \peakS.  
+There are two reasons that explain the gap between \shrink\ and Single-server-ideal. First, Single-server-ideal ignores several factors that increase latency of any distributed system such as workload dynamics, load imbalance and non-steady state cache behavior. Second, \shrink\ waits for the pre-shutdown wait interval to see if a decrease in load persists before turning servers off. But, in our calculation, Single-server-ideal knows the load for the entire experiment beforehand and hence it can shutdown servers sooner than \shrink\ and save more energy.
 
 %An implication of our findings is that a simple random load balancing policy effectively avoids load hotspots and ensures only a small decrease in cache hit rates even as energy optimization schemes vary the number of active servers in a \cdc.
 \begin{figure}
 \centering
 \includegraphics[scale=0.4]{graphs/final/num-servers.pdf}
 \includegraphics[scale=0.4]{graphs/final/hit-rate.pdf}
-\caption{Server consolidation (Section \ref{sec:ec2}): [Left] \shrink\ adapts the number of active servers based on \cdc\  load to reduce energy over \peakS. [Right] Cache hit rates and mean response time for \shrink\ and \peakS.}
+\caption{Server consolidation (Section \ref{sec:ec2}): [Left] \shrink\ adapts the number of active servers based on \cdc\  load to reduce energy over \peakS. [Right] Cache hit rates and mean latency for \shrink\ and \peakS.}
 \label{fig:ec2-other}
 \end{figure}
 
@@ -189,14 +189,14 @@ There are two reasons that explain the gap between \shrink\ and Single-server-id
 	\centering
 \includegraphics[scale=0.35]{figures/emulab-topo.pdf}
 \includegraphics[scale=0.5]{graphs/final/emulab-mean.pdf}
-\caption{Network and server consolidation (Section \ref{sec:emulab}): [Left] Emulab topology for the experiment. [Right] Compared to \peakS, \shrink\ has a 15\% higher response time but a 57\% lower energy use.}
+\caption{Network and server consolidation (Section \ref{sec:emulab}): [Left] Emulab topology for the experiment. [Right] Compared to \peakS, \shrink\ has a 15\% higher latency but a 57\% lower energy use.}
 \label{fig:emulab}
 \end{figure}
 
-We use Emulab to evaluate the energy-response time tradeoff when both server and network consolidation are being performed. For our experiment, we configure a tree topology with 1 Gbps links as shown in Figure \ref{fig:emulab} (left). 
+We use Emulab to evaluate the energy-latency tradeoff when both server and network consolidation are being performed. For our experiment, we configure a tree topology with 1 Gbps links as shown in Figure \ref{fig:emulab} (left). 
 In this topology, the ToR switches have 4 ports, and the core switch has at least 4 ports. Accordingly,  we calculate energy use of switches based on the power use of 4-port switch (Netgear GS105), which is 14.4 W \cite{netgearGS105}. The energy use of servers is computed using the same function as in the previous experiment. Our workload consists of a 1-hour duration of the trace containing requests for one-eighth of the content selected randomly.
 
-Figure \ref{fig:emulab} (right) compares schemes in terms of the mean response times.  Across different runs that vary specified mean response times, \shrink\ uses between 2 and 9 servers; \peakS\ uses 9 servers.  We discuss the case when \shrink\ uses 3 servers so that only one of the ToR switches are being used as a result of network consolidation. In this case, the peak utilization of the link between the ToR and the core switch increased up to 76\% during the experiment, which is nearly three times higher than the peak link utilization for \peakS. Despite this increase, \shrink's response time is only 15\% higher than \peakS, while its network energy use is 50\% lower and the overall energy use is 57\% lower than \peakS\ (second point from the left in Figure \ref{fig:emulab} (right)). This result shows that both network and server consolidation can be performed with a small performance impact in \cdc s. Finally, we note that the difference between Single-server-ideal and \shrink\ is consistent with the difference between them in our experiment with server-only consolidation,, e.g., for the same energy savings as \shrink\ (= 57\%), \shrink's response time is 15\% more than Single-server-ideal.
+Figure \ref{fig:emulab} (right) compares schemes in terms of the mean latencies.  Across different runs that vary specified mean latencies, \shrink\ uses between 2 and 9 servers; \peakS\ uses 9 servers.  We discuss the case when \shrink\ uses 3 servers so that only one of the ToR switches are being used as a result of network consolidation. In this case, the peak utilization of the link between the ToR and the core switch increased up to 76\% during the experiment, which is nearly three times higher than the peak link utilization for \peakS. Despite this increase, \shrink's latency is only 15\% higher than \peakS, while its network energy use is 50\% lower and the overall energy use is 57\% lower than \peakS\ (second point from the left in Figure \ref{fig:emulab} (right)). This result shows that both network and server consolidation can be performed with a small performance impact in \cdc s. Finally, we note that the difference between Single-server-ideal and \shrink\ is consistent with the difference between them in our experiment with server-only consolidation,, e.g., for the same energy savings as \shrink\ (= 57\%), \shrink's latency is 15\% more than Single-server-ideal.
 
 
 
@@ -225,12 +225,12 @@ Figure \ref{fig:emulab} (right) compares schemes in terms of the mean response t
 
 \subsubsection{Trace-based experiments}
 \label{sec:simulation}
-%The following are the goals of our trace-based experiments: (1) Quantify energy savings of server consolidation over the complete duration of the trace for a given server utilization limit expected to cause a small impact in response time.
+%The following are the goals of our trace-based experiments: (1) Quantify energy savings of server consolidation over the complete duration of the trace for a given server utilization limit expected to cause a small impact in latency.
 %(2) Evaluate the potential benefit of cooperative caching among servers in a \cdc\ assuming that a cache-coordination protocol with a much smaller overhead can be developed in future. 
 %(3) Quantify the tradeoff between energy savings and reliability by varying the pre-shutdown wait interval $W$.
 %(4) Analyze the sensitivity of hit rates to a server's storage capacity.
 
-\textbf{Methodology:} We conduct experiments for a \cdc\ with 16 servers for the week-long Akamai trace. The capacity of each server is defined in terms of network traffic it can support. The rate of network traffic generated by a request is a constant equal to the client bandwidth reported in the Akamai trace. To be able to fit the simulator process in the memory on our machine (32 GB), we filtered requests for one-eighth of the content from the trace. Accordingly, we scale down  the capacity of each server to be 150 Mbps, and the cache size per server to be 150 GB. Since trace-based experiments do not provide an accurate estimate of response times, we used a fixed server utilization limit $U$ = 0.65 for our experiments, which is expected to cause a small response time inflation (Figure \ref{fig:ec2-other} (right)). 
+\textbf{Methodology:} We conduct experiments for a \cdc\ with 16 servers for the week-long Akamai trace. The capacity of each server is defined in terms of network traffic it can support. The rate of network traffic generated by a request is a constant equal to the client bandwidth reported in the Akamai trace. To be able to fit the simulator process in the memory on our machine (32 GB), we filtered requests for one-eighth of the content from the trace. Accordingly, we scale down  the capacity of each server to be 150 Mbps, and the cache size per server to be 150 GB. Since trace-based experiments do not provide an accurate estimate of latencies, we used a fixed server utilization limit $U$ = 0.65 for our experiments, which is expected to cause a small latency inflation (Figure \ref{fig:ec2-other} (right)). 
 The cache hit rates of our simulator's LRU caching and Squid differ by less than 2\% for the same workload and cache size. 
 
 
