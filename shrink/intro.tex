@@ -43,11 +43,11 @@ Our work is grounded in implementation, due to which it accounts for several fac
 
 We have built a prototype of \shrink\ using Squid \cite{squid}, a caching proxy, and have deployed it on Amazon EC2 \cite{ec2} and Emulab \cite{emulab}. To conduct a realistic evaluation, we have collected and used traces containing more than 2 billion requests generating nearly 200 TB of traffic from a datacenter of the world's largest CDN, Akamai. Our key empirical results are the following. 
 
-(1) \emph{Comparison to baseline:}  \shrink\ reduces energy use by 35\% over a baseline scheme that provisions resources according to the peak demand while increasing mean, 95-th \%-ile and 99-th \%-ile latency by 8\%, 3\% and 15\% respectively. 
+(1) \emph{Comparison to baseline:}  \shrink\ reduces energy use by 35\% over a baseline scheme that provisions resources according to the peak demand while increasing the mean, 95-th \%-ile and 99-th \%-ile latencies by 8\%, 3\% and 15\% respectively. 
 
 (2) \emph{Comparison to ideal:}  \shrink\ achieves a mean, 95-th \%-ile and 99-th \%-ile latency that is 15\%, 3\% and 25\% higher than a scheme that characterizes the ideal energy-latency tradeoff while using 5\% more energy than it.
 
-(3) \emph{Comparison of network energy use:} When one-fourth of the servers are active, \shrink's network energy use is lower than a network-unaware server consolidation scheme by 37\% and 42\% on FatTree \cite{fattree} and VL2 \cite{vl2} respectively.
+(3) \emph{Comparison of network energy use:} When one-fourth of the servers are active, \shrink's network energy use is lower than a network-unaware server consolidation scheme by 37\% and 42\% on the FatTree \cite{fattree} and the VL2 \cite{vl2} topology respectively.
 
 \textbf{Scope of the paper:} This paper focuses on energy saving schemes based on server and network consolidation deployable at the scale of a single \cdc. The following schemes, although related, are outside the scope of this paper: (1) Adapting global load balancing across \cdc s to reduce the total energy use of all \cdc s. (2) Making each server or switch power-proportional, e.g., server energy use can be reduced by turning off a fraction of its disks. (3) Optimizing the cost of energy used such as by accounting for time-of-day pricing for electricity; Section \ref{sec:discussion} discusses electricity costs.
 

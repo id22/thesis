@@ -149,7 +149,7 @@ We calculate the energy savings relative to \peakS\ as per Equation \ref{eq:bene
 
 
 We evaluate \shrink\ in terms of three latency metrics --  mean, 95-percentile, 99-percentile. 
-To provide a utilization-vs.-latency curve $F(.)$ to \shrink\ for each metric, we take the first approach discussed in Section \ref{sec:utilization-vs-responsetime}. The function $F(.)$ for each metric is equal to the measured utilization vs. latency curve of a single server with an inefficiency factor $\rho = 0.2$.  Based on $F(.)$ for each metric, we specify latencies $F(u)$ to \shrink\ for values of $u$ from 0.375 to 0.875 at intervals of 0.125 across different runs. 
+To provide a utilization-vs.-latency curve $F(.)$ to \shrink\ for each metric, we take the first approach discussed in Section \ref{sec:utilization-vs-responsetime}. The function $F(.)$ for each metric is equal to the measured utilization vs. latency curve of a single server with an inefficiency factor $\rho = 1.2$.  Based on $F(.)$ for each metric, we specify latencies $F(u)$ to \shrink\ for values of $u$ from 0.375 to 0.875 at intervals of 0.125 across different runs. 
 
 %, which is much less than the number of servers in the Akamai datacenter itself. we have made this choice not to overstate the energy savings.
 

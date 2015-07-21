@@ -26,14 +26,14 @@
 	The task of resolving names to \auspice\ providers may seem similar to that of resolving names to addresses. However, the former is an easier problem because the
 	update costs associated with storing name-to-\auspice\ provider mappings are much smaller. 
 }
-%  \auspice\ provider for a name is expected to change much more slowly than its address. Hence, update costs for storing name-to-\auspice\ provider mappings are much smaller. 
+%  \auspice\ provider for a name is expected to change much more slowly than its address. Hence, update costs for storing name-to-\auspice\ provider mappings are much smaller.
 
 %The pre-resolution may be facilitated by a local name server and the tuple [X,P] can be cached by any intermediary or endpoint as \auspice\ providers are expected to change infrequently. 
 
 
 
 %A special case is that of structured names as in DNS. 
-
+%
 %Due to the small update costs, 
 %
 %name to auspice \auspice\ mapping are expected to change at much smaller rates 
@@ -80,7 +80,7 @@
 	\textbf{Paxos overhead:}
 }
 \vspace{-0.1in}
-\section{Related Work}
+\section{Related work}
 \label{sec:related}
 
 %To our knowledge, this is the first paper to study the problem of locality-aware service replica placement and use the insights to drive the design and implementation of a global name service. Nevertheless, an enormous body of prior research has studied naming, server selection, and placement issues in large-scale distributed systems, as discussed below.
@@ -94,7 +94,7 @@ Our work draws on lessons learned from an enormous body of prior work on network
 
 %\textbf{DNS enhancements:} 
 %Since then, 
-{\bf{DNS.}} Many have studied issues related to performance, scalability, load balancing, or denial-of-service vulnerabilities in DNS's resolution infrastructure \cite{Pappas,codons-paper,Brownlee,dnssec}. Several DHT-based alternatives have been put forward \cite{codons-paper,cox,DHTdns} and we compare against one representative proposal, Codons \cite{codons-paper}. In general, DHT-based designs are ideal for balancing load across servers, but are less well-suited to scenarios with a large number of service replicas that have to coordinate upon updates, and are at odds with scenarios requiring placement of replicas close to pocket of demand. In comparison, \auspice\ uses a planned placement approach.
+{\bf{DNS:}} Many have studied issues related to performance, scalability, load balancing, or denial-of-service vulnerabilities in DNS's resolution infrastructure \cite{Pappas,codons-paper,Brownlee,dnssec}. Several DHT-based alternatives have been put forward \cite{codons-paper,cox,DHTdns} and we compare against one representative proposal, Codons \cite{codons-paper}. In general, DHT-based designs are ideal for balancing load across servers, but are less well-suited to scenarios with a large number of service replicas that have to coordinate upon updates, and are at odds with scenarios requiring placement of replicas close to pocket of demand. In comparison, \auspice\ uses a planned placement approach.
 
 Vu et al. describe DMap \cite{VuICDCS12}, an in-network DHT scheme %to map a self-certifying identifier to a fixed number of resolver locations using different consistent hash functions with clients choosing the closest mapped resolver. This approach 
 that is similar in spirit to \staticthree\ as evaluated in our experiments (Section \ref{sec:eval}) (with a more direct comparison in \cite{techreport}), showing that demand-aware placement can dramatically outperform randomized placement. A more important qualitative distinction is that DMap ties federation to the interconnection structure between ISPs, which entails commensurate lookup latency penalties and potential incentive mismatches by mapping GUIDs to non-provider ISPs. In comparison, the \auspice\ approach decouples the federation structure between GNS providers from that between ISPs.
@@ -110,10 +110,9 @@ that is similar in spirit to \staticthree\ as evaluated in our experiments (Sect
 
 %Active Names allows applications to deploy mobile code at resolvers that can recursively invoke other programs for finer-grained, hierarchical resolution and compose the output of resolved services. In contrast, \auspice\ does not support mobile code and does not attempt to support service composition, but does supports the resolution of identifiers to other identifiers (e.g., for geocast) before eventual resolution to network locations. As part of ongoing work, we are exploring adding support for active resolution objects \cite{comet} in \auspice.
 
-\textbf{Server selection.} Many prior systems have addressed the server selection problem with data or services replicated across a wide-area network. Examples include anycast services \cite{oasis,Bhattacharjee:1997:AA:839292.843045,donar} to map users to the best server based on server load or network path characteristics. These systems as well as CDNs and cloud hosting providers %\cite{AWS-load-balancing} 
-share our goals of proximate server selection and load balance given a fixed placement of server replicas. \auspice\ differs in that it additionally considers replica placement itself as a degree of freedom in achieving latency or load balance.
+\textbf{Request redirection:} Many prior systems have addressed the request redirection problem with data or services replicated across a wide-area network as discussed in the context of CDNs in Chapter \ref{ch:te-background}. Examples include anycast services \cite{oasis,Bhattacharjee:1997:AA:839292.843045,donar} to map users to the best server based on server load or network path characteristics. These systems as well as CDNs and cloud hosting providers share our goals of proximate request redirection and load balance given a fixed placement of server replicas. \auspice\ differs in that it additionally considers replica placement itself as a degree of freedom in achieving low latency or load balance.
 
-\textbf{Dynamic placement.} We were unable to find prior systems that {\em automatically} reconfigure the {\em geo-distributed} replica locations of frequently {\em mutable objects} while preserving {\em consistency} (i.e., those satisfying all four italicized properties). However, reconfigurable placement has been studied for static or slow changing content \cite{gwertzman:95b} or within a single datacenter, or without replication. For example, Volley \cite{volley} optimizes the placement of mutable data objects based on the geo-distribution of accesses and is similar in spirit to \auspice\ in this respect, however it implicitly assumes a single replica for each object, so it does not have to worry about high update rates or replica coordination overhead. %As shown in  Section \ref{sec:eval}, creating multiple replicas of objects or services can significantly reduce user-perceived response times while also enhancing opportunities to balance load provided update cost is taken into account.
+\textbf{Dynamic placement:} We were unable to find prior systems that {\em automatically} reconfigure the {\em geo-distributed} replica locations of frequently {\em mutable objects} while preserving {\em consistency} (i.e., those satisfying all four italicized properties). However, reconfigurable placement has been studied for static or slow changing content \cite{gwertzman:95b} or within a single datacenter, or without replication. For example, Volley \cite{volley} optimizes the placement of mutable data objects based on the geo-distribution of accesses and is similar in spirit to \auspice\ in this respect, however it implicitly assumes a single replica for each object, so it does not have to worry about high update rates or replica coordination overhead. %As shown in  Section \ref{sec:eval}, creating multiple replicas of objects or services can significantly reduce user-perceived response times while also enhancing opportunities to balance load provided update cost is taken into account.
 %\auspice\ is also similar in spirit to edge services hosted by CDNs. However, unlike \auspice, the geo-distributed locations of edge services as well as cloud-hosted services today are chosen manually and infrequently updated. %In comparison, \auspice\ automates geo-distributed placement of replicas, but the ``service'', a key-value store, is much simpler compared to black-box cloud-hosted services.
 
 
